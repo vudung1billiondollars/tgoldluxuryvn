@@ -1,0 +1,75 @@
+/* T GOLD · khung xem 3D */
+.tg3d{position:relative;aspect-ratio:1/1;overflow:hidden;isolation:isolate;border-radius:2px;
+  background:radial-gradient(120% 90% at 50% 38%,#2a2017 0%,#16100b 48%,#0a0806 100%);
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.tg3d-canvas{position:absolute;inset:0}
+.tg3d-canvas canvas{display:block;width:100%!important;height:100%!important;cursor:grab;opacity:0;transition:opacity .8s ease}
+.tg3d.is-ready .tg3d-canvas canvas{opacity:1}
+.tg3d-canvas canvas:active{cursor:grabbing}
+
+.tg3d button{appearance:none;-webkit-appearance:none;border:0;background:none;padding:0;margin:0;color:inherit;font:inherit;cursor:pointer}
+.tg3d-tools{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:2px;padding:5px;border-radius:999px;
+  background:rgba(8,6,5,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(212,169,79,.18)}
+.tg3d-tools button{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;color:#E9E3D8;transition:color .25s,background-color .25s}
+.tg3d-tools button:hover{color:#F1D48F;background:rgba(212,169,79,.1)}
+.tg3d-tools button:focus-visible,.tg3d-sw button:focus-visible{outline:1px solid #D4A94F;outline-offset:2px}
+.tg3d-tools svg{width:19px;height:19px}
+
+.tg3d-sw{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:6px;padding:6px;border-radius:999px;
+  background:rgba(8,6,5,.55);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(212,169,79,.18)}
+.tg3d-sw button{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:1px solid transparent;transition:border-color .25s}
+.tg3d-sw button i{display:block;width:24px;height:24px;border-radius:50%;box-shadow:inset 0 -2px 4px rgba(0,0,0,.25),inset 0 2px 3px rgba(255,255,255,.35)}
+.tg3d-sw button[aria-checked="true"]{border-color:#D4A94F}
+
+.tg3d-hint{position:absolute;left:0;right:0;top:16px;margin:0;padding:0 64px;text-align:center;font-size:12px;letter-spacing:.04em;color:#9B907D;pointer-events:none;transition:opacity .6s ease}
+.tg3d-hint.off{opacity:0}
+.tg3d:not(.is-ready) .tg3d-hint,.tg3d:not(.is-ready) .tg3d-sw,.tg3d:not(.is-ready) .tg3d-tools{visibility:hidden}
+
+.tg3d-load{position:absolute;inset:0;display:grid;place-content:center;gap:12px;text-align:center;font-size:12px;letter-spacing:.08em;color:#CFC6B6;padding:0 24px}
+.tg3d-load i{display:block;width:140px;height:1px;margin:0 auto;background:rgba(212,169,79,.2)}
+.tg3d-load b{display:block;width:0;height:100%;background:#D4A94F;transition:width .2s}
+.tg3d-load[hidden]{display:none}
+
+/* toàn màn hình */
+.tg3d:fullscreen{aspect-ratio:auto;width:100vw;height:100vh;border-radius:0}
+.tg3d.is-full{position:fixed;inset:0;z-index:1000;aspect-ratio:auto;width:auto;height:100dvh;border-radius:0}
+html.tg3d-lock,html.tg3d-lock body{overflow:hidden}
+.tg3d.is-full .tg3d-sw,.tg3d:fullscreen .tg3d-sw{bottom:max(18px,env(safe-area-inset-bottom))}
+
+@media (max-width:640px){
+  .tg3d-tools{right:10px;padding:4px}
+  .tg3d-tools button{width:36px;height:36px}
+  .tg3d-tools svg{width:17px;height:17px}
+  .tg3d-sw{bottom:12px}
+  .tg3d-hint{top:12px;font-size:11.5px;padding:0 56px}
+}
+
+/* kiểu sáng: nền be, công cụ dạng kính sáng */
+.tg3d-light{background:#E4DBD2}
+.tg3d-light .tg3d-tools,.tg3d-light .tg3d-sw{background:rgba(250,247,243,.7);border-color:rgba(26,18,6,.07);box-shadow:0 6px 20px rgba(60,40,20,.08)}
+.tg3d-light .tg3d-tools button{color:#3A332B}
+.tg3d-light .tg3d-tools button:hover{color:#8A6420;background:rgba(212,169,79,.16)}
+/* nút đang bật (xoay chéo) */
+.tg3d-tools button[data-act="tilt"][aria-pressed="true"]{color:#F1D48F;background:rgba(212,169,79,.2)}
+.tg3d-light .tg3d-tools button[data-act="tilt"][aria-pressed="true"]{color:#8A6420;background:rgba(212,169,79,.24)}
+.tg3d-light .tg3d-tools button:focus-visible,.tg3d-light .tg3d-sw button:focus-visible{outline-color:#8A6420}
+.tg3d-light .tg3d-sw button[aria-checked="true"]{border-color:#B8883A}
+.tg3d-light .tg3d-hint{color:#857A6D}
+.tg3d-light .tg3d-load{color:#5A5046}
+.tg3d-light .tg3d-load i{background:rgba(26,18,6,.12)}
+.tg3d-light .tg3d-load b{background:#B8883A}
+
+/* giữ yên 3 giây → kéo dịch khung (trang tự thiết kế): vòng tiến trình tại điểm chạm */
+.tg3d-hold{position:absolute;left:0;top:0;z-index:4;width:54px;height:54px;margin:-27px 0 0 -27px;pointer-events:none;opacity:0;transform:scale(.7);transition:opacity .2s ease,transform .25s ease}
+.tg3d-hold.show{opacity:1;transform:scale(1)}
+.tg3d-hold svg{display:block;width:100%;height:100%;overflow:visible}
+.tg3d-hold circle{fill:rgba(18,14,10,.28);stroke:rgba(255,255,255,.7);stroke-width:2.5}
+.tg3d-hold circle.p{fill:none;stroke:#D4A94F;stroke-width:3;stroke-linecap:round;stroke-dasharray:113.1;stroke-dashoffset:113.1;transform:rotate(-90deg);transform-origin:22px 22px}
+.tg3d-hold.fill circle.p{stroke-dashoffset:0;transition:stroke-dashoffset var(--hold,2.75s) linear}
+.tg3d-hold .mv{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;opacity:0;transition:opacity .2s}
+.tg3d-hold.on circle{fill:rgba(212,169,79,.85);stroke:#fff}
+.tg3d-hold.on .mv{opacity:1}
+.tg3d-hold span{position:absolute;left:50%;top:60px;transform:translateX(-50%);white-space:nowrap;padding:4px 10px;border-radius:999px;background:rgba(18,14,10,.8);color:#F5F0E6;font-size:11.5px;opacity:0;transition:opacity .2s}
+.tg3d-hold.on span{opacity:1}
+.tg3d.is-pan canvas,.tg3d.is-pan .tg3d-canvas canvas:active{cursor:move!important}
+@media (prefers-reduced-motion:reduce){.tg3d-hold.fill circle.p{transition:none}}

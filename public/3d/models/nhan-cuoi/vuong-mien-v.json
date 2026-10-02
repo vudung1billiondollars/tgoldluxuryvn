@@ -1,0 +1,20 @@
+{
+  "id": "vuong-mien-v",
+  "ten": "Vương miện chữ V",
+  "moTa": "Nhẫn nữ mảnh chữ V, marquise ở mũi và sáu viên đá chấu; nhẫn nam bản phẳng với một mặt vát tam giác ở mép.",
+  "nguon": "Mẫu tham khảo số 2",
+  "family": "nhan-cuoi",
+  "fileGlb": "vuong-mien-v.glb",
+  "poster": "vuong-mien-v.jpg",
+  "view": "pair",
+  "metal": "vang-trang",
+  "metal2": "",
+  "gem": "lab-diamond",
+  "innerGem": "",
+  "coDa": true,
+  "vienDa": 7,
+  "vienDaAn": 0,
+  "dungLuongKB": 725,
+  "ngay": "2026-09-29",
+  "thietKe": "nhan-cuoi.html#mau=vuong-mien-v"
+}

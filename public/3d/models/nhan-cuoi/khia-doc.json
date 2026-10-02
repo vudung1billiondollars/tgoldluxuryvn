@@ -1,0 +1,20 @@
+{
+  "id": "khia-doc",
+  "ten": "Khía dọc & tám viên",
+  "moTa": "Khía dọc đều quanh thân; nhẫn nữ tám viên chìm rải quanh.",
+  "nguon": "T Gold phối thêm",
+  "family": "nhan-cuoi",
+  "fileGlb": "khia-doc.glb",
+  "poster": "khia-doc.jpg",
+  "view": "pair",
+  "metal": "vang",
+  "metal2": "",
+  "gem": "lab-diamond",
+  "innerGem": "",
+  "coDa": true,
+  "vienDa": 8,
+  "vienDaAn": 0,
+  "dungLuongKB": 2002,
+  "ngay": "2026-09-29",
+  "thietKe": "nhan-cuoi.html#mau=khia-doc"
+}

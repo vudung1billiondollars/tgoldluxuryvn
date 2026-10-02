@@ -1,0 +1,175 @@
+{
+  "_note": "Chữ & ảnh đã sửa của các trang thông tin (chỉ lưu phần khác chữ mặc định). Sửa trong /admin → Trang thông tin.",
+  "pages": {
+    "custom": {
+      "images": {
+        "pair-1-3d": {
+          "src": "/assets/photos/custom-pendant-3d-660.webp",
+          "srcset": "/assets/photos/custom-pendant-3d-330.webp 330w, /assets/photos/custom-pendant-3d-660.webp 660w",
+          "alt": {
+            "vi": "Bản dựng 3D mặt dây chữ cái đính đá quý, có kích thước 23 × 28 mm",
+            "en": "3D model of an initial pendant set with gemstones, dimensioned 23 × 28 mm"
+          },
+          "focus": "50% 50%"
+        },
+        "pair-1-done": {
+          "src": "/assets/photos/custom-pendant-1160.webp",
+          "srcset": "/assets/photos/custom-pendant-480.webp 480w, /assets/photos/custom-pendant-800.webp 800w, /assets/photos/custom-pendant-1160.webp 1160w",
+          "alt": {
+            "vi": "Thành phẩm mặt dây chữ cái đính đá quý, đeo cùng dây chuyền vàng",
+            "en": "Finished initial pendant set with gemstones, worn on a gold chain"
+          },
+          "focus": "50% 50%"
+        },
+        "pair-2-3d": {
+          "src": "/assets/photos/custom-ring-3d-740.webp",
+          "srcset": "/assets/photos/custom-ring-3d-370.webp 370w, /assets/photos/custom-ring-3d-740.webp 740w",
+          "alt": {
+            "vi": "Bản dựng 3D nhẫn nam chữ cái đính đá quý",
+            "en": "3D model of a men’s initial ring set with gemstones"
+          },
+          "focus": "50% 60%"
+        },
+        "pair-2-done": {
+          "src": "/assets/photos/custom-ring-1000.webp",
+          "srcset": "/assets/photos/custom-ring-480.webp 480w, /assets/photos/custom-ring-800.webp 800w, /assets/photos/custom-ring-1000.webp 1000w",
+          "alt": {
+            "vi": "Thành phẩm nhẫn nam chữ cái đính đá quý, đeo trên tay",
+            "en": "Finished men’s initial ring set with gemstones, worn on the hand"
+          },
+          "focus": "50% 50%"
+        }
+      }
+    },
+    "materials": {
+      "images": {
+        "cert": {
+          "src": "/media/2026-10/img-0204-d65244-1600.webp",
+          "srcset": "/media/2026-10/img-0204-d65244-400.webp 400w, /media/2026-10/img-0204-d65244-800.webp 800w, /media/2026-10/img-0204-d65244-1600.webp 1600w",
+          "alt": {
+            "vi": "",
+            "en": ""
+          },
+          "focus": "50% 50%"
+        }
+      }
+    },
+    "workshop": {
+      "images": {
+        "video": {
+          "src": "/assets/photos/xuong-dinh-da-quy-1080.webp",
+          "srcset": "/assets/photos/xuong-dinh-da-quy-480.webp 480w, /assets/photos/xuong-dinh-da-quy-720.webp 720w, /assets/photos/xuong-dinh-da-quy-1080.webp 1080w",
+          "alt": {
+            "vi": "Đính đá quý tại xưởng T Gold",
+            "en": "Gemstone setting in the T Gold workshop"
+          },
+          "focus": "50% 50%",
+          "video": "/assets/video/xuong-dinh-da-quy-720.mp4"
+        },
+        "stage-1": {
+          "src": "/assets/photos/xuong-cong-doan-1-v3-828.webp",
+          "srcset": "/assets/photos/xuong-cong-doan-1-v3-480.webp 480w, /assets/photos/xuong-cong-doan-1-v3-800.webp 800w, /assets/photos/xuong-cong-doan-1-v3-828.webp 828w",
+          "alt": {
+            "vi": "Bàn thiết kế với bản dựng 3D mặt dây chữ cái trên màn hình",
+            "en": "Design desk with a 3D model of an initial pendant on screen"
+          },
+          "focus": "50% 50%"
+        },
+        "stage-2": {
+          "src": "/assets/photos/xuong-cong-doan-2-v2-1280.webp",
+          "srcset": "/assets/photos/xuong-cong-doan-2-v2-480.webp 480w, /assets/photos/xuong-cong-doan-2-v2-800.webp 800w, /assets/photos/xuong-cong-doan-2-v2-1280.webp 1280w",
+          "alt": {
+            "vi": "Viên đá quý được giữ trên nhíp để kiểm tra",
+            "en": "A gemstone held in tweezers for inspection"
+          },
+          "focus": "50% 50%"
+        },
+        "stage-3": {
+          "src": "/assets/photos/xuong-cong-doan-3-1280.webp",
+          "srcset": "/assets/photos/xuong-cong-doan-3-480.webp 480w, /assets/photos/xuong-cong-doan-3-800.webp 800w, /assets/photos/xuong-cong-doan-3-1280.webp 1280w",
+          "alt": {
+            "vi": "Rót vàng nóng chảy vào khuôn đúc",
+            "en": "Molten gold being poured into a casting mold"
+          },
+          "focus": "50% 50%"
+        },
+        "stage-4": {
+          "src": "/assets/photos/xuong-cong-doan-4-1280.webp",
+          "srcset": "/assets/photos/xuong-cong-doan-4-480.webp 480w, /assets/photos/xuong-cong-doan-4-800.webp 800w, /assets/photos/xuong-cong-doan-4-1280.webp 1280w",
+          "alt": {
+            "vi": "Thợ đính đá quý lên nhẫn bằng dụng cụ cầm tay",
+            "en": "A craftsman setting gemstones into a ring with a hand tool"
+          },
+          "focus": "50% 50%"
+        },
+        "stage-5": {
+          "src": "/assets/photos/xuong-cong-doan-5-1152.webp",
+          "srcset": "/assets/photos/xuong-cong-doan-5-480.webp 480w, /assets/photos/xuong-cong-doan-5-800.webp 800w, /assets/photos/xuong-cong-doan-5-1152.webp 1152w",
+          "alt": {
+            "vi": "Thợ đánh bóng nhẫn bằng máy mài cầm tay",
+            "en": "A craftsman polishing a ring with a rotary tool"
+          },
+          "focus": "50% 50%"
+        },
+        "stage-6": {
+          "src": "/assets/photos/xuong-cong-doan-6-v3-1600.webp",
+          "srcset": "/assets/photos/xuong-cong-doan-6-v3-480.webp 480w, /assets/photos/xuong-cong-doan-6-v3-800.webp 800w, /assets/photos/xuong-cong-doan-6-v3-1600.webp 1600w",
+          "alt": {
+            "vi": "Nhẫn đính đá quý đặt trên giấy kiểm định",
+            "en": "A gemstone ring resting on its certificate"
+          },
+          "focus": "50% 50%"
+        }
+      }
+    },
+    "story": {
+      "images": {
+        "st-hero": {
+          "src": "/assets/photos/hero-hands-1280.webp",
+          "srcset": "/assets/photos/hero-hands-400.webp 400w, /assets/photos/hero-hands-800.webp 800w, /assets/photos/hero-hands-1280.webp 1280w",
+          "alt": {
+            "vi": "Đôi tay đeo nhẫn và lắc tay T Gold trên nền áo tối",
+            "en": "Hands wearing T Gold rings and a bracelet against a dark shirt"
+          },
+          "focus": "50% 50%"
+        },
+        "st-what-1": {
+          "src": "/assets/photos/ring-macro-wide-1200.webp",
+          "srcset": "/assets/photos/ring-macro-wide-400.webp 400w, /assets/photos/ring-macro-wide-800.webp 800w, /assets/photos/ring-macro-wide-1200.webp 1200w",
+          "alt": {
+            "vi": "Cận cảnh nhẫn nam đính đá quý chủ lớn",
+            "en": "Close-up of a men’s ring with a large center gemstone"
+          },
+          "focus": "50% 50%"
+        },
+        "st-what-2": {
+          "src": "/assets/photos/gold-ring-leather-800.webp",
+          "srcset": "/assets/photos/gold-ring-leather-400.webp 400w, /assets/photos/gold-ring-leather-800.webp 800w",
+          "alt": {
+            "vi": "Nhẫn nam vàng đính đá quý trên nền da",
+            "en": "Men’s gold ring set with gemstones on leather"
+          },
+          "focus": "50% 50%"
+        },
+        "st-strip": {
+          "src": "/assets/photos/tray-rings-1600.webp",
+          "srcset": "/assets/photos/tray-rings-400.webp 400w, /assets/photos/tray-rings-800.webp 800w, /assets/photos/tray-rings-1600.webp 1600w",
+          "alt": {
+            "vi": "Khay nhẫn nam tại showroom",
+            "en": "A tray of men’s rings at the showroom"
+          },
+          "focus": "50% 46%"
+        },
+        "st-who": {
+          "src": "/assets/photos/hero-4-768.webp",
+          "srcset": "/assets/photos/hero-4-400.webp 400w, /assets/photos/hero-4-768.webp 768w",
+          "alt": {
+            "vi": "Nhẫn và lắc tay đính đá quý phủ kín trên tay",
+            "en": "Fully paved gemstone rings and a tennis bracelet on the wrist"
+          },
+          "focus": "50% 50%"
+        }
+      }
+    }
+  }
+}

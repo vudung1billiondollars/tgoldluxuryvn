@@ -1,0 +1,69 @@
+{
+  "_note": "Thông tin website. Sửa trong trang quản trị /admin → Thông tin website. Ô để trống sẽ hiển thị “(cập nhật)”.",
+  "siteUrl": "https://tgoldluxury.vn",
+  "contact": {
+    "hotline": "",
+    "zalo": "",
+    "messenger": "",
+    "email": "",
+    "address": {
+      "vi": "",
+      "en": ""
+    },
+    "hours": {
+      "vi": "10:00 – 21:00",
+      "en": "10:00 – 21:00"
+    },
+    "hoursVerified": false,
+    "mapEmbed": "",
+    "mapLink": ""
+  },
+  "social": {
+    "instagram": "",
+    "facebook": "",
+    "tiktok": "",
+    "zalo": ""
+  },
+  "form": {
+    "endpoint": "/api/booking",
+    "maxFiles": 3,
+    "maxFileMB": 5
+  },
+  "media": {
+    "heroVideo": "",
+    "heroVideoMobile": "",
+    "heroPoster": ""
+  },
+  "claims": {
+    "leadTime": {
+      "verified": true,
+      "vi": "Với những đơn phù hợp, thời gian hoàn thiện khoảng 5–7 ngày.",
+      "en": "For eligible orders, completion takes around 5–7 days."
+    },
+    "warranty": {
+      "verified": true,
+      "vi": {
+        "title": "Bảo hành trọn đời",
+        "text": "Theo chính sách của T Gold."
+      },
+      "en": {
+        "title": "Lifetime warranty",
+        "text": "Under the T Gold warranty policy."
+      }
+    },
+    "certificates": {
+      "verified": true,
+      "list": [
+        "GGJ",
+        "GRA",
+        "IGI",
+        "GIA"
+      ]
+    },
+    "exchange": {
+      "verified": true,
+      "vi": "Đổi mẫu theo chính sách",
+      "en": "Exchange per policy"
+    }
+  }
+}

@@ -1,0 +1,190 @@
+/* T GOLD · trang tự thiết kế 3D (dùng chung: nhẫn cầu hôn tuy-chinh.html, nhẫn cưới nhan-cuoi.html) */
+/* Bố cục kiểu ứng dụng: trang không cuộn — khung 3D đứng yên, chỉ bảng chọn cuộn. Điện thoại & iPad dọc: 3D ở trên, bảng chọn ở dưới. */
+:root{
+  --ink:#080605; --lacquer:#120E0A; --lacquer-2:#1A140E; --gold:#D4A94F; --gold-l:#F1D48F; --ivory:#F5F0E6; --text:#E9E3D8; --sub:#CFC6B6; --muted:#9B907D;
+  --line:rgba(212,169,79,.36); --line-s:rgba(212,169,79,.16);
+  --satin:#E4DBD2; --satin-hi:#EDE6DE; --satin-lo:#D5CABD; --engrave:#7A5A1E;
+  --top-h:52px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;height:100%;overscroll-behavior:none}
+body{margin:0;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:none;background:var(--ink);color:var(--text);
+  font-family:'Be Vietnam Pro',Arial,sans-serif;font-weight:300;font-size:14.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button{touch-action:manipulation}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.top{flex:none;height:var(--top-h);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 max(16px,env(safe-area-inset-left)) 0 max(16px,env(safe-area-inset-left));border-bottom:1px solid var(--line-s);touch-action:none}
+.logo{font-family:'Cinzel',Georgia,serif;font-weight:700;letter-spacing:.34em;color:var(--gold-l);font-size:15px}
+.tag{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+.shell{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) min(calc(15vw + 390px),720px);overflow:hidden}
+.shell>*{min-width:0}
+
+/* ——— khung trình bày 3D: như hộp nhẫn — nền satin be (màu đã duyệt) có ánh sáng tụ giữa, viền vàng mảnh */
+.stage{min-height:0;padding:18px 10px 18px max(18px,env(safe-area-inset-left));touch-action:none}
+.frame{position:relative;height:100%;border-radius:22px;overflow:hidden;isolation:isolate;
+  box-shadow:0 0 0 1px rgba(212,169,79,.34),0 0 0 6px var(--lacquer),0 0 0 7px rgba(212,169,79,.12),0 40px 80px -40px rgba(0,0,0,.9)}
+.frame #viewer.tg3d{aspect-ratio:auto;width:100%;height:100%;border-radius:0;
+  background:radial-gradient(110% 85% at 50% 40%,var(--satin-hi) 0%,var(--satin) 52%,var(--satin-lo) 100%)!important}
+/* dấu tuổi vàng — như dấu khắc bên trong đai nhẫn; đổi theo lựa chọn */
+.mark{position:absolute;left:16px;top:16px;z-index:3;display:flex;align-items:center;gap:10px;pointer-events:none}
+.stamp{display:grid;place-items:center;min-width:46px;height:30px;padding:0 9px;border-radius:15px;border:1.5px solid rgba(122,90,30,.55);
+  font-family:'Cinzel',Georgia,serif;font-weight:700;font-size:13px;letter-spacing:.08em;color:var(--engrave);
+  background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));box-shadow:inset 0 1px 1.5px rgba(80,55,15,.28),0 1px 0 rgba(255,255,255,.55)}
+.stamp.press{animation:press .45s cubic-bezier(.2,.8,.3,1)}
+@keyframes press{0%{transform:scale(1.14);opacity:.4}100%{transform:scale(1);opacity:1}}
+.spec{display:flex;flex-direction:column;line-height:1.25}
+.spec b{font-weight:600;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#5E4B2E}
+.spec span{font-size:12px;color:#6F6353}
+/* công cụ & màu vàng trên khung: sơn mài tối, chữ ngà — nổi rõ trên nền be */
+.frame .tg3d-light .tg3d-tools,.frame .tg3d-light .tg3d-sw{background:rgba(18,14,10,.8);border-color:rgba(212,169,79,.28);box-shadow:0 10px 26px -8px rgba(30,20,8,.45)}
+.frame .tg3d-light .tg3d-tools button{color:#E9E3D8}
+.frame .tg3d-light .tg3d-tools button:hover{color:var(--gold-l);background:rgba(212,169,79,.14)}
+.frame .tg3d-light .tg3d-tools button[data-act="tilt"][aria-pressed="true"]{color:var(--ink);background:var(--gold)}
+.frame .tg3d-light .tg3d-tools button:focus-visible,.frame .tg3d-light .tg3d-sw button:focus-visible{outline-color:var(--gold-l)}
+.frame .tg3d-light .tg3d-sw button[aria-checked="true"]{border-color:var(--gold-l)}
+.frame .tg3d-hint{top:auto;bottom:74px;font-size:12px;color:#6F6353}
+.frame .tg3d-hint::before{content:"";display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:var(--gold);vertical-align:1px;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+
+/* chọn nhẫn đang xem (nhẫn cưới: cả đôi / nhẫn nữ / nhẫn nam) — cùng kiểu sơn mài với công cụ */
+.focus{position:absolute;right:16px;top:14px;z-index:3;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(18,14,10,.8);border:1px solid rgba(212,169,79,.28);box-shadow:0 10px 26px -8px rgba(30,20,8,.45);touch-action:manipulation}
+.focus button{appearance:none;border:0;background:none;margin:0;color:#CFC6B6;font:inherit;font-size:12px;line-height:1;padding:8px 13px;border-radius:999px;cursor:pointer}
+.focus button:hover{color:var(--gold-l)}
+.focus button[aria-pressed="true"]{background:var(--gold);color:var(--ink);font-weight:600}
+.focus button:focus-visible{outline:1px solid var(--gold-l);outline-offset:1px}
+.focus .sm{display:none}
+
+/* ——— bảng chọn */
+.pane{min-height:0;overflow:hidden;display:flex;flex-direction:column;border-left:1px solid var(--line-s);background:linear-gradient(180deg,var(--lacquer),var(--ink) 40%)}
+.pane-head{flex:none;padding:22px 26px 10px}
+.kick{font-weight:600;font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin:0 0 6px}
+h1{font-family:'Cormorant Garamond',serif;font-weight:700;color:var(--ivory);font-size:34px;line-height:1.05;margin:0}
+h1 em{font-style:italic;color:var(--gold-l)}
+.steps{flex:none;display:flex;gap:0;overflow-x:auto;overflow-y:hidden;touch-action:pan-x;overscroll-behavior-x:contain;scrollbar-width:none;padding:10px 16px 0;border-bottom:1px solid var(--line-s);-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent)}
+.steps.end{-webkit-mask-image:none;mask-image:none}
+.steps::-webkit-scrollbar{display:none}
+.steps button{flex:none;appearance:none;border:0;background:none;padding:10px 9px 12px;margin:0;font:inherit;font-size:13px;color:var(--muted);cursor:pointer;position:relative;white-space:nowrap}
+.steps button span{font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--gold);opacity:.7;margin-right:5px}
+.steps button[aria-selected="true"]{color:var(--ivory)}
+.steps button[aria-selected="true"]::after{content:"";position:absolute;left:9px;right:9px;bottom:0;height:2px;border-radius:2px;background:var(--gold)}
+.steps button:hover{color:var(--ivory)}
+.steps button:focus-visible{outline:1px solid var(--gold);outline-offset:-4px;border-radius:6px}
+.pane-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:18px 26px calc(24px + env(safe-area-inset-bottom))}
+
+.sec-h{display:flex;align-items:baseline;gap:12px;margin:0 0 14px;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:26px;line-height:1.1;color:var(--ivory)}
+.sec-h span{font-family:'Be Vietnam Pro',sans-serif;font-size:11px;font-weight:600;letter-spacing:.2em;color:var(--gold)}
+.grp{border:0;margin:0 0 18px;padding:0;min-width:0}
+/* tiêu đề con trong một bước (Nhẫn nữ / Nhẫn nam / Chung cho đôi) */
+.sub{display:flex;align-items:center;gap:12px;margin:22px 0 12px;font-family:'Be Vietnam Pro',sans-serif;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.sub::after{content:"";flex:1;height:1px;background:var(--line-s)}
+.sec-h+.sub{margin-top:4px}
+.grp legend{display:flex;justify-content:space-between;gap:12px;width:100%;padding:0;margin-bottom:9px;font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.grp legend b{font-weight:500;letter-spacing:.02em;text-transform:none;font-size:13px;color:var(--gold-l);text-align:right}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px}
+.cards button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px 9px;border:1px solid var(--line-s);border-radius:12px;background:var(--lacquer);color:var(--sub);font:inherit;font-size:12px;line-height:1.3;cursor:pointer;transition:border-color .2s,color .2s,background-color .2s}
+.cards svg{width:38px;height:38px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chips button{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:0 14px;border:1px solid var(--line-s);border-radius:999px;background:none;color:var(--sub);font:inherit;font-size:13px;cursor:pointer;transition:border-color .2s,color .2s}
+.chips i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 -1px 3px rgba(0,0,0,.35)}
+.cards button:hover,.chips button:hover{color:var(--ivory);border-color:var(--line)}
+.grp button[aria-checked="true"]{border-color:var(--gold);color:var(--ivory);background:linear-gradient(180deg,rgba(212,169,79,.14),rgba(212,169,79,.04))}
+.grp button[aria-checked="true"] svg{color:var(--gold-l)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:1px solid var(--gold);outline-offset:2px}
+.hint{margin:8px 0 0;font-size:12.5px;line-height:1.6;color:var(--muted)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.fld{display:flex;flex-direction:column;gap:7px;font-size:10.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.fld select,.fld input{height:42px;padding:0 12px;border:1px solid var(--line-s);border-radius:10px;background:var(--lacquer);color:var(--text);font:inherit;font-size:14px;letter-spacing:0;text-transform:none}
+.see{display:flex;flex-wrap:wrap;gap:8px;margin:-2px 0 16px}
+.see button{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border:1px solid var(--line);border-radius:999px;background:none;color:var(--gold-l);font:inherit;font-size:12px;cursor:pointer}
+.see button:hover{background:rgba(212,169,79,.1)}
+.engrave-prev{font-family:"Edwardian Script ITC","Pinyon Script",cursive;font-size:22px;line-height:1;color:var(--gold-l);letter-spacing:.01em;text-transform:none}
+.next{display:flex;justify-content:flex-end;margin-top:6px;padding-top:16px;border-top:1px solid var(--line-s)}
+.btn-next{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border:0;border-radius:999px;background:var(--gold);color:var(--ink);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.btn-next:hover{background:var(--gold-l)}
+.sum ul{list-style:none;margin:0 0 14px;padding:0}
+.sum li{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--line-s);font-size:13.5px}
+.sum li span{color:var(--muted)}
+.sum li b{font-weight:400;color:var(--ivory)}
+.note{font-size:12.5px;line-height:1.7;color:var(--muted);margin:0 0 14px}
+.note b{color:var(--sub);font-weight:500}
+.btn-next.send{margin:2px 0 14px;text-decoration:none}
+.btn-l{height:42px;padding:0 18px;border:1px solid var(--line);border-radius:999px;background:none;color:var(--gold-l);font:inherit;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer}
+/* mẫu gợi ý (nhẫn cưới): thẻ ảnh chụp từ chính hình 3D, nền satin như khung trình bày */
+.lead{margin:-4px 0 14px;font-size:13px;line-height:1.65;color:var(--sub)}
+.from{margin:0 0 12px;padding:8px 12px;border:1px solid var(--line-s);border-radius:10px;font-size:12px;color:var(--muted)}
+.from b{font-weight:500;color:var(--gold-l)}
+.presets{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:12px;margin:0 0 18px}
+.presets button{display:flex;flex-direction:column;align-items:stretch;padding:0;border:1px solid var(--line-s);border-radius:14px;overflow:hidden;background:var(--lacquer);color:var(--sub);font:inherit;text-align:left;cursor:pointer;transition:border-color .2s}
+.presets .ph{display:block;aspect-ratio:3/2;background:radial-gradient(110% 85% at 50% 40%,var(--satin-hi) 0%,var(--satin) 52%,var(--satin-lo) 100%)}
+.presets img{display:block;width:100%;height:100%;object-fit:cover}
+.presets .nm{padding:10px 12px 3px;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:17.5px;line-height:1.15;color:var(--ivory)}
+.presets .ds{padding:0 12px 12px;font-size:11.5px;line-height:1.5;color:var(--muted)}
+.presets button:hover{border-color:var(--line)}
+.presets button[aria-checked="true"]{border-color:var(--gold);box-shadow:inset 0 0 0 1px var(--gold)}
+.presets button[aria-checked="true"] .nm::after{content:" ✦";font-size:.7em;vertical-align:.15em;color:var(--gold)}
+.fade{animation:fade .28s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* iPad nằm ngang (màn cảm ứng, ngang, đủ cao): khung 3D rộng hơn 15% so với máy tính (bảng chọn ≈ 475 px) */
+@media (hover:none) and (pointer:coarse) and (orientation:landscape) and (min-width:900px) and (min-height:600px){
+  .shell{grid-template-columns:minmax(0,1fr) calc(2.25vw + 448px)}
+  .steps{padding:10px 6px 0}.steps button{padding:10px 5px 12px;font-size:12.5px}.steps button span{margin-right:3px;letter-spacing:.04em}
+  .steps button[aria-selected="true"]::after{left:5px;right:5px}
+}
+/* ——— điện thoại & iPad dọc: 3D ở trên (đứng yên), bảng chọn ở dưới (máy tính cửa sổ hẹp vẫn chia hai bên) */
+@media (max-width:899px),(max-width:1100px) and (orientation:portrait){
+  :root{--top-h:46px}
+  .tag{font-size:10px;letter-spacing:.16em}
+  .shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+  .stage{height:clamp(250px,47dvh,640px);padding:10px max(10px,env(safe-area-inset-left)) 12px}
+  .frame{border-radius:18px;box-shadow:0 0 0 1px rgba(212,169,79,.34),0 0 0 4px var(--lacquer),0 0 0 5px rgba(212,169,79,.1)}
+  .pane{border-left:0;border-top:1px solid var(--line-s);border-radius:20px 20px 0 0;background:var(--lacquer)}
+  .pane-head{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;padding:0}
+  .steps{padding:4px 8px 0}
+  .pane-body{padding:16px 16px calc(22px + env(safe-area-inset-bottom))}
+  .sec-h{font-size:23px;margin-bottom:12px}
+  .mark{left:12px;top:12px;gap:8px}
+  .stamp{min-width:40px;height:26px;font-size:11.5px}
+  .spec b{font-size:9.5px}.spec span{font-size:11px}
+  .frame .tg3d-hint{bottom:62px;font-size:11.5px}
+  .focus{right:10px;top:10px;padding:3px}.focus button{font-size:11px;padding:7px 10px}
+  .focus .lg{display:none}.focus .sm{display:inline}
+}
+@media (min-width:700px) and (max-width:1100px) and (orientation:portrait){ .stage{height:clamp(300px,52dvh,700px)} .cards{grid-template-columns:repeat(auto-fill,minmax(92px,1fr))} }
+/* điện thoại: nhóm thẻ lướt ngang (tiết kiệm chiều cao), chừa mép để thấy còn lựa chọn */
+@media (max-width:699px){
+  .stage{height:clamp(270px,54dvh,600px)}
+  .cards{display:flex;overflow-x:auto;overflow-y:hidden;touch-action:pan-x pan-y;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;gap:7px;margin:0 -16px;padding:1px 16px 3px;scroll-padding:0 16px}
+  .cards::-webkit-scrollbar{display:none}
+  .cards button{flex:0 0 68px;padding:8px 4px 7px;gap:3px;border-radius:10px;font-size:11px}
+  .cards svg{width:28px;height:28px}
+  .chips{gap:6px}
+  .chips button{min-height:32px;padding:0 11px;font-size:12px;gap:6px}
+  .chips i{width:11px;height:11px}
+  .pane-body{padding:12px 16px calc(18px + env(safe-area-inset-bottom))}
+  .sec-h{font-size:20px;margin-bottom:10px}
+  .grp{margin-bottom:14px}
+  .grp legend{margin-bottom:7px;font-size:9.5px}
+  .grp legend b{font-size:12px}
+  .hint{font-size:11.5px}
+  .steps button{font-size:12px;padding:8px 8px 10px}
+  .steps button span{font-size:9px}
+  .btn-next{height:40px;font-size:12.5px;padding:0 16px}
+  .fld select,.fld input{height:38px;font-size:13px}
+  .row2{grid-template-columns:1fr}
+  .sum li{grid-template-columns:84px 1fr;font-size:12.5px;padding:7px 0}
+  .lead{font-size:12px;margin:-2px 0 10px}
+  .presets{grid-template-columns:1fr 1fr;gap:9px}
+  .presets button{border-radius:12px}
+  .presets .nm{font-size:15px;padding:8px 10px 2px}
+  .presets .ds{font-size:10.5px;padding:0 10px 10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+}
+/* điện thoại nằm ngang: 3D bên trái, bảng chọn bên phải */
+@media (max-width:1023px) and (max-height:520px) and (orientation:landscape){
+  .shell{grid-template-columns:minmax(0,1fr) minmax(300px,44%);grid-template-rows:1fr}
+  .stage{height:auto;padding:8px 6px 8px max(8px,env(safe-area-inset-left))}
+  .pane{border-top:0;border-left:1px solid var(--line-s);border-radius:0}
+}
+@media (pointer:coarse){ .frame .tg3d-tools [data-act="in"],.frame .tg3d-tools [data-act="out"]{display:none} }
+@media (prefers-reduced-motion:reduce){ .stamp.press,.fade,.frame .tg3d-hint::before{animation:none} }

@@ -1,0 +1,675 @@
+{
+  "_note": "Nội dung trang chủ. Sửa trong trang quản trị /admin → Trang chủ. Trong tiêu đề, đặt phần chữ vàng nghiêng giữa hai dấu *…*.",
+  "seo": {
+    "title": {
+      "vi": "T Gold – Luxury Jewelry | Trang sức vàng thật, đá quý thật",
+      "en": "T Gold – Luxury Jewelry | Real gold, real gemstones"
+    },
+    "description": {
+      "vi": "Trang sức Luxury từ vàng 10K · 14K · 18K và đá quý Moissanite, Lab Diamond, kim cương thiên nhiên. Mẫu có sẵn và Custom tại xưởng riêng T Gold, có giấy kiểm định.",
+      "en": "Luxury jewelry in 10K · 14K · 18K gold set with Moissanite, Lab Diamond or natural diamond. Ready designs and Custom pieces made in the T Gold workshop, with certification."
+    }
+  },
+  "hero": {
+    "interval": 7,
+    "tagline": "TRUE MATERIALS · TAILORED DESIGN · YOUR TRAIT",
+    "h1": {
+      "vi": "T Gold – Trang sức Luxury cho giá trị được nhìn thấy",
+      "en": ""
+    },
+    "slides": [
+      {
+        "nav": {
+          "vi": "Giá trị",
+          "en": "Worth"
+        },
+        "kicker": {
+          "vi": "T GOLD · LUXURY JEWELRY",
+          "en": "T GOLD · LUXURY JEWELRY"
+        },
+        "title": {
+          "vi": "GIÁ TRỊ",
+          "en": "WORTH"
+        },
+        "subtitle": {
+          "vi": "ĐƯỢC NHÌN THẤY",
+          "en": "MADE VISIBLE"
+        },
+        "text": {
+          "vi": "Trang sức Luxury dành cho những người muốn những gì mình mang trên người xứng với giá trị, cá tính và vị thế của chính mình.",
+          "en": "Luxury jewelry for those who want what they wear to reflect their value, individuality and status."
+        },
+        "image": {
+          "src": "/assets/photos/hero-1-1600.webp",
+          "srcset": "/assets/photos/hero-1-400.webp 400w, /assets/photos/hero-1-800.webp 800w, /assets/photos/hero-1-1600.webp 1600w",
+          "alt": {
+            "vi": "Đôi tay đeo nhẫn và lắc tay T Gold trên nền áo tối",
+            "en": "Hands wearing T Gold rings and a bracelet against a dark shirt"
+          },
+          "focus": "50% 55%"
+        },
+        "ctas": [
+          {
+            "label": {
+              "vi": "TÌM HIỂU T GOLD",
+              "en": "DISCOVER T GOLD"
+            },
+            "link": {
+              "to": "page:story"
+            }
+          }
+        ]
+      },
+      {
+        "nav": {
+          "vi": "Chất liệu",
+          "en": "Materials"
+        },
+        "kicker": {
+          "vi": "T · TRUE MATERIALS",
+          "en": "T · TRUE MATERIALS"
+        },
+        "title": {
+          "vi": "VÀNG · ĐÁ QUÝ",
+          "en": "GOLD · GEMSTONES"
+        },
+        "subtitle": {
+          "vi": "GIÁ TRỊ MINH BẠCH",
+          "en": "TRANSPARENT VALUE"
+        },
+        "text": {
+          "vi": "Vàng 10K · 14K · 18K, kết hợp cùng Moissanite, kim cương Lab hoặc kim cương thiên nhiên.\nTuổi vàng · trọng lượng · thông số đá quý được thể hiện rõ ràng; kiểm định khi áp dụng.",
+          "en": "10K · 14K · 18K gold, paired with Moissanite, Lab Diamonds or Natural Diamonds.\nGold purity · weight · gemstone specifications are clearly stated; certification where applicable."
+        },
+        "image": {
+          "src": "/assets/photos/hero-2-1510.webp",
+          "srcset": "/assets/photos/hero-2-400.webp 400w, /assets/photos/hero-2-800.webp 800w, /assets/photos/hero-2-1510.webp 1510w",
+          "alt": {
+            "vi": "Nhẫn, lắc tay và mặt dây T Gold trưng bày cạnh giấy kiểm định",
+            "en": "T Gold rings, bracelets and pendants displayed beside their certificates"
+          },
+          "focus": "50% 50%"
+        },
+        "ctas": [
+          {
+            "label": {
+              "vi": "TIÊU CHUẨN CHẤT LƯỢNG",
+              "en": "QUALITY STANDARDS"
+            },
+            "link": {
+              "to": "page:materials"
+            }
+          }
+        ]
+      },
+      {
+        "nav": {
+          "vi": "Thiết kế",
+          "en": "Design"
+        },
+        "kicker": {
+          "vi": "T · TAILORED DESIGN",
+          "en": "T · TAILORED DESIGN"
+        },
+        "title": {
+          "vi": "THIẾT KẾ",
+          "en": "DESIGN"
+        },
+        "subtitle": {
+          "vi": "THEO LỰA CHỌN CỦA BẠN",
+          "en": "AROUND YOUR CHOICES"
+        },
+        "text": {
+          "vi": "Chọn size, màu vàng, tuổi vàng, loại đá quý — hoặc bắt đầu từ một ý tưởng riêng.\nTừ bản vẽ 3D đến thành phẩm, được thực hiện và kiểm soát tại xưởng T Gold.",
+          "en": "Choose the size, gold color, gold purity and gemstone — or begin with an idea of your own.\nFrom the 3D design to the finished piece, the process is carried out and controlled at the T Gold workshop."
+        },
+        "image": {
+          "src": "/assets/photos/gold-ring-box-1600.webp",
+          "srcset": "/assets/photos/gold-ring-box-400.webp 400w, /assets/photos/gold-ring-box-800.webp 800w, /assets/photos/gold-ring-box-1600.webp 1600w",
+          "alt": {
+            "vi": "Nhẫn vàng T Gold đặt cạnh mẫu in 3D",
+            "en": "A T Gold gold ring beside its 3D-printed model"
+          },
+          "focus": "52% 50%"
+        },
+        "ctas": [
+          {
+            "label": {
+              "vi": "BẮT ĐẦU CUSTOM",
+              "en": "START CUSTOM"
+            },
+            "link": {
+              "to": "page:custom"
+            }
+          }
+        ]
+      },
+      {
+        "nav": {
+          "vi": "Dấu ấn",
+          "en": "Trait"
+        },
+        "kicker": {
+          "vi": "T · YOUR TRAIT",
+          "en": "T · YOUR TRAIT"
+        },
+        "title": {
+          "vi": "DẤU ẤN RIÊNG",
+          "en": "YOUR SIGNATURE"
+        },
+        "subtitle": {
+          "vi": "THUỘC VỀ NGƯỜI SỞ HỮU",
+          "en": "MADE TO BELONG TO YOU"
+        },
+        "text": {
+          "vi": "Trang sức không chỉ để được nhìn thấy.\nMột thiết kế thực sự thuộc về bạn phải thể hiện gu, cá tính, vị thế — và dấu ấn của những gì bạn đã đạt được.",
+          "en": "Jewelry is not only meant to be seen.\nA piece that truly belongs to you should express your taste, individuality and status — and mark what you have achieved."
+        },
+        "image": {
+          "src": "/assets/photos/hero-4-768.webp",
+          "srcset": "/assets/photos/hero-4-400.webp 400w, /assets/photos/hero-4-768.webp 768w",
+          "alt": {
+            "vi": "Nhẫn và lắc tay đính đá quý phủ kín trên tay",
+            "en": "Fully paved gemstone rings and a tennis bracelet on the wrist"
+          },
+          "focus": "50% 50%"
+        },
+        "ctas": [
+          {
+            "label": {
+              "vi": "KHÁM PHÁ BỘ SƯU TẬP",
+              "en": "EXPLORE THE COLLECTION"
+            },
+            "link": {
+              "to": "page:collection"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "trust": {
+    "enabled": true,
+    "items": [
+      {
+        "icon": "gem",
+        "title": {
+          "vi": "Vàng thật · Đá quý thật",
+          "en": "Real Gold · Real Gemstones"
+        },
+        "text": {
+          "vi": "Minh bạch chất liệu",
+          "en": "Material Transparency"
+        }
+      },
+      {
+        "icon": "workshop",
+        "title": {
+          "vi": "Xưởng chế tác riêng",
+          "en": "In-house Workshop"
+        },
+        "text": {
+          "vi": "Kiểm soát từ 3D đến QC",
+          "en": "Controlled from 3D to QC"
+        }
+      },
+      {
+        "icon": "pen",
+        "title": {
+          "vi": "Custom theo yêu cầu",
+          "en": "Custom Made"
+        },
+        "text": {
+          "vi": "Từ ý tưởng của bạn",
+          "en": "From Your Idea"
+        }
+      },
+      {
+        "icon": "shield",
+        "title": {
+          "vi": "Bảo hành trọn đời",
+          "en": "Lifetime Warranty"
+        },
+        "text": {
+          "vi": "Theo điều kiện áp dụng",
+          "en": "Terms Apply"
+        }
+      }
+    ]
+  },
+  "categories": {
+    "enabled": true,
+    "kicker": {
+      "vi": "Danh mục sản phẩm",
+      "en": "Shop by category"
+    },
+    "title": {
+      "vi": "Khám phá *trang sức T Gold.*",
+      "en": "Discover *T Gold jewelry.*"
+    },
+    "lead": {
+      "vi": "",
+      "en": ""
+    },
+    "link": {
+      "label": {
+        "vi": "",
+        "en": ""
+      },
+      "link": {
+        "to": "page:collection"
+      }
+    },
+    "images": {
+      "mat-day": {
+        "src": "/media/2026-09/img-7467-535b27-1600.webp",
+        "srcset": "/media/2026-09/img-7467-535b27-400.webp 400w, /media/2026-09/img-7467-535b27-800.webp 800w, /media/2026-09/img-7467-535b27-1600.webp 1600w",
+        "alt": {
+          "vi": "Mặt dây thánh giá đính đá quý",
+          "en": "A gemstone cross pendant"
+        },
+        "focus": "50% 45%"
+      },
+      "nhan-nam": {
+        "src": "/media/2026-09/img-7460-b0d711-1600.webp",
+        "srcset": "/media/2026-09/img-7460-b0d711-400.webp 400w, /media/2026-09/img-7460-b0d711-800.webp 800w, /media/2026-09/img-7460-b0d711-1600.webp 1600w",
+        "alt": {
+          "vi": "Nhẫn nam vàng đính đá quý",
+          "en": "A men’s gold ring set with gemstones"
+        },
+        "focus": "50% 50%"
+      },
+      "day-chuyen": {
+        "src": "/media/2026-09/img-7465-f57ceb-1600.webp",
+        "srcset": "/media/2026-09/img-7465-f57ceb-400.webp 400w, /media/2026-09/img-7465-f57ceb-800.webp 800w, /media/2026-09/img-7465-f57ceb-1600.webp 1600w",
+        "alt": {
+          "vi": "Dây chuyền Cuban đeo trên cổ",
+          "en": "A Cuban chain worn at the neck"
+        },
+        "focus": "50% 30%"
+      },
+      "lac-tay": {
+        "src": "/media/2026-09/pin2-03-37287a-1280.webp",
+        "srcset": "/media/2026-09/pin2-03-37287a-400.webp 400w, /media/2026-09/pin2-03-37287a-800.webp 800w, /media/2026-09/pin2-03-37287a-1280.webp 1280w",
+        "alt": {
+          "vi": "Lắc tay đính đá quý trên cổ tay",
+          "en": "A gemstone bracelet on the wrist"
+        },
+        "focus": "40% 50%"
+      },
+      "nhan-nu": {
+        "src": "/media/2026-09/img-7483-5695aa-1600.webp",
+        "srcset": "/media/2026-09/img-7483-5695aa-400.webp 400w, /media/2026-09/img-7483-5695aa-800.webp 800w, /media/2026-09/img-7483-5695aa-1600.webp 1600w",
+        "alt": {
+          "vi": "",
+          "en": ""
+        },
+        "focus": "50% 50%"
+      },
+      "bong-tai": {
+        "src": "/media/2026-09/img-0211-36ed9d-1600.webp",
+        "srcset": "/media/2026-09/img-0211-36ed9d-400.webp 400w, /media/2026-09/img-0211-36ed9d-800.webp 800w, /media/2026-09/img-0211-36ed9d-1600.webp 1600w",
+        "alt": {
+          "vi": "",
+          "en": ""
+        },
+        "focus": "50% 50%"
+      },
+      "nhan-cuoi": {
+        "src": "/assets/photos/couple-928.webp",
+        "srcset": "/assets/photos/couple-400.webp 400w, /assets/photos/couple-800.webp 800w, /assets/photos/couple-928.webp 928w",
+        "alt": {
+          "vi": "Nhẫn cặp trên tay đôi",
+          "en": "Couple rings on joined hands"
+        },
+        "focus": "50% 40%"
+      }
+    }
+  },
+  "featured": {
+    "enabled": true,
+    "kicker": {
+      "vi": "Sản phẩm nổi bật",
+      "en": "Featured pieces"
+    },
+    "title": {
+      "vi": "Được lựa chọn nhiều *tại T Gold.*",
+      "en": "Popular choices *at T Gold.*"
+    },
+    "lead": {
+      "vi": "",
+      "en": ""
+    },
+    "products": [],
+    "limit": 8,
+    "priceNote": {
+      "vi": "Liên hệ",
+      "en": "Inquire"
+    },
+    "cta": {
+      "label": {
+        "vi": "Xem toàn bộ sản phẩm",
+        "en": "View all pieces"
+      },
+      "link": {
+        "to": "page:collection"
+      }
+    }
+  },
+  "order": {
+    "enabled": true,
+    "kicker": {
+      "vi": "CÁCH ĐẶT HÀNG",
+      "en": "HOW TO ORDER"
+    },
+    "title": {
+      "vi": "Đã tìm thấy *mẫu bạn thích?*",
+      "en": "Found *a piece you like?*"
+    },
+    "lead": {
+      "vi": "Chỉ vài bước để sở hữu một thiết kế T Gold.",
+      "en": "Just a few steps to own a T Gold piece."
+    },
+    "image": {
+      "src": "/assets/photos/showroom-1600.webp",
+      "srcset": "/assets/photos/showroom-400.webp 400w, /assets/photos/showroom-800.webp 800w, /assets/photos/showroom-1600.webp 1600w",
+      "alt": {
+        "vi": "Tủ trưng bày trang sức tại showroom T Gold",
+        "en": "Jewelry display cases at the T Gold showroom"
+      },
+      "focus": "50% 50%"
+    },
+    "steps": [
+      {
+        "title": {
+          "vi": "Chọn sản phẩm",
+          "en": "Choose Your Piece"
+        },
+        "text": {
+          "vi": "Chọn mẫu có sẵn hoặc gửi mẫu bạn quan tâm.",
+          "en": "Select an available design or send us one you like."
+        }
+      },
+      {
+        "title": {
+          "vi": "Tư vấn cấu hình",
+          "en": "Choose Your Configuration"
+        },
+        "text": {
+          "vi": "Size · tuổi vàng · màu vàng · loại đá quý.",
+          "en": "Size · gold purity · gold color · gemstone."
+        }
+      },
+      {
+        "title": {
+          "vi": "Xác nhận & chế tác",
+          "en": "Confirm & Craft"
+        },
+        "text": {
+          "vi": "Chốt cấu hình và tiến hành chế tác.",
+          "en": "Confirm the configuration and begin production."
+        }
+      },
+      {
+        "title": {
+          "vi": "Nhận sản phẩm",
+          "en": "Receive Your Piece"
+        },
+        "text": {
+          "vi": "Hoàn thiện · QC · bàn giao.",
+          "en": "Finishing · QC · delivery."
+        }
+      }
+    ],
+    "cta": {
+      "label": {
+        "vi": "XEM CÁCH ĐẶT HÀNG",
+        "en": "HOW TO ORDER"
+      },
+      "link": {
+        "to": "page:order"
+      }
+    }
+  },
+  "custom": {
+    "enabled": true,
+    "kicker": {
+      "vi": "T · TAILORED DESIGN — CUSTOM",
+      "en": "T · TAILORED DESIGN — CUSTOM"
+    },
+    "title": {
+      "vi": "Chưa tìm thấy thiết kế đúng gu? *Chúng mình làm lại từ đầu.*",
+      "en": "Haven’t found the right design? *We’ll create it from the beginning.*"
+    },
+    "lead": {
+      "vi": "Không cần bắt đầu bằng một bản thiết kế hoàn chỉnh.",
+      "en": "You don’t need a finished design to get started."
+    },
+    "sendLabel": {
+      "vi": "Gửi T Gold:",
+      "en": "Send T Gold:"
+    },
+    "sendItems": [
+      {
+        "vi": "một hình ảnh",
+        "en": "an image"
+      },
+      {
+        "vi": "một ý tưởng",
+        "en": "an idea"
+      },
+      {
+        "vi": "một chi tiết bạn thích",
+        "en": "a detail you like"
+      }
+    ],
+    "flow": [
+      {
+        "vi": "Ý tưởng",
+        "en": "Idea"
+      },
+      {
+        "vi": "Bản vẽ 3D",
+        "en": "3D Design"
+      },
+      {
+        "vi": "Chất liệu",
+        "en": "Materials"
+      },
+      {
+        "vi": "Chế tác",
+        "en": "Crafting"
+      },
+      {
+        "vi": "Thành phẩm",
+        "en": "Finished Piece"
+      }
+    ],
+    "image": {
+      "src": "/assets/photos/workshop-bench-736.webp",
+      "srcset": "/assets/photos/workshop-bench-400.webp 400w, /assets/photos/workshop-bench-736.webp 736w",
+      "alt": {
+        "vi": "Bàn chế tác tại xưởng T Gold",
+        "en": "A workbench in the T Gold workshop"
+      },
+      "focus": "50% 50%"
+    },
+    "cta": {
+      "label": {
+        "vi": "BẮT ĐẦU CUSTOM",
+        "en": "START CUSTOM"
+      },
+      "link": {
+        "to": "page:custom"
+      }
+    }
+  },
+  "why": {
+    "enabled": true,
+    "kicker": {
+      "vi": "VÌ SAO LÀ T GOLD",
+      "en": "WHY T GOLD"
+    },
+    "title": {
+      "vi": "Giá trị thật, *nhìn thấy được.*",
+      "en": "Real value, *made visible.*"
+    },
+    "lead": {
+      "vi": "Với một món trang sức giá trị cao, bạn xứng đáng biết rõ mình đang sở hữu điều gì.",
+      "en": "With a valuable piece of jewelry, you deserve to know exactly what you own."
+    },
+    "items": [
+      {
+        "title": {
+          "vi": "Vàng thật · Đá quý thật",
+          "en": "Real Gold · Real Gemstones"
+        },
+        "text": {
+          "vi": "Tuổi vàng · trọng lượng · thông số rõ ràng.",
+          "en": "Clear gold purity · weight · specifications."
+        },
+        "image": {
+          "src": "/assets/photos/stone-prongs-1280.webp",
+          "srcset": "/assets/photos/stone-prongs-400.webp 400w, /assets/photos/stone-prongs-800.webp 800w, /assets/photos/stone-prongs-1280.webp 1280w",
+          "alt": {
+            "vi": "Cận cảnh đá quý trên chấu giữ",
+            "en": "Close-up of a gemstone held in its prongs"
+          },
+          "focus": "50% 45%"
+        },
+        "link": {
+          "label": {
+            "vi": "TIÊU CHUẨN CHẤT LƯỢNG",
+            "en": "QUALITY STANDARDS"
+          },
+          "link": {
+            "to": "page:materials"
+          }
+        }
+      },
+      {
+        "title": {
+          "vi": "Xưởng chế tác riêng",
+          "en": "In-house Workshop"
+        },
+        "text": {
+          "vi": "Kiểm soát từ thiết kế 3D đến QC.",
+          "en": "Controlled from 3D design to QC."
+        },
+        "image": {
+          "src": "/assets/photos/setting-hands-736.webp",
+          "srcset": "/assets/photos/setting-hands-400.webp 400w, /assets/photos/setting-hands-736.webp 736w",
+          "alt": {
+            "vi": "Thợ kim hoàn T Gold đính đá quý",
+            "en": "A T Gold jeweller setting gemstones"
+          },
+          "focus": "50% 50%"
+        },
+        "link": {
+          "label": {
+            "vi": "XƯỞNG T GOLD",
+            "en": "T GOLD WORKSHOP"
+          },
+          "link": {
+            "to": "page:workshop"
+          }
+        }
+      },
+      {
+        "title": {
+          "vi": "Đa dạng · Đúng Trend",
+          "en": "Variety · On Trend"
+        },
+        "text": {
+          "vi": "Liên tục cập nhật những thiết kế đáng đeo.",
+          "en": "Continuously updated with designs worth wearing."
+        },
+        "image": {
+          "src": "/assets/photos/tray-rings-1600.webp",
+          "srcset": "/assets/photos/tray-rings-400.webp 400w, /assets/photos/tray-rings-800.webp 800w, /assets/photos/tray-rings-1600.webp 1600w",
+          "alt": {
+            "vi": "Khay nhẫn nam tại showroom",
+            "en": "A tray of men’s rings at the showroom"
+          },
+          "focus": "50% 50%"
+        },
+        "link": {
+          "label": {
+            "vi": "KHÁM PHÁ BỘ SƯU TẬP",
+            "en": "EXPLORE COLLECTIONS"
+          },
+          "link": {
+            "to": "page:collection"
+          }
+        }
+      },
+      {
+        "title": {
+          "vi": "Đồng hành lâu dài",
+          "en": "Long-term Care"
+        },
+        "text": {
+          "vi": "Bảo hành · làm mới · chỉnh size · sửa chữa.\nTheo điều kiện áp dụng.",
+          "en": "Warranty · refinishing · resizing · repairs.\nTerms apply."
+        },
+        "image": {
+          "src": "/assets/photos/fitting-1600.webp",
+          "srcset": "/assets/photos/fitting-400.webp 400w, /assets/photos/fitting-800.webp 800w, /assets/photos/fitting-1600.webp 1600w",
+          "alt": {
+            "vi": "Chuyên viên T Gold chỉnh lắc tay cho khách",
+            "en": "A T Gold specialist fitting a bracelet"
+          },
+          "focus": "60% 55%"
+        },
+        "link": {
+          "label": {
+            "vi": "BẢO HÀNH & CHĂM SÓC",
+            "en": "WARRANTY & CARE"
+          },
+          "link": {
+            "to": "page:care"
+          }
+        }
+      }
+    ],
+    "closing": {
+      "vi": "Một món trang sức hôm nay có thể đánh dấu một thành tựu. T Gold muốn tiếp tục đồng hành với những dấu mốc tiếp theo.",
+      "en": "A piece today can mark an achievement. T Gold wants to be there for the milestones that follow."
+    },
+    "cta": {
+      "label": {
+        "vi": "TÌM HIỂU VỀ T GOLD",
+        "en": "DISCOVER T GOLD"
+      },
+      "link": {
+        "to": "page:story"
+      }
+    }
+  },
+  "journal": {
+    "enabled": true,
+    "kicker": {
+      "vi": "Tạp chí T Gold",
+      "en": "The T Gold Journal"
+    },
+    "title": {
+      "vi": "Hiểu rõ *trước khi chọn.*",
+      "en": "Understand *before you choose.*"
+    },
+    "lead": {
+      "vi": "",
+      "en": ""
+    },
+    "link": {
+      "label": {
+        "vi": "Xem tất cả bài viết",
+        "en": "All articles"
+      },
+      "link": {
+        "to": "page:journal"
+      }
+    },
+    "posts": [],
+    "chips": []
+  }
+}

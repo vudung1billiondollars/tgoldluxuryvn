@@ -1,0 +1,20 @@
+{
+  "id": "mat-phang-vuong-mien",
+  "ten": "Mặt phẳng & vương miện",
+  "moTa": "Nhẫn nam mặt phẳng nhám một baguette; nhẫn nữ mảnh với hàng đá chấu, marquise vươn lên giữa.",
+  "nguon": "Mẫu tham khảo số 8",
+  "family": "nhan-cuoi",
+  "fileGlb": "mat-phang-vuong-mien.glb",
+  "poster": "mat-phang-vuong-mien.jpg",
+  "view": "pair",
+  "metal": "vang-trang",
+  "metal2": "",
+  "gem": "lab-diamond",
+  "innerGem": "",
+  "coDa": true,
+  "vienDa": 8,
+  "vienDaAn": 0,
+  "dungLuongKB": 592,
+  "ngay": "2026-09-29",
+  "thietKe": "nhan-cuoi.html#mau=mat-phang-vuong-mien"
+}

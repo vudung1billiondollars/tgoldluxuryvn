@@ -1,0 +1,25 @@
+{
+  "name": "tgold-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "T Gold – Luxury Jewelry · website song ngữ VI / EN",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "brand": "node scripts/make-brand-assets.mjs",
+    "build": "node scripts/build.mjs",
+    "start": "node server.js",
+    "dev": "node --env-file-if-exists=.env server.js",
+    "og": "node scripts/make-og.mjs",
+    "sync-3d": "node scripts/sync-3d.mjs"
+  },
+  "dependencies": {
+    "nodemailer": "^10.0.10",
+    "sharp": "^0.35.0"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.12.0"
+  }
+}

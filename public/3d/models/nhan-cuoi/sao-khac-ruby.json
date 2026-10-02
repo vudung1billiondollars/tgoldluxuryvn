@@ -1,0 +1,20 @@
+{
+  "id": "sao-khac-ruby",
+  "ten": "Sao khắc & ruby ẩn",
+  "moTa": "Sao tám cánh khắc trên thân, đá quý li ti lấp lánh; nhẫn nam giấu hàng ruby trên vành sau.",
+  "nguon": "Mẫu tham khảo số 6",
+  "family": "nhan-cuoi",
+  "fileGlb": "sao-khac-ruby.glb",
+  "poster": "sao-khac-ruby.jpg",
+  "view": "pair",
+  "metal": "vang-trang",
+  "metal2": "",
+  "gem": "lab-diamond",
+  "innerGem": "ruby",
+  "coDa": true,
+  "vienDa": 47,
+  "vienDaAn": 7,
+  "dungLuongKB": 2156,
+  "ngay": "2026-09-29",
+  "thietKe": "nhan-cuoi.html#mau=sao-khac-ruby"
+}

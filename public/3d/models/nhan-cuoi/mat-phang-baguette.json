@@ -1,0 +1,20 @@
+{
+  "id": "mat-phang-baguette",
+  "ten": "Mặt phẳng đôi baguette",
+  "moTa": "Cả hai mặt phẳng: nhẫn nam nhám một baguette, nhẫn nữ ba baguette nối hàng.",
+  "nguon": "Mẫu tham khảo số 7",
+  "family": "nhan-cuoi",
+  "fileGlb": "mat-phang-baguette.glb",
+  "poster": "mat-phang-baguette.jpg",
+  "view": "pair",
+  "metal": "vang-trang",
+  "metal2": "",
+  "gem": "lab-diamond",
+  "innerGem": "",
+  "coDa": true,
+  "vienDa": 4,
+  "vienDaAn": 0,
+  "dungLuongKB": 507,
+  "ngay": "2026-09-29",
+  "thietKe": "nhan-cuoi.html#mau=mat-phang-baguette"
+}

@@ -1,0 +1,768 @@
+{
+  "_note": "Sản phẩm 3D: mỗi mẫu có trang riêng /3d/<slug>/ (tiếng Anh /en/3d/<slug>/). Quản lý trong /admin → Sản phẩm 3D. File .glb nằm ở public/3d/models/ (chép bằng npm run sync-3d) hoặc tải lên từ CMS (/media/3d/).",
+  "models": [
+    {
+      "slug": "thiet-ke-mat-day",
+      "status": "published",
+      "kind": "app",
+      "code": "",
+      "name": {
+        "vi": "Tự thiết kế mặt dây chuyền",
+        "en": ""
+      },
+      "description": {
+        "vi": "",
+        "en": ""
+      },
+      "src": "",
+      "app": "mat-day",
+      "view": "ring",
+      "metals": [],
+      "gems": [],
+      "metal": "",
+      "gem": "",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "",
+      "family": "",
+      "note": "",
+      "created": "2026-10-01"
+    },
+    {
+      "slug": "thiet-ke-nhan-nam",
+      "status": "published",
+      "kind": "app",
+      "code": "",
+      "name": {
+        "vi": "Tự thiết kế nhẫn nam",
+        "en": ""
+      },
+      "description": {
+        "vi": "",
+        "en": ""
+      },
+      "src": "",
+      "app": "nhan-nam",
+      "view": "ring",
+      "metals": [],
+      "gems": [],
+      "metal": "",
+      "gem": "",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "",
+      "family": "",
+      "note": "",
+      "created": "2026-10-01"
+    },
+    {
+      "slug": "vuong-mien-v",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Vương miện chữ V",
+        "en": ""
+      },
+      "description": {
+        "vi": "Nhẫn nữ mảnh chữ V, marquise ở mũi và sáu viên đá chấu; nhẫn nam bản phẳng với một mặt vát tam giác ở mép.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/vuong-mien-v.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/vuong-mien-v.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "vo-cuc",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Vô cực hai màu",
+        "en": ""
+      },
+      "description": {
+        "vi": "Hai dải bắt chéo, một dải vàng hồng; nhẫn nữ một viên ở điểm giao.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/vo-cuc.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "metal2": "vang-hong",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/vo-cuc.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "that-chu-v",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Thắt chữ V",
+        "en": ""
+      },
+      "description": {
+        "vi": "Bản phẳng thắt nhọn ở đỉnh như gấp nếp; nhẫn nữ chạy đá quý hai bên chỗ thắt.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/that-chu-v.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/that-chu-v.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "sao-khac-ruby",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Sao khắc & ruby ẩn",
+        "en": ""
+      },
+      "description": {
+        "vi": "Sao tám cánh khắc trên thân, đá quý li ti lấp lánh; nhẫn nam giấu hàng ruby trên vành sau.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/sao-khac-ruby.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "metal2": "",
+      "innerGem": "ruby",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/sao-khac-ruby.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "nua-vong-da",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Nửa vòng đá quý",
+        "en": ""
+      },
+      "description": {
+        "vi": "Nhẫn nữ mảnh đính nửa vòng đá quý chấu nhỏ; nhẫn nam bo tròn cổ điển. Vàng 18K.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/nua-vong-da.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang",
+      "gem": "lab-diamond",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/nua-vong-da.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "mat-phang-vuong-mien",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Mặt phẳng & vương miện",
+        "en": ""
+      },
+      "description": {
+        "vi": "Nhẫn nam mặt phẳng nhám một baguette; nhẫn nữ mảnh với hàng đá chấu, marquise vươn lên giữa.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/mat-phang-vuong-mien.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/mat-phang-vuong-mien.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "mat-phang-dang-cong",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Mặt phẳng & dáng cong",
+        "en": ""
+      },
+      "description": {
+        "vi": "Nhẫn nam mặt phẳng nhám, một baguette ở góc; nhẫn nữ uốn cong mềm với marquise.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/mat-phang-dang-cong.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/mat-phang-dang-cong.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "mat-phang-baguette",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Mặt phẳng đôi baguette",
+        "en": ""
+      },
+      "description": {
+        "vi": "Cả hai mặt phẳng: nhẫn nam nhám một baguette, nhẫn nữ ba baguette nối hàng.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/mat-phang-baguette.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/mat-phang-baguette.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "khia-doc",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Khía dọc & tám viên",
+        "en": ""
+      },
+      "description": {
+        "vi": "Khía dọc đều quanh thân; nhẫn nữ tám viên chìm rải quanh.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/khia-doc.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang",
+      "gem": "lab-diamond",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/khia-doc.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "kenh-da-doi",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Kênh đá đôi",
+        "en": ""
+      },
+      "description": {
+        "vi": "Nhẫn nữ full eternity; nhẫn nam kênh đá trên nền vân chải.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/kenh-da-doi.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/kenh-da-doi.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "hai-go-mat-hong",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Hai gờ & đá trên vành",
+        "en": ""
+      },
+      "description": {
+        "vi": "Nhẫn nam lòng máng nhám giữa hai gờ bóng; nhẫn nữ giấu hàng đá quý trên mặt vành.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/hai-go-mat-hong.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/hai-go-mat-hong.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "dai-lua",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Dải lụa xoắn",
+        "en": ""
+      },
+      "description": {
+        "vi": "Mặt nhám xoắn như dải lụa, một đường gờ bóng chạy chéo; trái tim nổi trong lòng nhẫn.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/dai-lua.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [],
+      "metal": "vang-trang",
+      "gem": "",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/dai-lua.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "co-dien-hai-mau",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Cổ điển hai màu",
+        "en": ""
+      },
+      "description": {
+        "vi": "Bo tròn, viền hạt hai mép, dải giữa vàng trắng; nhẫn nữ ba viên chìm.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/co-dien-hai-mau.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang",
+      "gem": "lab-diamond",
+      "metal2": "vang-trang",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/co-dien-hai-mau.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "bua-go-day-da",
+      "status": "published",
+      "kind": "model",
+      "code": "",
+      "name": {
+        "vi": "Búa gò & dây đá",
+        "en": ""
+      },
+      "description": {
+        "vi": "Nhẫn nam vân búa gò nhám, hai mép bóng; nhẫn nữ baguette xen đá tròn.",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-cuoi/bua-go-day-da.glb",
+      "app": "",
+      "view": "pair",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "/3d/models/nhan-cuoi/bua-go-day-da.jpg",
+      "family": "nhan-cuoi",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "thiet-ke-nhan-cau-hon",
+      "status": "published",
+      "kind": "app",
+      "code": "",
+      "name": {
+        "vi": "Tự thiết kế nhẫn cầu hôn",
+        "en": ""
+      },
+      "description": {
+        "vi": "",
+        "en": ""
+      },
+      "src": "",
+      "app": "nhan-cau-hon",
+      "view": "ring",
+      "metals": [],
+      "gems": [],
+      "metal": "",
+      "gem": "",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "",
+      "family": "",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "thiet-ke-nhan-cuoi",
+      "status": "published",
+      "kind": "app",
+      "code": "",
+      "name": {
+        "vi": "Tự thiết kế nhẫn cưới",
+        "en": ""
+      },
+      "description": {
+        "vi": "",
+        "en": ""
+      },
+      "src": "",
+      "app": "nhan-cuoi",
+      "view": "ring",
+      "metals": [],
+      "gems": [],
+      "metal": "",
+      "gem": "",
+      "metal2": "",
+      "innerGem": "",
+      "tilt": false,
+      "poster": "",
+      "family": "",
+      "note": "",
+      "created": "2026-09-29"
+    },
+    {
+      "slug": "nn-q640",
+      "status": "published",
+      "code": "NN Q640",
+      "name": {
+        "vi": "NN Q640",
+        "en": "NN Q640"
+      },
+      "description": {
+        "vi": "",
+        "en": ""
+      },
+      "src": "/3d/models/nn-q640.glb",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "tilt": false,
+      "note": "Viên chủ tròn Ø6,65 mm + 16 viên tấm (đo từ file thiết kế).",
+      "created": "2026-09-27"
+    },
+    {
+      "slug": "nhan-nu-2",
+      "status": "published",
+      "code": "",
+      "name": {
+        "vi": "Nhẫn nữ 2",
+        "en": "Women's ring 2"
+      },
+      "description": {
+        "vi": "",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-nu-2.glb",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "tilt": false,
+      "note": "Viên chủ giác emerald 4,70 × 3,20 mm + 16 viên tấm Ø1,65 mm (đo từ file thiết kế).",
+      "created": "2026-09-27"
+    },
+    {
+      "slug": "nhan-nu-3",
+      "status": "published",
+      "code": "",
+      "name": {
+        "vi": "Nhẫn nữ 3",
+        "en": "Women's ring 3"
+      },
+      "description": {
+        "vi": "",
+        "en": ""
+      },
+      "src": "/3d/models/nhan-nu-3.glb",
+      "metals": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gems": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond",
+        "sapphire",
+        "ruby",
+        "emerald",
+        "yellow-sapphire"
+      ],
+      "metal": "vang-trang",
+      "gem": "lab-diamond",
+      "tilt": false,
+      "note": "Tự ráp từ file xưởng tách bộ phận (3D's Products/rap/nhan-nu-3.json) — cần xưởng xác nhận. Viên chủ Ø8,99 mm, 6 viên Ø4,42, 6 viên Ø3,87, 16 viên Ø3,32, 41 viên tấm Ø1,33–1,55 mm (đo từ file). Chấu để dài như file đúc.",
+      "created": "2026-09-27"
+    }
+  ]
+}

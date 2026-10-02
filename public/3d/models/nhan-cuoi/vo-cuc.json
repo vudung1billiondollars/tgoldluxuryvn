@@ -1,0 +1,20 @@
+{
+  "id": "vo-cuc",
+  "ten": "Vô cực hai màu",
+  "moTa": "Hai dải bắt chéo, một dải vàng hồng; nhẫn nữ một viên ở điểm giao.",
+  "nguon": "T Gold phối thêm",
+  "family": "nhan-cuoi",
+  "fileGlb": "vo-cuc.glb",
+  "poster": "vo-cuc.jpg",
+  "view": "pair",
+  "metal": "vang-trang",
+  "metal2": "vang-hong",
+  "gem": "lab-diamond",
+  "innerGem": "",
+  "coDa": true,
+  "vienDa": 1,
+  "vienDaAn": 0,
+  "dungLuongKB": 767,
+  "ngay": "2026-09-29",
+  "thietKe": "nhan-cuoi.html#mau=vo-cuc"
+}

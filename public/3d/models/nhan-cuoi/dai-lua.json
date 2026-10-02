@@ -1,0 +1,20 @@
+{
+  "id": "dai-lua",
+  "ten": "Dải lụa xoắn",
+  "moTa": "Mặt nhám xoắn như dải lụa, một đường gờ bóng chạy chéo; trái tim nổi trong lòng nhẫn.",
+  "nguon": "Mẫu tham khảo số 1",
+  "family": "nhan-cuoi",
+  "fileGlb": "dai-lua.glb",
+  "poster": "dai-lua.jpg",
+  "view": "pair",
+  "metal": "vang-trang",
+  "metal2": "",
+  "gem": "lab-diamond",
+  "innerGem": "",
+  "coDa": false,
+  "vienDa": 0,
+  "vienDaAn": 0,
+  "dungLuongKB": 1301,
+  "ngay": "2026-09-29",
+  "thietKe": "nhan-cuoi.html#mau=dai-lua"
+}

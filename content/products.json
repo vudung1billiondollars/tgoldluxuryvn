@@ -1,0 +1,983 @@
+{
+  "_note": "Danh mục sản phẩm. Sửa trong trang quản trị /admin → Sản phẩm. Không khai báo giá. Sản phẩm có \"sample\": true là dữ liệu minh hoạ, cần thay bằng sản phẩm thật.",
+  "categories": [
+    {
+      "id": "mat-day",
+      "vi": "Mặt dây",
+      "en": "Pendants"
+    },
+    {
+      "id": "nhan-nam",
+      "vi": "Nhẫn nam",
+      "en": "Men's rings"
+    },
+    {
+      "id": "day-chuyen",
+      "vi": "Dây chuyền",
+      "en": "Chains"
+    },
+    {
+      "id": "lac-tay",
+      "vi": "Lắc tay",
+      "en": "Bracelets"
+    },
+    {
+      "id": "nhan-nu",
+      "vi": "Nhẫn nữ",
+      "en": "Women's rings"
+    },
+    {
+      "id": "bong-tai",
+      "vi": "Bông tai",
+      "en": "Earrings"
+    },
+    {
+      "id": "nhan-cuoi",
+      "vi": "Nhẫn cưới & nhẫn cặp",
+      "en": "Wedding & couple rings"
+    }
+  ],
+  "badges": {
+    "ban-chay": {
+      "vi": "Bán chạy",
+      "en": "Best seller"
+    },
+    "moi": {
+      "vi": "Mới",
+      "en": "New"
+    },
+    "custom": {
+      "vi": "Custom",
+      "en": "Custom"
+    }
+  },
+  "gemstones": {
+    "moissanite": {
+      "vi": "Moissanite",
+      "en": "Moissanite"
+    },
+    "lab-diamond": {
+      "vi": "Lab Diamond",
+      "en": "Lab Diamond"
+    },
+    "natural-diamond": {
+      "vi": "Kim cương thiên nhiên",
+      "en": "Natural diamond"
+    }
+  },
+  "goldColors": {
+    "vang": {
+      "vi": "Vàng",
+      "en": "Yellow gold",
+      "swatch": "#D9B35E"
+    },
+    "vang-trang": {
+      "vi": "Vàng trắng",
+      "en": "White gold",
+      "swatch": "#E4E2DC"
+    },
+    "vang-hong": {
+      "vi": "Vàng hồng",
+      "en": "Rose gold",
+      "swatch": "#D9A08A"
+    }
+  },
+  "karats": [
+    "10K",
+    "14K",
+    "18K"
+  ],
+  "certificates": [
+    "GGJ",
+    "GRA",
+    "IGI",
+    "GIA"
+  ],
+  "products": [
+    {
+      "slug": "tu-thiet-ke-mat-day-chuyen",
+      "status": "published",
+      "sample": false,
+      "featured": 1,
+      "created": "2026-10-01",
+      "category": "mat-day",
+      "badges": [
+        "custom"
+      ],
+      "name": {
+        "vi": "Tự thiết kế mặt dây chuyền",
+        "en": "Tự thiết kế mặt dây chuyền"
+      },
+      "config": {
+        "vi": "",
+        "en": ""
+      },
+      "description": {
+        "vi": "",
+        "en": ""
+      },
+      "gold_karats": [
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang"
+      ],
+      "gemstones": [],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "",
+        "en": ""
+      },
+      "sizes": null,
+      "certificates": [],
+      "images": [],
+      "video": "",
+      "model3d": "thiet-ke-mat-day"
+    },
+    {
+      "slug": "tu-thiet-ke-nhan-nam",
+      "status": "published",
+      "sample": false,
+      "featured": 1,
+      "created": "2026-10-01",
+      "category": "nhan-nam",
+      "badges": [
+        "custom"
+      ],
+      "name": {
+        "vi": "Tự thiết kế nhẫn nam",
+        "en": "Tự thiết kế nhẫn nam"
+      },
+      "config": {
+        "vi": "",
+        "en": ""
+      },
+      "description": {
+        "vi": "",
+        "en": ""
+      },
+      "gold_karats": [
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang"
+      ],
+      "gemstones": [],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "",
+        "en": ""
+      },
+      "sizes": null,
+      "certificates": [],
+      "images": [],
+      "video": "",
+      "model3d": "thiet-ke-nhan-nam"
+    },
+    {
+      "slug": "vuong-mien-chu-v",
+      "status": "published",
+      "sample": false,
+      "featured": 0,
+      "created": "2026-09-29",
+      "category": "nhan-cuoi",
+      "badges": [
+        "custom"
+      ],
+      "name": {
+        "vi": "Vương miện chữ V",
+        "en": "Vương miện chữ V"
+      },
+      "config": {
+        "vi": "",
+        "en": ""
+      },
+      "description": {
+        "vi": "Nhẫn nữ mảnh chữ V, marquise ở mũi và sáu viên đá chấu; nhẫn nam bản phẳng với một mặt vát tam giác ở mép.",
+        "en": ""
+      },
+      "gold_karats": [
+        "10K",
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gemstones": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond"
+      ],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "",
+        "en": ""
+      },
+      "sizes": null,
+      "certificates": [
+        "GGJ",
+        "GRA",
+        "IGI",
+        "GIA"
+      ],
+      "images": [],
+      "video": "",
+      "model3d": "vuong-mien-v"
+    },
+    {
+      "slug": "tu-thiet-ke-nhan-cau-hon",
+      "status": "published",
+      "sample": false,
+      "featured": 0,
+      "created": "2026-09-29",
+      "category": "nhan-cuoi",
+      "badges": [],
+      "name": {
+        "vi": "Tự thiết kế nhẫn cầu hôn",
+        "en": "Tự thiết kế nhẫn cầu hôn"
+      },
+      "config": {
+        "vi": "",
+        "en": ""
+      },
+      "description": {
+        "vi": "",
+        "en": ""
+      },
+      "gold_karats": [
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang"
+      ],
+      "gemstones": [],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "",
+        "en": ""
+      },
+      "sizes": null,
+      "certificates": [],
+      "images": [],
+      "video": "",
+      "model3d": "thiet-ke-nhan-cuoi"
+    },
+    {
+      "slug": "nhan-sovereign",
+      "status": "published",
+      "sample": true,
+      "featured": 1,
+      "created": "2026-08-02",
+      "category": "nhan-nam",
+      "badges": [
+        "ban-chay"
+      ],
+      "name": {
+        "vi": "Nhẫn Sovereign",
+        "en": "Sovereign Ring"
+      },
+      "config": {
+        "vi": "Vàng 18K · Moissanite phủ kín",
+        "en": "18K gold · fully paved Moissanite"
+      },
+      "description": {
+        "vi": "Mặt nhẫn lớn, phủ kín đá quý Moissanite trên nền vàng 18K — một chiếc nhẫn tạo sức nặng ngay khi bạn đưa tay ra. Dành cho những người không ngại để thành quả của mình được nhìn thấy.",
+        "en": "A broad face fully paved with Moissanite on 18K gold — a ring that carries weight the moment you extend your hand. For those who never shy away from letting their achievements be seen."
+      },
+      "gold_karats": [
+        "10K",
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gemstones": [
+        "moissanite",
+        "lab-diamond"
+      ],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "Moissanite giác tròn phủ kín mặt nhẫn; kích thước và số lượng ghi rõ theo cấu hình",
+        "en": "Round-cut Moissanite fully paved across the face; size and count stated per configuration"
+      },
+      "sizes": {
+        "label": {
+          "vi": "Size nhẫn",
+          "en": "Ring size"
+        },
+        "options": [
+          "18",
+          "20",
+          "22",
+          "24"
+        ],
+        "default": "20"
+      },
+      "certificates": [
+        "GRA"
+      ],
+      "images": [
+        {
+          "src": "/assets/photos/gold-ring-leather-1200.webp",
+          "srcset": "/assets/photos/gold-ring-leather-400.webp 400w, /assets/photos/gold-ring-leather-800.webp 800w, /assets/photos/gold-ring-leather-1200.webp 1200w",
+          "alt": {
+            "vi": "Nhẫn Sovereign — vàng đính đá quý",
+            "en": "Sovereign Ring — gold set with gemstones"
+          }
+        }
+      ],
+      "video": ""
+    },
+    {
+      "slug": "chain-cuban-iced",
+      "status": "published",
+      "sample": true,
+      "featured": 2,
+      "created": "2026-09-10",
+      "category": "day-chuyen",
+      "badges": [
+        "moi"
+      ],
+      "name": {
+        "vi": "Chain Cuban Iced",
+        "en": "Cuban Iced Chain"
+      },
+      "config": {
+        "vi": "Vàng 14K · Lab Diamond",
+        "en": "14K gold · Lab Diamond"
+      },
+      "description": {
+        "vi": "Dây Cuban bản lớn, từng mắt xích đính Lab Diamond bắt sáng theo mọi chuyển động. Một điểm nhấn đủ nổi bật để trở thành chữ ký phong cách của bạn.",
+        "en": "A bold Cuban link with Lab Diamonds set into every link, catching the light with every move. A statement strong enough to become the signature of your style."
+      },
+      "gold_karats": [
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang",
+        "vang-trang"
+      ],
+      "gemstones": [
+        "lab-diamond",
+        "moissanite"
+      ],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "Lab Diamond đính trên từng mắt xích; kích thước và số lượng ghi rõ theo chiều dài",
+        "en": "Lab Diamonds set on every link; size and count stated per length"
+      },
+      "sizes": {
+        "label": {
+          "vi": "Chiều dài",
+          "en": "Length"
+        },
+        "options": [
+          "45 cm",
+          "50 cm",
+          "55 cm",
+          "60 cm"
+        ],
+        "default": "50 cm"
+      },
+      "certificates": [
+        "IGI"
+      ],
+      "images": [
+        {
+          "src": "/assets/photos/chain-look-1200.webp",
+          "srcset": "/assets/photos/chain-look-400.webp 400w, /assets/photos/chain-look-800.webp 800w, /assets/photos/chain-look-1200.webp 1200w",
+          "alt": {
+            "vi": "Chain Cuban Iced đeo trên cổ",
+            "en": "Cuban Iced Chain worn at the neck"
+          }
+        }
+      ],
+      "video": ""
+    },
+    {
+      "slug": "mat-day-monogram-t",
+      "status": "published",
+      "sample": true,
+      "featured": 3,
+      "created": "2026-08-20",
+      "category": "mat-day",
+      "badges": [
+        "custom"
+      ],
+      "name": {
+        "vi": "Mặt dây Monogram T",
+        "en": "Monogram T Pendant"
+      },
+      "config": {
+        "vi": "Vàng 18K · Moissanite",
+        "en": "18K gold · Moissanite"
+      },
+      "description": {
+        "vi": "Chữ T — biểu tượng của T Gold — đính Moissanite trên vàng 18K. Có thể Custom thành chữ cái hoặc biểu tượng mang dấu ấn riêng của bạn.",
+        "en": "The T — the emblem of T Gold — set with Moissanite in 18K gold. It can be made Custom as your own initial or personal emblem."
+      },
+      "gold_karats": [
+        "10K",
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gemstones": [
+        "moissanite",
+        "lab-diamond",
+        "natural-diamond"
+      ],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "Moissanite phủ mặt chữ; kích thước và số lượng ghi rõ theo kích thước mặt",
+        "en": "Moissanite paved across the letter; size and count stated per pendant size"
+      },
+      "sizes": {
+        "label": {
+          "vi": "Kích thước mặt",
+          "en": "Pendant size"
+        },
+        "options": [
+          "3 cm",
+          "4 cm",
+          "5 cm"
+        ],
+        "default": "4 cm"
+      },
+      "certificates": [
+        "GRA"
+      ],
+      "images": [],
+      "video": ""
+    },
+    {
+      "slug": "lac-tay-tennis",
+      "status": "published",
+      "sample": true,
+      "featured": 4,
+      "created": "2026-07-28",
+      "category": "lac-tay",
+      "badges": [],
+      "name": {
+        "vi": "Lắc tay Tennis",
+        "en": "Tennis Bracelet"
+      },
+      "config": {
+        "vi": "Vàng 14K · Lab Diamond",
+        "en": "14K gold · Lab Diamond"
+      },
+      "description": {
+        "vi": "Một hàng Lab Diamond liền mạch ôm lấy cổ tay — tinh gọn nhưng không bao giờ lẫn vào đám đông. Hợp để đeo mỗi ngày lẫn những dịp quan trọng.",
+        "en": "A seamless line of Lab Diamonds around the wrist — refined, yet never lost in the crowd. Made for every day and for the moments that matter."
+      },
+      "gold_karats": [
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang",
+        "vang-trang"
+      ],
+      "gemstones": [
+        "lab-diamond",
+        "moissanite"
+      ],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "Lab Diamond giác tròn xếp liền hàng; kích thước và số lượng ghi rõ theo chiều dài",
+        "en": "Round-cut Lab Diamonds in a continuous line; size and count stated per length"
+      },
+      "sizes": {
+        "label": {
+          "vi": "Chiều dài",
+          "en": "Length"
+        },
+        "options": [
+          "17 cm",
+          "18 cm",
+          "19 cm",
+          "20 cm"
+        ],
+        "default": "18 cm"
+      },
+      "certificates": [
+        "IGI"
+      ],
+      "images": [
+        {
+          "src": "/assets/photos/bracelet-shirt-768.webp",
+          "srcset": "/assets/photos/bracelet-shirt-400.webp 400w, /assets/photos/bracelet-shirt-768.webp 768w",
+          "alt": {
+            "vi": "Lắc tay Tennis trên cổ tay",
+            "en": "Tennis Bracelet on the wrist"
+          }
+        }
+      ],
+      "video": ""
+    },
+    {
+      "slug": "nhan-signet-crown",
+      "status": "published",
+      "sample": true,
+      "featured": 0,
+      "created": "2026-07-15",
+      "category": "nhan-nam",
+      "badges": [],
+      "name": {
+        "vi": "Nhẫn Signet Crown",
+        "en": "Crown Signet Ring"
+      },
+      "config": {
+        "vi": "Vàng 18K · Kim cương thiên nhiên",
+        "en": "18K gold · Natural diamond"
+      },
+      "description": {
+        "vi": "Nhẫn signet vàng 18K với điểm nhấn kim cương thiên nhiên — cổ điển, chắc tay và mang khí chất của người dẫn dắt.",
+        "en": "An 18K gold signet ring accented with a natural diamond — classic, substantial, with the presence of a leader."
+      },
+      "gold_karats": [
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang",
+        "vang-trang"
+      ],
+      "gemstones": [
+        "natural-diamond",
+        "lab-diamond"
+      ],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "Kim cương thiên nhiên làm điểm nhấn; thông số ghi rõ trên giấy kiểm định",
+        "en": "Natural diamond accent; specifications stated on the certificate"
+      },
+      "sizes": {
+        "label": {
+          "vi": "Size nhẫn",
+          "en": "Ring size"
+        },
+        "options": [
+          "18",
+          "20",
+          "22",
+          "24"
+        ],
+        "default": "20"
+      },
+      "certificates": [
+        "GIA"
+      ],
+      "images": [
+        {
+          "src": "/assets/photos/gold-ring-box-1600.webp",
+          "srcset": "/assets/photos/gold-ring-box-400.webp 400w, /assets/photos/gold-ring-box-800.webp 800w, /assets/photos/gold-ring-box-1600.webp 1600w",
+          "alt": {
+            "vi": "Nhẫn Signet Crown trong hộp",
+            "en": "Crown Signet Ring in its box"
+          }
+        }
+      ],
+      "video": ""
+    },
+    {
+      "slug": "chain-rope-classic",
+      "status": "published",
+      "sample": true,
+      "featured": 0,
+      "created": "2026-06-30",
+      "category": "day-chuyen",
+      "badges": [],
+      "name": {
+        "vi": "Chain Rope Classic",
+        "en": "Classic Rope Chain"
+      },
+      "config": {
+        "vi": "Vàng 18K · bản 5 mm",
+        "en": "18K gold · 5 mm width"
+      },
+      "description": {
+        "vi": "Dây xoắn vàng 18K bản 5 mm, bắt sáng tự nhiên trên từng vòng xoắn. Không cần đá quý vẫn đủ sức nặng để khẳng định phong cách.",
+        "en": "An 18K gold rope chain, 5 mm wide, catching the light along every twist. No gemstones needed — its weight speaks for itself."
+      },
+      "gold_karats": [
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang"
+      ],
+      "gemstones": [],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "Không đính đá quý",
+        "en": "No gemstones"
+      },
+      "sizes": {
+        "label": {
+          "vi": "Chiều dài",
+          "en": "Length"
+        },
+        "options": [
+          "50 cm",
+          "55 cm",
+          "60 cm"
+        ],
+        "default": "55 cm"
+      },
+      "certificates": [],
+      "images": [],
+      "video": ""
+    },
+    {
+      "slug": "mat-day-lion",
+      "status": "published",
+      "sample": true,
+      "featured": 0,
+      "created": "2026-09-05",
+      "category": "mat-day",
+      "badges": [
+        "moi"
+      ],
+      "name": {
+        "vi": "Mặt dây Lion",
+        "en": "Lion Pendant"
+      },
+      "config": {
+        "vi": "Vàng 14K · Moissanite",
+        "en": "14K gold · Moissanite"
+      },
+      "description": {
+        "vi": "Hình tượng sư tử phủ Moissanite trên vàng 14K — biểu tượng của sức mạnh và bản lĩnh. Kích thước có thể điều chỉnh theo form người đeo.",
+        "en": "A lion emblem paved with Moissanite on 14K gold — a symbol of strength and resolve. Its size can be tailored to the wearer."
+      },
+      "gold_karats": [
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang",
+        "vang-trang"
+      ],
+      "gemstones": [
+        "moissanite"
+      ],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "Moissanite phủ toàn bộ hình tượng; kích thước và số lượng ghi rõ theo kích thước mặt",
+        "en": "Moissanite paved across the emblem; size and count stated per pendant size"
+      },
+      "sizes": {
+        "label": {
+          "vi": "Kích thước mặt",
+          "en": "Pendant size"
+        },
+        "options": [
+          "3 cm",
+          "4 cm",
+          "5 cm"
+        ],
+        "default": "4 cm"
+      },
+      "certificates": [
+        "GRA"
+      ],
+      "images": [],
+      "video": ""
+    },
+    {
+      "slug": "lac-tay-cuban-iced",
+      "status": "published",
+      "sample": true,
+      "featured": 0,
+      "created": "2026-08-12",
+      "category": "lac-tay",
+      "badges": [
+        "ban-chay"
+      ],
+      "name": {
+        "vi": "Lắc tay Cuban Iced",
+        "en": "Cuban Iced Bracelet"
+      },
+      "config": {
+        "vi": "Vàng 18K · Moissanite phủ kín",
+        "en": "18K gold · fully paved Moissanite"
+      },
+      "description": {
+        "vi": "Lắc tay Cuban vàng 18K phủ Moissanite — cùng tinh thần với Chain Cuban Iced, dành cho những ai muốn cổ tay cũng có tiếng nói riêng.",
+        "en": "An 18K gold Cuban bracelet paved with Moissanite — the same spirit as the Cuban Iced Chain, for a wrist that speaks for itself."
+      },
+      "gold_karats": [
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang",
+        "vang-trang"
+      ],
+      "gemstones": [
+        "moissanite",
+        "lab-diamond"
+      ],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "Moissanite phủ kín từng mắt xích; kích thước và số lượng ghi rõ theo chiều dài",
+        "en": "Moissanite fully paved on every link; size and count stated per length"
+      },
+      "sizes": {
+        "label": {
+          "vi": "Chiều dài",
+          "en": "Length"
+        },
+        "options": [
+          "18 cm",
+          "19 cm",
+          "20 cm",
+          "21 cm"
+        ],
+        "default": "19 cm"
+      },
+      "certificates": [
+        "GRA"
+      ],
+      "images": [],
+      "video": ""
+    },
+    {
+      "slug": "bong-tai-stud-iced",
+      "status": "published",
+      "sample": true,
+      "featured": 0,
+      "created": "2026-07-05",
+      "category": "bong-tai",
+      "badges": [],
+      "name": {
+        "vi": "Bông tai Stud Iced",
+        "en": "Iced Stud Earrings"
+      },
+      "config": {
+        "vi": "Vàng 14K · Lab Diamond",
+        "en": "14K gold · Lab Diamond"
+      },
+      "description": {
+        "vi": "Đôi bông tai stud Lab Diamond trên vàng 14K — nhỏ gọn nhưng bắt sáng rõ ràng, hoàn thiện diện mạo một cách tự tin.",
+        "en": "Lab Diamond studs in 14K gold — compact, yet catching the light with clarity to complete your look with confidence."
+      },
+      "gold_karats": [
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang",
+        "vang-trang"
+      ],
+      "gemstones": [
+        "lab-diamond",
+        "moissanite",
+        "natural-diamond"
+      ],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "Một viên chủ mỗi bên; kích thước ghi rõ theo cấu hình",
+        "en": "One center stone per earring; size stated per configuration"
+      },
+      "sizes": null,
+      "certificates": [
+        "IGI"
+      ],
+      "images": [],
+      "video": ""
+    },
+    {
+      "slug": "bong-tai-halo",
+      "status": "published",
+      "sample": true,
+      "featured": 0,
+      "created": "2026-09-01",
+      "category": "bong-tai",
+      "badges": [
+        "moi"
+      ],
+      "name": {
+        "vi": "Bông tai Halo",
+        "en": "Halo Earrings"
+      },
+      "config": {
+        "vi": "Vàng 14K · Moissanite",
+        "en": "14K gold · Moissanite"
+      },
+      "description": {
+        "vi": "Viên chủ được bao quanh bởi vòng Moissanite nhỏ, tạo độ lấp lánh lớn hơn kích thước thật. Có ba màu vàng để lựa chọn.",
+        "en": "A center stone framed by a halo of small Moissanite, creating brilliance beyond its size. Available in three gold colors."
+      },
+      "gold_karats": [
+        "10K",
+        "14K"
+      ],
+      "gold_colors": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gemstones": [
+        "moissanite"
+      ],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "Viên chủ và vòng halo Moissanite; kích thước và số lượng ghi rõ theo cấu hình",
+        "en": "Moissanite center stone and halo; size and count stated per configuration"
+      },
+      "sizes": null,
+      "certificates": [
+        "GRA"
+      ],
+      "images": [],
+      "video": ""
+    },
+    {
+      "slug": "nhan-cap-eternal",
+      "status": "published",
+      "sample": true,
+      "featured": 0,
+      "created": "2026-08-25",
+      "category": "nhan-cuoi",
+      "badges": [
+        "custom"
+      ],
+      "name": {
+        "vi": "Nhẫn cặp Eternal",
+        "en": "Eternal Couple Rings"
+      },
+      "config": {
+        "vi": "Vàng 18K · Lab Diamond",
+        "en": "18K gold · Lab Diamond"
+      },
+      "description": {
+        "vi": "Đôi nhẫn vàng 18K đính Lab Diamond — một lời hứa được chế tác để đi cùng thời gian. Có thể Custom theo câu chuyện của hai bạn.",
+        "en": "A pair of 18K gold rings set with Lab Diamonds — a promise crafted to last. It can be made Custom to tell your story."
+      },
+      "gold_karats": [
+        "14K",
+        "18K"
+      ],
+      "gold_colors": [
+        "vang",
+        "vang-trang",
+        "vang-hong"
+      ],
+      "gemstones": [
+        "lab-diamond",
+        "natural-diamond"
+      ],
+      "customizable": true,
+      "weight_note": {
+        "vi": "",
+        "en": ""
+      },
+      "gemstone_specs": {
+        "vi": "Lab Diamond đính mặt nhẫn; kích thước và số lượng ghi rõ theo cấu hình",
+        "en": "Lab Diamonds set on the band; size and count stated per configuration"
+      },
+      "sizes": {
+        "label": {
+          "vi": "Size nhẫn",
+          "en": "Ring size"
+        },
+        "options": [
+          "10",
+          "12",
+          "14",
+          "16",
+          "18",
+          "20",
+          "22"
+        ],
+        "default": "14"
+      },
+      "certificates": [
+        "IGI"
+      ],
+      "images": [
+        {
+          "src": "/assets/photos/couple-928.webp",
+          "srcset": "/assets/photos/couple-400.webp 400w, /assets/photos/couple-800.webp 800w, /assets/photos/couple-928.webp 928w",
+          "alt": {
+            "vi": "Nhẫn cặp Eternal trên tay đôi",
+            "en": "Eternal Couple Rings on joined hands"
+          }
+        }
+      ],
+      "video": ""
+    }
+  ]
+}
