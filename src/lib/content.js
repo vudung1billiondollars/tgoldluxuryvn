@@ -1,13 +1,23 @@
 // Kho nội dung: content/ trong repo là bản gốc (seed); DATA_DIR/content là bản đang chạy do CMS chỉnh sửa.
 // Các template đọc trực tiếp từ các object bên dưới, nên chỉ cần loadContent() lại là build ra nội dung mới.
 import { ROOT } from './env.js';
-import { readFileSync, existsSync, mkdirSync, copyFileSync, statSync } from 'node:fs';
+import { readFileSync, existsSync, mkdirSync, copyFileSync, statSync, accessSync, constants } from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 
 export { ROOT };
 export const REPO_CONTENT = path.join(ROOT, 'content');
-export const DATA_DIR = path.resolve(ROOT, process.env.DATA_DIR || process.env.BOOKING_STORAGE_DIR || 'storage');
+// DATA_DIR đặt trong biến môi trường mà không tạo / ghi được (sai đường dẫn, thiếu quyền) → dùng tạm storage/ trong thư mục ứng dụng
+// và báo trong nhật ký, không để website dừng hẳn.
+function pickDataDir() {
+  const want = path.resolve(ROOT, process.env.DATA_DIR || process.env.BOOKING_STORAGE_DIR || 'storage');
+  try { mkdirSync(want, { recursive: true }); accessSync(want, constants.W_OK); return want; } catch (err) {
+    const fallback = path.join(ROOT, 'storage');
+    if (want !== fallback) console.warn(`⚠ Không dùng được DATA_DIR=${want} (${err.code || err.message}) — tạm lưu dữ liệu ở ${fallback}. Dữ liệu ở đây có thể mất khi deploy lại.`);
+    return fallback;
+  }
+}
+export const DATA_DIR = pickDataDir();
 export const LIVE_CONTENT = path.join(DATA_DIR, 'content');
 export const MEDIA_DIR = path.join(DATA_DIR, 'media');          // ảnh/video tải lên từ CMS → công khai tại /media/
 export const BOOKINGS_DIR = path.join(DATA_DIR, 'bookings');     // lịch hẹn + ảnh khách gửi → KHÔNG công khai

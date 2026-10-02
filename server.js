@@ -224,7 +224,12 @@ if (existsSync(path.join(DATA_DIR, 'bookings.jsonl')) && !existsSync(path.join(B
   renameSync(path.join(DATA_DIR, 'bookings.jsonl'), path.join(BOOKINGS_DIR, 'bookings.jsonl'));
 }
 seedLiveContent();
-const b = await rebuild();
-console.log(`✓ Build ${b.pages} trang (${b.ms} ms) · dữ liệu: ${path.relative(ROOT, DATA_DIR) || DATA_DIR}`);
-if (!process.env.ADMIN_PASSWORD) console.warn('⚠ Chưa đặt ADMIN_PASSWORD — trang /admin sẽ không đăng nhập được.');
-server.listen(PORT, () => console.log(`T Gold đang chạy tại http://localhost:${PORT}  ·  quản trị: http://localhost:${PORT}/admin/`));
+// Không dùng `await` ở cấp ngoài cùng: một số máy chủ (Hostinger, Passenger, lsnode) nạp tệp này bằng require() —
+// có await cấp ngoài thì Node báo ERR_REQUIRE_ASYNC_MODULE, ứng dụng không khởi động được và website trả về 503.
+rebuild()
+  .then((b) => {
+    console.log(`✓ Build ${b.pages} trang (${b.ms} ms) · dữ liệu: ${path.relative(ROOT, DATA_DIR) || DATA_DIR}`);
+    if (!process.env.ADMIN_PASSWORD) console.warn('⚠ Chưa đặt ADMIN_PASSWORD — trang /admin sẽ không đăng nhập được.');
+    server.listen(PORT, () => console.log(`T Gold đang chạy tại http://localhost:${PORT}  ·  quản trị: http://localhost:${PORT}/admin/`));
+  })
+  .catch((err) => { console.error('✗ Không khởi động được website:', err); process.exit(1); });
