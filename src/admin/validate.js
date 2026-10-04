@@ -24,6 +24,8 @@ export function cleanProduct(p, catalog) {
   const category = str(p?.category, 40);
   if (!catIds.includes(category)) errors.push('Chọn danh mục sản phẩm.');
   const created = isDate(str(p?.created, 10)) ? str(p.created, 10) : new Date().toISOString().slice(0, 10);
+  const updatedAt = str(p?.updatedAt, 40);
+  const updatedTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/.test(updatedAt) ? Date.parse(updatedAt) : NaN;
   const opts = Array.isArray(p?.sizes?.options) ? p.sizes.options.map((x) => str(x, 20)).filter(Boolean).slice(0, 20) : [];
   const product = {
     slug,
@@ -47,6 +49,7 @@ export function cleanProduct(p, catalog) {
     images: (Array.isArray(p?.images) ? p.images : []).slice(0, 12).map((im) => ({ src: mediaPath(im?.src), srcset: srcset(im?.srcset), alt: bi(im?.alt, 200) })).filter((im) => im.src),
     video: mediaPath(p?.video),
     model3d: SLUG.test(str(p?.model3d, 80)) ? str(p.model3d, 80) : '', // mẫu 3D / công cụ tự thiết kế gắn vào sản phẩm (slug trong Sản phẩm 3D)
+    ...(Number.isFinite(updatedTime) ? { updatedAt: new Date(updatedTime).toISOString() } : {}),
   };
   if (!product.gold_karats.length) errors.push('Chọn ít nhất một tuổi vàng.');
   return { product, errors };

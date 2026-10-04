@@ -36,6 +36,32 @@ const setP = (o, p, v) => { const ks = p.split('.'); let t = o; ks.slice(0, -1).
 const slugify = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80);
 const fmtTime = (iso) => { if (!iso) return '—'; const d = new Date(iso); return Number.isNaN(d) ? iso : d.toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }); };
 const clone = (o) => JSON.parse(JSON.stringify(o));
+const productDateFormat = new Intl.DateTimeFormat('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+function productTimeText(iso) {
+  const at = Date.parse(iso);
+  if (!Number.isFinite(at)) return '';
+  const age = Date.now() - at;
+  return age >= 0 && age < 5 * 60 * 1000 ? 'Vừa xong' : productDateFormat.format(new Date(at));
+}
+function setProductUpdated(el, iso) {
+  const text = productTimeText(iso);
+  el.replaceChildren(...(text ? ['Sửa lần cuối: ', h('time', { datetime: iso, title: `${productDateFormat.format(new Date(iso))} (giờ Việt Nam)`, text })] : ['Chưa ghi nhận chỉnh sửa']));
+}
+function productUpdated(iso) {
+  const el = h('p', { class: 'product-updated' });
+  setProductUpdated(el, iso);
+  return el;
+}
+function refreshProductTimes() {
+  document.querySelectorAll('.product-updated time').forEach((el) => { el.textContent = productTimeText(el.dateTime); });
+}
+setInterval(() => { if (!document.hidden) refreshProductTimes(); }, 15000);
+const PRODUCT_CHANGE_KEY = 'tgold:products-updated';
+function notifyProductsChanged() {
+  catalogCache = null;
+  try { localStorage.setItem(PRODUCT_CHANGE_KEY, `${Date.now()}-${Math.random()}`); } catch { /* vẫn cập nhật khi quay lại tab */ }
+}
+let disposeProductList = () => {};
 
 let toastT;
 function toast(msg, bad = false) {
@@ -44,6 +70,7 @@ function toast(msg, bad = false) {
 }
 function confirmBox(msg, okLabel = 'Đồng ý') {
   const d = $('#confirm'); $('#confirm-msg').textContent = msg; $('#confirm-ok').textContent = okLabel;
+  d.returnValue = 'cancel';
   d.showModal();
   return new Promise((r) => d.addEventListener('close', () => r(d.returnValue === 'ok'), { once: true }));
 }
@@ -153,6 +180,7 @@ function savebar(onSave, extra = []) {
   const btn = h('button', { type: 'submit', class: 'btn primary' }, icon('save'), 'Lưu');
   const bar = h('div', { class: 'savebar' }, h('span', { class: 'state', text: 'Chưa có thay đổi' }), ...extra, btn);
   bar.save = async () => {
+    if (btn.disabled) return;
     btn.disabled = true;
     try { await onSave(); clearDirty(); } catch (e) { toast(e.message, true); } finally { btn.disabled = false; }
   };
@@ -165,6 +193,7 @@ const card = (title, desc, ...kids) => h('section', { class: 'card' }, title && 
 
 /* ───────── Đăng nhập ───────── */
 async function renderLogin() {
+  disposeProductList();
   let configured = true;
   try { configured = (await (await fetch('/admin/api/session')).json()).configured; } catch { /* bỏ qua */ }
   const pw = h('input', { type: 'password', autocomplete: 'current-password', required: true, minLength: 8, placeholder: 'Mật khẩu quản trị' });
@@ -273,16 +302,82 @@ async function viewBookings(id) {
 let catalogCache = null;
 let pFilter = { q: '', cat: '', status: '' };
 async function viewProducts() {
-  const { catalog } = await api('catalog'); catalogCache = catalog;
-  const catName = Object.fromEntries(catalog.categories.map((c) => [c.id, c.vi]));
+  let { catalog } = await api('catalog'); catalogCache = catalog;
   const listEl = h('div', { class: 'list' });
+  let busySlug = null, refreshing = false, refreshQueued = false, mutationRevision = 0;
+  async function mutateProduct(p, method) {
+    if (busySlug) return;
+    if (method === 'DELETE' && !(await confirmBox(`Xoá “${p.name.vi}” khỏi website? Có thể khôi phục trong Sao lưu → Lịch sử phiên bản.`, 'Xoá'))) return;
+    if (busySlug) return;
+    busySlug = p.slug;
+    mutationRevision++;
+    listEl.querySelectorAll('button').forEach((el) => { el.disabled = true; });
+    listEl.querySelector(`[data-product-slug="${p.slug}"]`)?.setAttribute('aria-busy', 'true');
+    try {
+      const r = await api(`products/${p.slug}`, { method, ...(method === 'PATCH' ? { body: { status: p.status === 'hidden' ? 'published' : 'hidden' } } : {}) });
+      const idx = catalog.products.findIndex((x) => x.slug === p.slug);
+      if (idx >= 0) {
+        if (method === 'DELETE') catalog.products.splice(idx, 1);
+        else catalog.products[idx] = r.product;
+      }
+      notifyProductsChanged();
+      toast(`${method === 'DELETE' ? 'Đã xoá sản phẩm' : r.product.status === 'hidden' ? 'Đã ẩn sản phẩm' : 'Đã hiện sản phẩm'} · website đã cập nhật`);
+    } catch (e) { toast(e.message, true); }
+    finally {
+      busySlug = null;
+      if (listEl.isConnected) draw();
+      if (refreshQueued) refresh();
+    }
+  }
   const draw = () => {
+    const catName = Object.fromEntries(catalog.categories.map((c) => [c.id, c.vi]));
+    const focused = listEl.contains(document.activeElement) ? document.activeElement.closest('[data-product-action]') : null;
+    const focusSlug = focused?.closest('[data-product-slug]')?.dataset.productSlug;
+    const focusAction = focused?.dataset.productAction;
     const n = pFilter.q.toLowerCase();
     const rows = catalog.products.filter((p) => (!pFilter.cat || p.category === pFilter.cat) && (!pFilter.status || p.status === pFilter.status) && (!n || `${p.name.vi} ${p.name.en} ${p.slug}`.toLowerCase().includes(n)));
-    listEl.replaceChildren(...(rows.length ? rows.map((p) => h('div', { class: 'row', tabindex: '0', role: 'button', on: { click: () => { location.hash = `#/products/${p.slug}`; }, keydown: (e) => { if (e.key === 'Enter') location.hash = `#/products/${p.slug}`; } } },
+    // Giữ nguyên thứ tự catalog; thời gian sửa chỉ là thông tin hiển thị.
+    listEl.replaceChildren(...(rows.length ? rows.map((p) => h('div', { class: 'row product-row', 'data-product-slug': p.slug, 'aria-busy': busySlug === p.slug ? 'true' : null },
       h('div', { class: 'thumb' }, p.images?.[0]?.src ? h('img', { src: p.images[0].src, alt: '' }) : icon('gem')),
-      h('div', {}, h('div', { class: 't', text: p.name.vi }), h('div', { class: 's', text: `${catName[p.category] || p.category} · ${p.config?.vi || ''}` })),
-      h('div', { class: 'r' }, p.model3d ? h('span', { class: 'pill gold', text: '3D' }) : null, p.sample ? h('span', { class: 'pill warn', text: 'Mẫu minh hoạ' }) : null, p.featured ? h('span', { class: 'pill gold', text: `Nổi bật #${p.featured}` }) : null, h('span', { class: `pill ${p.status === 'hidden' ? 'mute' : 'ok'}`, text: p.status === 'hidden' ? 'Đang ẩn' : 'Đang hiện' })))) : [h('p', { class: 'empty', text: 'Không có sản phẩm phù hợp.' })]));
+      h('div', { class: 'product-main' }, h('a', { class: 't product-name', href: `#/products/${p.slug}`, target: '_blank', rel: 'noopener', title: `Sửa “${p.name.vi}” (mở tab mới)`, text: p.name.vi }), h('div', { class: 's', text: [catName[p.category] || p.category, p.config?.vi].filter(Boolean).join(' · ') }), productUpdated(p.updatedAt)),
+      h('div', { class: 'product-controls' },
+        h('div', { class: 'product-badges' }, p.model3d ? h('span', { class: 'pill gold', text: '3D' }) : null, p.sample ? h('span', { class: 'pill warn', text: 'Mẫu minh hoạ' }) : null, p.featured ? h('span', { class: 'pill gold', text: `Nổi bật #${p.featured}` }) : null, h('span', { class: `pill ${p.status === 'hidden' ? 'mute' : 'ok'}`, text: p.status === 'hidden' ? 'Đang ẩn' : 'Đang hiện' })),
+        h('div', { class: 'product-actions' },
+          h('a', { class: 'btn ghost sm', href: `#/products/${p.slug}`, target: '_blank', rel: 'noopener', 'data-product-action': 'edit', 'aria-label': `Sửa “${p.name.vi}” (mở tab mới)` }, 'Sửa', icon('ext')),
+          h('button', { type: 'button', class: 'btn ghost sm', disabled: !!busySlug, 'data-product-action': 'visibility', 'aria-label': `${p.status === 'hidden' ? 'Hiện' : 'Ẩn'} “${p.name.vi}”`, on: { click: () => mutateProduct(p, 'PATCH') } }, p.status === 'hidden' ? 'Hiện' : 'Ẩn'),
+          h('button', { type: 'button', class: 'btn danger sm', disabled: !!busySlug, 'data-product-action': 'delete', 'aria-label': `Xoá “${p.name.vi}”`, on: { click: () => mutateProduct(p, 'DELETE') } }, 'Xoá'))))) : [h('p', { class: 'empty', text: 'Không có sản phẩm phù hợp.' })]));
+    if (focusSlug) {
+      const target = listEl.querySelector(`[data-product-slug="${focusSlug}"] [data-product-action="${focusAction}"]`) || listEl.querySelector('[data-product-action]');
+      target?.focus({ preventScroll: true });
+    }
+  };
+  async function refresh() {
+    if (!listEl.isConnected) return;
+    if (busySlug || refreshing) { refreshQueued = true; return; }
+    refreshing = true; refreshQueued = false;
+    const revision = mutationRevision;
+    try {
+      const latest = (await api('catalog')).catalog;
+      if (!listEl.isConnected) return;
+      // Có thao tác vừa bắt đầu trong lúc chờ GET: tải lại sau khi thao tác hoàn tất.
+      if (busySlug || revision !== mutationRevision) { refreshQueued = true; return; }
+      const changed = JSON.stringify(catalog) !== JSON.stringify(latest);
+      catalog = latest; catalogCache = latest;
+      if (changed) draw();
+      else refreshProductTimes();
+    } catch (e) { if (listEl.isConnected) toast(e.message, true); }
+    finally { refreshing = false; if (refreshQueued && !busySlug && listEl.isConnected) refresh(); }
+  }
+  const onStorage = (e) => { if (e.key === PRODUCT_CHANGE_KEY) refresh(); };
+  const onVisible = () => { if (!document.hidden) refresh(); };
+  addEventListener('storage', onStorage);
+  addEventListener('focus', refresh);
+  document.addEventListener('visibilitychange', onVisible);
+  disposeProductList = () => {
+    removeEventListener('storage', onStorage);
+    removeEventListener('focus', refresh);
+    document.removeEventListener('visibilitychange', onVisible);
+    disposeProductList = () => {};
   };
   draw();
   return page('Nội dung', 'Sản phẩm', [h('a', { class: 'btn ghost', href: '#/categories' }, 'Quản lý danh mục'), h('a', { class: 'btn ghost', href: '#/products/import' }, icon('img'), 'Tải theo thư mục'), h('a', { class: 'btn primary', href: '#/products/new' }, icon('plus'), 'Thêm sản phẩm')],
@@ -449,6 +544,7 @@ async function viewProductImport() {
       stateEl.textContent = `Đang tạo ${ready.length} sản phẩm…`;
       try {
         const r = await api('products-import', { method: 'POST', body: { products: ready.map((x) => x.product) } });
+        if (r.created.length) notifyProductsChanged();
         created = r.created; (r.failed || []).forEach((f) => problems.push(`${f.name}: ${f.error}`));
       } catch (e) { problems.push(`Chưa tạo được sản phẩm: ${e.message}`); }
     }
@@ -487,7 +583,7 @@ async function viewProductImport() {
 }
 
 async function viewProduct(slug) {
-  const { catalog } = catalogCache ? { catalog: catalogCache } : await api('catalog');
+  const { catalog } = await api('catalog');
   catalogCache = catalog;
   const isNew = slug === 'new';
   const orig = catalog.products.find((p) => p.slug === slug);
@@ -538,11 +634,14 @@ async function viewProduct(slug) {
   };
   drawImgs();
 
+  const updatedEl = productUpdated(p.updatedAt);
   const bar = savebar(async () => {
     const opts = sz.options.split(',').map((s) => s.trim()).filter(Boolean);
     p.sizes = opts.length ? { label: sz.label, options: opts, default: opts.includes(sz.def.trim()) ? sz.def.trim() : opts[0] } : null;
-    const r = await api(`products/${isNew ? (p.slug || 'new') : orig.slug}`, { method: 'PUT', body: { product: p } });
-    catalogCache = null;
+    const r = await api(`products/${isNew ? (p.slug || 'new') : orig.slug}`, { method: 'PUT', body: { product: p, isNew } });
+    p.updatedAt = r.product.updatedAt;
+    setProductUpdated(updatedEl, p.updatedAt);
+    notifyProductsChanged();
     toast(buildMsg(r.build));
     if (isNew || r.product.slug !== slug) { dirty = false; location.hash = `#/products/${r.product.slug}`; }
   }, [!isNew && p.status !== 'hidden' ? h('a', { class: 'btn ghost', href: `/san-pham/${orig.slug}/`, target: '_blank', rel: 'noopener' }, icon('ext'), 'Xem trên web') : null]);
@@ -575,10 +674,10 @@ async function viewProduct(slug) {
     !isNew && card('Xoá sản phẩm', 'Sản phẩm sẽ biến mất khỏi website. Có thể khôi phục trong mục Sao lưu → Lịch sử phiên bản.',
       h('div', {}, h('button', { type: 'button', class: 'btn danger', on: { click: async () => {
         if (!(await confirmBox(`Xoá “${orig.name.vi}” khỏi website?`, 'Xoá'))) return;
-        try { const r = await api(`products/${orig.slug}`, { method: 'DELETE' }); dirty = false; catalogCache = null; toast(buildMsg(r.build)); location.hash = '#/products'; } catch (e) { toast(e.message, true); }
+        try { const r = await api(`products/${orig.slug}`, { method: 'DELETE' }); dirty = false; notifyProductsChanged(); toast(buildMsg(r.build)); location.hash = '#/products'; } catch (e) { toast(e.message, true); }
       } } }, 'Xoá sản phẩm'))),
     bar);
-  return h('div', { class: 'inner' }, h('a', { class: 'back', href: '#/products' }, icon('back'), 'Sản phẩm'), h('div', { class: 'head' }, h('div', {}, h('p', { class: 'kick', text: isNew ? 'Thêm mới' : 'Chỉnh sửa' }), h('h1', { text: isNew ? 'Sản phẩm mới' : orig.name.vi }))), form);
+  return h('div', { class: 'inner' }, h('a', { class: 'back', href: '#/products' }, icon('back'), 'Sản phẩm'), h('div', { class: 'head' }, h('div', {}, h('p', { class: 'kick', text: isNew ? 'Thêm mới' : 'Chỉnh sửa' }), h('h1', { text: isNew ? 'Sản phẩm mới' : orig.name.vi }), !isNew && updatedEl)), form);
 }
 
 /* ───────── Sản phẩm 3D ───────── */
@@ -1244,6 +1343,7 @@ async function viewBackup() {
 /* ───────── Định tuyến ───────── */
 let lastHash = location.hash;
 async function route() {
+  disposeProductList();
   const hash = location.hash.replace(/^#\/?/, '');
   const [sec, arg] = hash.split('/');
   const main = () => $('#main');

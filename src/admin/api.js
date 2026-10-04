@@ -78,6 +78,14 @@ async function writeContent(file, data) {
   return rebuild();
 }
 
+// Các tab có thể lưu cùng lúc: đọc bản mới nhất và ghi tuần tự để không mất thay đổi hoặc dùng chung tệp .tmp.
+let catalogMutation = Promise.resolve();
+function mutateCatalog(change) {
+  const pending = catalogMutation.then(async () => change(await readRaw('products.json')));
+  catalogMutation = pending.catch(() => {});
+  return pending;
+}
+
 // ── Tải ảnh / video ──
 const slugify = (s) => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'file';
 async function upload(req, res) {
@@ -333,67 +341,89 @@ export async function handleAdmin(req, res, url) {
 
     // Danh mục sản phẩm
     if (route === 'categories' && m === 'PUT') {
-      const cat = await readRaw('products.json');
       const body = await readJson(req);
-      // Xoá danh mục còn sản phẩm: chuyển sản phẩm sang danh mục đã chọn (moves: mã cũ → mã mới, cho phép nối tiếp)
-      const ids = new Set((Array.isArray(body.categories) ? body.categories : []).map((c) => String(c?.id || '')));
-      const moves = body.moves && typeof body.moves === 'object' ? body.moves : {};
-      let moved = 0;
-      for (const p of cat.products) {
-        let to = p.category, n = 0;
-        while (!ids.has(to) && typeof moves[to] === 'string' && n++ < 30) to = moves[to];
-        if (to !== p.category && ids.has(to)) { p.category = to; moved++; }
-      }
-      const { categories, errors } = cleanCategories(body.categories, cat.products);
-      if (errors.length) { json(res, 422, { ok: false, error: errors.join(' ') }); return true; }
-      cat.categories = categories;
-      const build = await writeContent('products.json', cat);
-      json(res, 200, { ok: true, categories, moved, build }); return true;
+      await mutateCatalog(async (cat) => {
+        // Xoá danh mục còn sản phẩm: chuyển sản phẩm sang danh mục đã chọn (moves: mã cũ → mã mới, cho phép nối tiếp)
+        const ids = new Set((Array.isArray(body.categories) ? body.categories : []).map((c) => String(c?.id || '')));
+        const moves = body.moves && typeof body.moves === 'object' ? body.moves : {};
+        let moved = 0;
+        for (const p of cat.products) {
+          let to = p.category, n = 0;
+          while (!ids.has(to) && typeof moves[to] === 'string' && n++ < 30) to = moves[to];
+          if (to !== p.category && ids.has(to)) { p.category = to; p.updatedAt = new Date().toISOString(); moved++; }
+        }
+        const { categories, errors } = cleanCategories(body.categories, cat.products);
+        if (errors.length) { json(res, 422, { ok: false, error: errors.join(' ') }); return; }
+        cat.categories = categories;
+        const build = await writeContent('products.json', cat);
+        json(res, 200, { ok: true, categories, moved, build });
+      });
+      return true;
     }
 
     // Sản phẩm
     if (route === 'catalog' && m === 'GET') { json(res, 200, { ok: true, catalog: await readRaw('products.json') }); return true; }
     // Tạo nhiều sản phẩm một lượt (CMS → Sản phẩm → Tải theo thư mục): kiểm tra từng sản phẩm, slug trùng thì tự thêm số, ghi + dựng lại website đúng 1 lần
     if (route === 'products-import' && m === 'POST') {
-      const cat = await readRaw('products.json');
       const list = (await readJson(req)).products;
       if (!Array.isArray(list) || !list.length || list.length > 200) { json(res, 400, { ok: false, error: 'Danh sách sản phẩm trống hoặc quá 200 sản phẩm một lượt.' }); return true; }
-      const taken = new Set([...cat.products.map((x) => x.slug), 'new', 'import']); // 'new' / 'import' là đường dẫn riêng của trang quản trị
-      const created = [], failed = [];
-      for (const raw of list) {
-        const label = String(raw?.name?.vi || raw?.slug || '(không tên)').slice(0, 120);
-        const base = String(raw?.slug || '').slice(0, 72);
-        if (!SLUG.test(base)) { failed.push({ name: label, error: 'Tên thư mục không tạo được đường dẫn (cần có chữ hoặc số).' }); continue; }
-        let slug = base;
-        for (let n = 2; taken.has(slug); n += 1) slug = `${base}-${n}`;
-        const { product, errors } = cleanProduct({ ...raw, slug, model3d: '' }, cat);
-        if (!product.images.length) errors.push('Sản phẩm chưa có ảnh.');
-        if (errors.length) { failed.push({ name: label, error: errors.join(' ') }); continue; }
-        taken.add(slug);
-        created.push(product);
-      }
-      let build = null;
-      if (created.length) { cat.products.unshift(...created); build = await writeContent('products.json', cat); }
-      json(res, 200, { ok: true, created: created.map((x) => ({ slug: x.slug, name: x.name.vi })), failed, build }); return true;
+      await mutateCatalog(async (cat) => {
+        const taken = new Set([...cat.products.map((x) => x.slug), 'new', 'import']); // 'new' / 'import' là đường dẫn riêng của trang quản trị
+        const created = [], failed = [];
+        for (const raw of list) {
+          const label = String(raw?.name?.vi || raw?.slug || '(không tên)').slice(0, 120);
+          const base = String(raw?.slug || '').slice(0, 72);
+          if (!SLUG.test(base)) { failed.push({ name: label, error: 'Tên thư mục không tạo được đường dẫn (cần có chữ hoặc số).' }); continue; }
+          let slug = base;
+          for (let n = 2; taken.has(slug); n += 1) slug = `${base}-${n}`;
+          const { product, errors } = cleanProduct({ ...raw, slug, model3d: '' }, cat);
+          if (!product.images.length) errors.push('Sản phẩm chưa có ảnh.');
+          if (errors.length) { failed.push({ name: label, error: errors.join(' ') }); continue; }
+          taken.add(slug);
+          product.updatedAt = new Date().toISOString();
+          created.push(product);
+        }
+        let build = null;
+        if (created.length) { cat.products.unshift(...created); build = await writeContent('products.json', cat); }
+        json(res, 200, { ok: true, created: created.map((x) => ({ slug: x.slug, name: x.name.vi })), failed, build });
+      });
+      return true;
     }
-    if ((mm = route.match(/^products\/([a-z0-9-]+)$/))) {
-      const cat = await readRaw('products.json');
-      const idx = cat.products.findIndex((x) => x.slug === mm[1]);
-      if (m === 'PUT') {
-        const { product, errors } = cleanProduct((await readJson(req)).product, cat);
-        if (product.model3d && !((await readRaw('models3d.json')).models || []).some((x) => x.slug === product.model3d)) errors.push('Mẫu 3D gắn vào sản phẩm không còn tồn tại — chọn lại hoặc bỏ trống.');
-        if (errors.length) { json(res, 422, { ok: false, error: errors.join(' ') }); return true; }
-        if (product.slug !== mm[1] && cat.products.some((x) => x.slug === product.slug)) { json(res, 409, { ok: false, error: 'Đường dẫn (slug) này đã được dùng cho sản phẩm khác.' }); return true; }
-        if (idx >= 0) cat.products[idx] = product; else cat.products.unshift(product);
-        const build = await writeContent('products.json', cat);
-        json(res, 200, { ok: true, product, build }); return true;
-      }
-      if (m === 'DELETE') {
-        if (idx < 0) { json(res, 404, { ok: false, error: 'Không tìm thấy sản phẩm.' }); return true; }
-        cat.products.splice(idx, 1);
-        const build = await writeContent('products.json', cat);
-        json(res, 200, { ok: true, build }); return true;
-      }
+    if ((mm = route.match(/^products\/([a-z0-9-]+)$/)) && ['PUT', 'PATCH', 'DELETE'].includes(m)) {
+      const originalSlug = mm[1];
+      const body = m === 'DELETE' ? null : await readJson(req);
+      if (m === 'PATCH' && !['published', 'hidden'].includes(body.status)) { json(res, 422, { ok: false, error: 'Trạng thái sản phẩm phải là hiện hoặc ẩn.' }); return true; }
+      await mutateCatalog(async (cat) => {
+        const idx = cat.products.findIndex((x) => x.slug === originalSlug);
+        if (m === 'PUT') {
+          if (body.isNew === false && idx < 0) { json(res, 404, { ok: false, error: 'Sản phẩm đã bị xoá hoặc đổi đường dẫn. Tải lại danh sách sản phẩm.' }); return; }
+          if (body.isNew === true && idx >= 0) { json(res, 409, { ok: false, error: 'Đường dẫn (slug) này đã được dùng cho sản phẩm khác.' }); return; }
+          const { product, errors } = cleanProduct(body.product, cat);
+          if (product.model3d && !((await readRaw('models3d.json')).models || []).some((x) => x.slug === product.model3d)) errors.push('Mẫu 3D gắn vào sản phẩm không còn tồn tại — chọn lại hoặc bỏ trống.');
+          if (errors.length) { json(res, 422, { ok: false, error: errors.join(' ') }); return; }
+          if (product.slug !== originalSlug && cat.products.some((x) => x.slug === product.slug)) { json(res, 409, { ok: false, error: 'Đường dẫn (slug) này đã được dùng cho sản phẩm khác.' }); return; }
+          product.updatedAt = new Date().toISOString();
+          // Thay ngay tại vị trí cũ; thời gian sửa không thay đổi thứ tự danh sách CMS.
+          if (idx >= 0) cat.products[idx] = product; else cat.products.unshift(product);
+          const build = await writeContent('products.json', cat);
+          json(res, 200, { ok: true, product, build }); return;
+        }
+        if (m === 'PATCH') {
+          if (idx < 0) { json(res, 404, { ok: false, error: 'Không tìm thấy sản phẩm.' }); return; }
+          if (cat.products[idx].status === body.status) { json(res, 200, { ok: true, product: cat.products[idx], build: null }); return; }
+          const product = { ...cat.products[idx], status: body.status, updatedAt: new Date().toISOString() };
+          cat.products[idx] = product;
+          const build = await writeContent('products.json', cat);
+          json(res, 200, { ok: true, product, build }); return;
+        }
+        if (m === 'DELETE') {
+          if (idx < 0) { json(res, 404, { ok: false, error: 'Không tìm thấy sản phẩm.' }); return; }
+          cat.products.splice(idx, 1);
+          const build = await writeContent('products.json', cat);
+          json(res, 200, { ok: true, build });
+        }
+      });
+      return true;
     }
 
     // Tạp chí
@@ -517,7 +547,7 @@ export async function handleAdmin(req, res, url) {
       const { file, version } = await readJson(req, 5000);
       if (!FILES.includes(file) || !/^[\w-]+\.json$/.test(version || '')) { json(res, 400, { ok: false, error: 'Phiên bản không hợp lệ.' }); return true; }
       const data = JSON.parse(await readFile(path.join(HISTORY, file.replace(/\.json$/, ''), version), 'utf8'));
-      const build = await writeContent(file, data);
+      const build = await (file === 'products.json' ? mutateCatalog(() => writeContent(file, data)) : writeContent(file, data));
       json(res, 200, { ok: true, build }); return true;
     }
 
@@ -539,7 +569,7 @@ export async function handleAdmin(req, res, url) {
       cat.products = cat.products.map((x) => cleanProduct(x, cat).product).filter((x) => SLUG.test(x.slug));
       const jr = { ...pack['journal.json'], posts: pack['journal.json'].posts.map((x) => cleanPost(x).post).filter((x) => SLUG.test(x.slug)) };
       await writeContent('site.json', site);
-      await writeContent('products.json', { ...cur.cat, ...cat, products: cat.products });
+      await mutateCatalog(() => writeContent('products.json', { ...cur.cat, ...cat, products: cat.products }));
       let build = await writeContent('journal.json', jr);
       if (pack['home.json']?.hero) build = await writeContent('home.json', cleanHome(pack['home.json'], (await homeCtx()).ctx).home);
       if (pack['pages.json']?.pages) {

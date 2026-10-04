@@ -125,6 +125,24 @@ ul,ol{list-style:none}
 .row .t{font-weight:500;color:var(--ivory);font-size:15px}
 .row .s{font-size:13px;color:var(--muted);margin-top:2px}
 .row .r{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+/* Sản phẩm: thao tác luôn hiện, chỉ tên và nút mở trang chỉnh sửa */
+.row.product-row{grid-template-columns:56px minmax(0,1fr) auto;cursor:default}
+.row.product-row:hover{background:transparent}
+.product-main{min-width:0}
+.product-name{display:inline-block;max-width:100%;overflow-wrap:anywhere;transition:color .15s}
+.row .product-name:hover,.row .product-name:focus-visible{color:var(--gold-l);text-decoration:underline;text-underline-offset:3px}
+.product-updated{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.product-updated time{font-variant-numeric:tabular-nums}
+.product-controls{display:flex;flex-direction:column;align-items:flex-end;gap:8px;min-width:0}
+.product-badges{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px}
+.product-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+.product-actions .btn.sm{min-width:44px;min-height:44px;height:auto;padding:10px 14px}
+.row.product-row[aria-busy=true]{background:rgba(3,3,3,.25);cursor:progress}
+@media (max-width:600px){
+  .row.product-row{grid-template-columns:56px minmax(0,1fr);align-items:start}
+  .product-controls{grid-column:2/-1;align-items:flex-start}
+  .product-badges,.product-actions{justify-content:flex-start}
+}
 .pill{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;font-size:11.5px;font-weight:600;letter-spacing:.04em;border:1px solid var(--soft);color:var(--sub);white-space:nowrap}
 .pill.gold{border-color:var(--gold);color:var(--gold-l)}
 .pill.ok{border-color:rgba(143,199,154,.5);color:var(--ok)}
