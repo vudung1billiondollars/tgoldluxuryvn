@@ -1,27 +1,27 @@
 // Kho nội dung: content/ trong repo là bản gốc (seed); DATA_DIR/content là bản đang chạy do CMS chỉnh sửa.
 // Các template đọc trực tiếp từ các object bên dưới, nên chỉ cần loadContent() lại là build ra nội dung mới.
 import { ROOT } from './env.js';
-import { readFileSync, existsSync, mkdirSync, copyFileSync, statSync, accessSync, constants } from 'node:fs';
+import { readFileSync, existsSync, mkdirSync, copyFileSync, statSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
+import { isProductionRuntime, isReleaseBuild, resolveDataDir } from './storage.js';
 
 export { ROOT };
 export const REPO_CONTENT = path.join(ROOT, 'content');
-// DATA_DIR đặt trong biến môi trường mà không tạo / ghi được (sai đường dẫn, thiếu quyền) → dùng tạm storage/ trong thư mục ứng dụng
-// và báo trong nhật ký, không để website dừng hẳn.
-function pickDataDir() {
-  const want = path.resolve(ROOT, process.env.DATA_DIR || process.env.BOOKING_STORAGE_DIR || 'storage');
-  try { mkdirSync(want, { recursive: true }); accessSync(want, constants.W_OK); return want; } catch (err) {
-    const fallback = path.join(ROOT, 'storage');
-    if (want !== fallback) console.warn(`⚠ Không dùng được DATA_DIR=${want} (${err.code || err.message}) — tạm lưu dữ liệu ở ${fallback}. Dữ liệu ở đây có thể mất khi deploy lại.`);
-    return fallback;
-  }
-}
-export const DATA_DIR = pickDataDir();
+const BUILD_ONLY = isReleaseBuild();
+const PRODUCTION_RUNTIME = isProductionRuntime(process.env, BUILD_ONLY);
+export const DATA_DIR = resolveDataDir({ root: ROOT, buildOnly: BUILD_ONLY });
 export const LIVE_CONTENT = path.join(DATA_DIR, 'content');
 export const MEDIA_DIR = path.join(DATA_DIR, 'media');          // ảnh/video tải lên từ CMS → công khai tại /media/
 export const BOOKINGS_DIR = path.join(DATA_DIR, 'bookings');     // lịch hẹn + ảnh khách gửi → KHÔNG công khai
 export const FILES = ['site.json', 'products.json', 'journal.json', 'home.json', 'pages.json', 'models3d.json'];
+
+function assertProductionContent() {
+  if (!PRODUCTION_RUNTIME) return;
+  const missing = FILES.filter((file) => !existsSync(path.join(LIVE_CONTENT, file)));
+  if (missing.length) throw new Error(`CMS storage: missing persisted content in ${LIVE_CONTENT}: ${missing.join(', ')}. Restore the existing store before starting; production does not initialize from repository defaults.`);
+}
+assertProductionContent();
 
 export const site = {};
 export const catalog = {};
@@ -33,7 +33,11 @@ export const models3d = {};     // sản phẩm 3D: mỗi mẫu một trang /3d/
 const replace = (target, src) => { for (const k of Object.keys(target)) delete target[k]; Object.assign(target, src); };
 
 // Thư mục nội dung đang dùng: bản CMS nếu đã có, không thì bản gốc trong repo
-export const contentDir = () => (existsSync(path.join(LIVE_CONTENT, 'site.json')) ? LIVE_CONTENT : REPO_CONTENT);
+export const contentDir = () => {
+  assertProductionContent();
+  if (PRODUCTION_RUNTIME) return LIVE_CONTENT;
+  return existsSync(path.join(LIVE_CONTENT, 'site.json')) ? LIVE_CONTENT : REPO_CONTENT;
+};
 
 // Trường song ngữ để trống bản EN → dùng tạm bản VI (chỉ trong bộ nhớ, không sửa tệp)
 const fill = (o) => { if (o && typeof o === 'object' && 'vi' in o && !o.en) o.en = o.vi; return o; };
@@ -63,8 +67,11 @@ function fillDeep(o) {
 }
 
 export function loadContent(dir = contentDir()) {
+  if (PRODUCTION_RUNTIME) dir = LIVE_CONTENT;
   // Tệp mới (vd. home.json) chưa có trong dữ liệu CMS → đọc bản gốc trong repo
-  const read = (f) => JSON.parse(readFileSync(existsSync(path.join(dir, f)) ? path.join(dir, f) : path.join(REPO_CONTENT, f), 'utf8'));
+  // Production luôn đọc kho thật; tệp biến mất giữa lúc kiểm tra và đọc phải
+  // gây lỗi, không được âm thầm thay bằng seed trong repo.
+  const read = (f) => JSON.parse(readFileSync(PRODUCTION_RUNTIME || existsSync(path.join(dir, f)) ? path.join(dir, f) : path.join(REPO_CONTENT, f), 'utf8'));
   replace(site, read('site.json'));
   replace(catalog, read('products.json'));
   replace(journal, read('journal.json'));
@@ -77,6 +84,8 @@ export function loadContent(dir = contentDir()) {
 
 // Lần chạy đầu: chép nội dung gốc sang DATA_DIR để CMS chỉnh sửa
 export function seedLiveContent() {
+  if (PRODUCTION_RUNTIME) { assertProductionContent(); return; }
+  if (BUILD_ONLY) throw new Error('CMS storage: a release build cannot initialize or write CMS content.');
   mkdirSync(LIVE_CONTENT, { recursive: true });
   for (const f of FILES) {
     const dst = path.join(LIVE_CONTENT, f);

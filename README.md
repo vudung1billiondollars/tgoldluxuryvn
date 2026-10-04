@@ -74,6 +74,14 @@ DATA_DIR/ (mặc định storage/, không commit)
 
 > ⚠️ Trên Hostinger, đặt `DATA_DIR` ra **ngoài thư mục deploy** (ví dụ `/home/uXXXX/tgold-data`) để lần deploy sau không ghi đè dữ liệu CMS. Nên bật thêm sao lưu GitHub, hoặc tải bản sao lưu hằng tuần.
 
+Với `NODE_ENV=production`, ứng dụng chỉ chạy khi `DATA_DIR` là đường dẫn tuyệt đối tới thư mục đã tồn tại, đọc/ghi được và nằm ngoài checkout (kiểm tra cả đích của symlink). Kho phải có đủ sáu tệp `content/*.json` ở trên. Nếu kho bị thiếu hoặc đường dẫn sai, ứng dụng dừng với lỗi rõ ràng; không dùng `storage/` thay thế và không khởi tạo lại bằng nội dung mặc định. Phải khôi phục kho dữ liệu trước khi khởi động. Cài đặt lần đầu cần chủ động chuẩn bị sáu tệp nội dung; sau đó cấu hình production. Khi di chuyển kho, chép cả `content/`, `media/`, `history/` và `bookings/`, giữ nguyên bản cũ để đối chiếu.
+
+Nếu ứng dụng chạy trong cấu trúc Hostinger `hbuilds/versions/<bản>/nodejs`, kho phải nằm ngoài toàn bộ `hbuilds/` và `public_html/` của cùng tên miền, kể cả các thư mục này là symlink. Không lưu kho CMS ở một bản build khác hoặc trong thư mục công khai. Ví dụ đặt kho tại `<thư mục tên miền>/tgold-data/` sau khi xác minh hosting giữ thư mục này qua các lần deploy.
+
+Các thư mục `content/`, `media/`, `history/`, `bookings/` đang tồn tại phải có đích thật nằm trong chính `DATA_DIR`, ngoài thư mục triển khai/công khai. Symlink trỏ ra một bản build khác sẽ bị từ chối. Không bắt buộc tạo trước các thư mục phụ tùy chọn còn thiếu.
+
+`npm run build` chỉ đọc dữ liệu: dùng kho đang có nếu build nhìn thấy kho, hoặc render nội dung trong repo nếu build chưa được gắn kho. Lệnh này không tạo `DATA_DIR`. Khi chạy production, máy chủ kiểm tra kho và build lại từ dữ liệu CMS trước khi nhận yêu cầu.
+
 ### Bảo mật
 - Mật khẩu chỉ nằm trong biến môi trường. Cookie phiên là HttpOnly và SameSite=Strict, hết hạn sau 12 giờ không dùng. Sai mật khẩu 8 lần bị khoá 15 phút.
 - Mọi yêu cầu thay đổi dữ liệu phải kèm header riêng (chống CSRF). Trang quản trị có CSP chặt và `noindex`.
@@ -112,11 +120,11 @@ Không bao giờ commit `.env`, `storage/` (có lịch hẹn và ảnh khách g�
 ## Deploy lên Hostinger (gói có Node.js: Business / Cloud) — tên miền tgoldluxury.vn
 1. hPanel → **Websites → Add website → Node.js Apps → Import Git repository**, chọn repo `tgoldluxuryvn`, nhánh `main`, gắn tên miền `tgoldluxury.vn`.
 2. Build command: `npm run build` · Start command: `npm start` · Node 20 trở lên.
-3. **Environment variables** (xem `.env.example`): `ADMIN_PASSWORD` (bắt buộc, đặt mật khẩu mới cho bản chạy thật), `DATA_DIR` (đặt ngoài thư mục deploy, ví dụ `/home/uXXXX/tgold-data`), SMTP của Hostinger Email và `BOOKING_TO`. Nếu muốn, thêm `GITHUB_TOKEN` và `GITHUB_REPO=vudung1billiondollars/tgoldluxuryvn`.
+3. **Environment variables** (xem `.env.example`): `NODE_ENV=production`, `ADMIN_PASSWORD` (bắt buộc, đặt mật khẩu mới cho bản chạy thật), `DATA_DIR` (đường dẫn tuyệt đối tới kho đã chuẩn bị ngoài thư mục deploy, ví dụ `/home/uXXXX/tgold-data`), SMTP của Hostinger Email và `BOOKING_TO`. Nếu muốn, thêm `GITHUB_TOKEN` và `GITHUB_REPO=vudung1billiondollars/tgoldluxuryvn`.
 4. Trỏ tên miền về Hostinger (nameserver hoặc bản ghi A theo hướng dẫn trong hPanel) và bật SSL.
 5. Mở `https://tgoldluxury.vn/admin/`, đăng nhập, rồi điền mục **Thông tin website** trước tiên (hotline, Zalo, địa chỉ).
 
-Lần chạy đầu trên máy chủ, nội dung trong `content/` được chép sang `DATA_DIR/content/`; từ đó CMS sửa trên bản chép này. Deploy lại **không** ghi đè nội dung đã sửa trong CMS (miễn là `DATA_DIR` nằm ngoài thư mục deploy).
+Development tự chép nội dung trong `content/` sang `DATA_DIR/content/` khi chạy lần đầu. Production yêu cầu kho đã chuẩn bị trước và không tự chép seed. Deploy lại không ghi đè nội dung CMS khi `DATA_DIR` nằm ngoài thư mục deploy và hosting giữ thư mục này qua các lần triển khai.
 
 Nếu sau này chuyển sang gói chỉ có PHP: chép `docs/deploy-branch.yml.example` thành `.github/workflows/deploy-branch.yml` (cần quyền `workflow` khi push) — workflow này build sẵn `dist/` sang nhánh `deploy`, form chạy qua `api/booking.php`. Trang `/admin` **không** chạy trên gói này.
 
