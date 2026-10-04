@@ -313,17 +313,65 @@
   /* ── Thư viện ảnh trang sản phẩm ── */
   $$('[data-gallery]').forEach((g) => {
     const slides = $$('[data-slide]', g), thumbs = $$('[data-thumb]', g);
+    const main = $('.pdp-main', g), strip = $('.pdp-thumbs', g), count = $('[data-gallery-count]', g);
+    if (!slides.length || !main) return;
+    let current = Math.max(0, slides.findIndex((slide) => !slide.hidden));
+    main.classList.toggle('is-video', !!$('video', slides[current]));
+    const keepThumbVisible = () => {
+      if (!strip || !thumbs[current]) return;
+      const frame = strip.getBoundingClientRect(), thumb = thumbs[current].getBoundingClientRect();
+      const delta = thumb.left < frame.left ? thumb.left - frame.left : thumb.right > frame.right ? thumb.right - frame.right : 0;
+      if (delta) strip.scrollBy({ left: delta, behavior: reduced ? 'auto' : 'smooth' });
+    };
+    const sizeThumbs = () => {
+      if (!strip) return;
+      // Giữ kích thước từng ảnh thu nhỏ như grid auto-fill cũ, chỉ bỏ việc xuống hàng.
+      const gap = parseFloat(getComputedStyle(strip).columnGap) || 0;
+      const width = strip.getBoundingClientRect().width;
+      const columns = Math.max(1, Math.floor((width + gap) / (64 + gap)));
+      strip.style.setProperty('--thumb-size', `${Math.max(64, (width - gap * (columns - 1)) / columns)}px`);
+      keepThumbVisible();
+    };
     const show = (n) => {
-      slides.forEach((s, i) => { s.hidden = i !== n; if (i !== n) $('video', s)?.pause(); });
-      thumbs.forEach((t, i) => t.setAttribute('aria-pressed', String(i === n)));
+      current = (n + slides.length) % slides.length;
+      slides.forEach((s, i) => { s.hidden = i !== current; if (i !== current) $('video', s)?.pause(); });
+      main.classList.toggle('is-video', !!$('video', slides[current]));
+      thumbs.forEach((t, i) => t.setAttribute('aria-pressed', String(i === current)));
+      if (count) count.textContent = `${current + 1}/${slides.length}`;
+      keepThumbVisible();
+      g.dispatchEvent(new CustomEvent('tg:gallery-change', { detail: { index: current } }));
     };
     thumbs.forEach((t, i) => t.addEventListener('click', () => show(i)));
+    $('[data-gallery-prev]', g)?.addEventListener('click', () => show(current - 1));
+    $('[data-gallery-next]', g)?.addEventListener('click', () => show(current + 1));
     g.addEventListener('keydown', (e) => {
-      if (!e.target.closest('[data-thumb]') || !/Arrow(Left|Right)/.test(e.key)) return;
-      const cur = thumbs.indexOf(e.target.closest('[data-thumb]'));
-      const n = (cur + (e.key === 'ArrowRight' ? 1 : -1) + thumbs.length) % thumbs.length;
-      thumbs[n].focus(); show(n);
+      const thumb = e.target.closest('[data-thumb]');
+      if ((!thumb && e.target !== main && !e.target.closest('[data-gallery-prev],[data-gallery-next]')) || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
+      e.preventDefault();
+      const n = e.key === 'Home' ? 0 : e.key === 'End' ? slides.length - 1 : current + (e.key === 'ArrowRight' ? 1 : -1);
+      show(n);
+      if (thumb) thumbs[current]?.focus({ preventScroll: true });
     });
+    // Vuốt hoặc kéo trên ảnh; video và khung 3D giữ thao tác điều khiển riêng.
+    let gesture = null;
+    main.addEventListener('pointerdown', (e) => {
+      if (!e.isPrimary) { gesture = null; return; }
+      if (slides.length < 2 || e.button !== 0 || e.target.closest('button,a,video,input,select,textarea,[data-m3d-slide]')) return;
+      gesture = { id: e.pointerId, x: e.clientX, y: e.clientY };
+      main.setPointerCapture(e.pointerId);
+    });
+    main.addEventListener('pointerup', (e) => {
+      if (!gesture || gesture.id !== e.pointerId) return;
+      const dx = e.clientX - gesture.x, dy = e.clientY - gesture.y;
+      gesture = null;
+      if (Math.abs(dx) >= Math.max(40, main.clientWidth * 0.08) && Math.abs(dx) > Math.abs(dy) * 1.25) show(current + (dx < 0 ? 1 : -1));
+    });
+    main.addEventListener('pointercancel', () => { gesture = null; });
+    main.addEventListener('lostpointercapture', () => { gesture = null; });
+    main.addEventListener('dragstart', (e) => { if (e.target.matches('img')) e.preventDefault(); });
+    sizeThumbs();
+    if (strip && 'ResizeObserver' in window) new ResizeObserver(sizeThumbs).observe(strip);
+    else if (strip) addEventListener('resize', sizeThumbs, { passive: true });
   });
 
   /* ── Bộ sưu tập: lọc + sắp xếp (đồng bộ với URL để chia sẻ được) ── */

@@ -18,6 +18,7 @@ const T = {
     specs: 'Thông số', weight: 'Trọng lượng vàng', weightDefault: 'Cân & ghi rõ theo cấu hình đã chốt', gemSpecs: 'Thông số đá quý',
     certs: 'Giấy kiểm định', certsDefault: 'Theo loại đá quý đã chọn', customizable: 'Custom', yes: 'Có thể điều chỉnh theo yêu cầu', no: 'Theo mẫu có sẵn',
     noGem: 'Không đính đá quý', related: 'Có thể bạn <em>cũng thích</em>', gallery: 'Thư viện ảnh', view: 'Xem ảnh',
+    galleryPrev: 'Xem ảnh trước', galleryNext: 'Xem ảnh tiếp theo', galleryCarousel: 'Thư viện dạng cuộn', gallerySlide: 'Mục',
     ph: ['Ảnh sản phẩm', 'Nền đen, 1 nguồn sáng, bắt sáng đá quý'], phAlt: ['Góc nghiêng', 'Đeo trên người', 'Cận cảnh đá quý'],
     fine: 'Giá được báo chính xác theo trọng lượng vàng và thông số đá quý thực tế của cấu hình bạn chọn.',
     journal: 'Đọc thêm trên Tạp chí', journalAll: 'Tạp chí',
@@ -29,6 +30,7 @@ const T = {
     specs: 'Specifications', weight: 'Gold weight', weightDefault: 'Weighed & stated per final configuration', gemSpecs: 'Gemstone specs',
     certs: 'Certification', certsDefault: 'According to the chosen gemstone', customizable: 'Custom', yes: 'Can be tailored on request', no: 'As designed',
     noGem: 'No gemstones', related: 'You may <em>also like</em>', gallery: 'Gallery', view: 'View image',
+    galleryPrev: 'View previous image', galleryNext: 'View next image', galleryCarousel: 'Carousel', gallerySlide: 'Slide',
     ph: ['Product photo', 'Black backdrop, single key light, gemstones catching the light'], phAlt: ['Side angle', 'On-body shot', 'Gemstone close-up'],
     fine: 'Pricing is quoted precisely from the actual gold weight and gemstone specifications of your configuration.',
     journal: 'More in the Journal', journalAll: 'Journal',
@@ -86,6 +88,7 @@ if (slide) {
   };
   go.addEventListener('click', open);
   document.querySelector('[data-thumb][data-is3d]')?.addEventListener('click', () => setTimeout(open, 0));
+  slide.closest('[data-gallery]')?.addEventListener('tg:gallery-change', (e) => { if (String(e.detail?.index) === slide.closest('[data-slide]')?.dataset.slide) open(); });
   if (!navigator.connection?.saveData) open();
   if (form) form.addEventListener('change', (e) => { if (!v) return; if (e.target.name === 'color' && cfg.metals.includes(e.target.value)) v.setMetal(e.target.value); else if (e.target.name === 'gem') v.setGem(e.target.value); });
   host.addEventListener('tg3d:metal', (e) => { const i = form && form.querySelector('input[name="color"][value="' + e.detail + '"]'); if (i && !i.checked) { i.checked = true; i.dispatchEvent(new Event('change', { bubbles: true })); } });
@@ -158,8 +161,11 @@ export function renderProduct(p, lang, ver = {}) {
   const body = `
 ${breadcrumb(crumbs, lang)}
 <section class="pdp wrap" aria-labelledby="pdp-title">
-  <div class="pdp-gallery" data-gallery>
-    <div class="pdp-main">${slides.map((s, i) => `<div class="slide" data-slide="${i}"${i ? ' hidden' : ''}>${s}</div>`).join('')}</div>
+  <div class="pdp-gallery" data-gallery role="region" aria-label="${t.gallery}"${slides.length > 1 ? ` aria-roledescription="${t.galleryCarousel}"` : ''}>
+    <div class="pdp-main"${slides.length > 1 ? ` tabindex="0" aria-label="${t.gallery}"` : ''}>${slides.map((s, i) => `<div class="slide" data-slide="${i}" role="group" aria-roledescription="${t.gallerySlide}" aria-label="${i + 1} / ${slides.length}"${i ? ' hidden' : ''}>${s}</div>`).join('')}${slides.length > 1 ? `
+      <button type="button" class="pdp-gallery-nav is-prev" data-gallery-prev aria-label="${t.galleryPrev}">${icon('arrow', 'ico flip')}</button>
+      <button type="button" class="pdp-gallery-nav is-next" data-gallery-next aria-label="${t.galleryNext}">${icon('arrow')}</button>
+      <span class="pdp-gallery-count" data-gallery-count aria-live="polite" aria-atomic="true">1/${slides.length}</span>` : ''}</div>
     ${slides.length > 1 ? `<div class="pdp-thumbs" role="group" aria-label="${t.gallery}">${slides.map((_, i) => `<button type="button" class="thumb${i === thumb3d ? ' is-3d' : ''}" data-thumb="${i}"${i === thumb3d ? ' data-is3d' : ''} aria-pressed="${i === 0}" aria-label="${i === thumb3d ? t.view3d : `${t.view} ${i + 1}`}">${thumbs[i]}</button>`).join('')}</div>` : ''}
   </div>
 
