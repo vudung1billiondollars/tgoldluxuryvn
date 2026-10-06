@@ -929,7 +929,7 @@ main:focus{outline:none}
 .pdp-main .media{aspect-ratio:4/5}
 .pdp-main .media video{background:#000}
 .pdp-main .media:not(.m3d-slide)>img,.pdp-main .media.ph{touch-action:pan-y pinch-zoom;user-select:none;-webkit-user-drag:none}
-.pdp-gallery-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--tg-line);border-radius:50%;background:rgba(12,9,7,.72);color:var(--tg-ivory);transition:background .2s,border-color .2s,color .2s;touch-action:manipulation}
+.pdp-gallery-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--tg-line);border-radius:50%;background:rgba(12,9,7,.72);color:var(--tg-ivory);transition:background .2s,border-color .2s,color .2s,transform .2s var(--ease);touch-action:manipulation}
 .pdp-gallery-nav.is-prev{left:10px}
 .pdp-gallery-nav.is-next{right:10px}
 .pdp-gallery-nav .ico{width:20px;height:20px}
@@ -937,6 +937,18 @@ main:focus{outline:none}
 .pdp-gallery-nav:focus-visible{outline:2px solid var(--tg-gold-light);outline-offset:3px;border-radius:50%}
 .pdp-gallery-count{position:absolute;right:12px;bottom:12px;z-index:3;padding:4px 10px;border:1px solid var(--tg-line-soft);border-radius:999px;background:rgba(12,9,7,.78);color:var(--tg-ivory);font-size:12px;font-weight:600;line-height:1.5;font-variant-numeric:tabular-nums;pointer-events:none}
 .pdp-main.is-video .pdp-gallery-count{top:12px;bottom:auto}
+/* Chuyển ảnh (site.js điều khiển): ảnh mới trượt vào từ phía bấm / vuốt, ảnh cũ trượt ra; khi kéo thì ảnh đi theo tay.
+   .is-sliding chỉ có trong lúc đang chuyển — cắt phần ảnh nằm ngoài khung; .is-in = ảnh đang trượt vào, xếp chồng lên khung */
+.pdp-main.is-sliding{overflow:hidden;overflow:clip}
+.pdp-main.is-sliding .slide{will-change:transform}
+.pdp-main .slide.is-in{position:absolute;inset:0}
+.pdp-main.is-dragging{cursor:grabbing}
+.pdp-gallery-nav .ico{transition:transform .3s var(--ease)}
+.pdp-gallery-nav:active{transform:translateY(-50%) scale(.92)}
+@media (hover:hover){
+  .pdp-gallery-nav.is-next:hover .ico{transform:translateX(3px)}
+  .pdp-gallery-nav.is-prev:hover .ico{transform:scaleX(-1) translateX(3px)}
+}
 .pdp-thumbs{--thumb-size:64px;display:flex;flex-wrap:nowrap;gap:10px;min-width:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;margin-top:10px;scrollbar-width:thin;scrollbar-color:var(--tg-line) transparent}
 .pdp-thumbs::-webkit-scrollbar{height:4px}
 .pdp-thumbs::-webkit-scrollbar-thumb{background:var(--tg-line);border-radius:999px}

@@ -332,44 +332,119 @@
       strip.style.setProperty('--thumb-size', `${Math.max(64, (width - gap * (columns - 1)) / columns)}px`);
       keepThumbVisible();
     };
-    const show = (n) => {
-      current = (n + slides.length) % slides.length;
-      slides.forEach((s, i) => { s.hidden = i !== current; if (i !== current) $('video', s)?.pause(); });
+    // ── Hiệu ứng chuyển ảnh: ảnh mới trượt vào từ phía bấm / vuốt, ảnh cũ trượt ra; kéo trên ảnh thì ảnh đi theo tay,
+    // thả ra thì trượt tiếp sang ảnh kế hoặc về chỗ cũ. Máy bật “giảm chuyển động” (hoặc trình duyệt cũ): đổi ảnh tức thì.
+    const GAP = 12, EASE = 'cubic-bezier(.22,.61,.36,1)';
+    const canSlide = !reduced && typeof main.animate === 'function';
+    const step = () => main.clientWidth + GAP;
+    const at = (x) => ({ transform: `translate3d(${x}px,0,0)` });
+    const place = (s, x) => { s.style.transform = x == null ? '' : at(x).transform; };
+    const enter = (s) => { s.hidden = false; s.classList.add('is-in'); };
+    const leave = (s) => { s.hidden = true; s.classList.remove('is-in'); place(s); };
+    let anims = [], after = null;
+    // Kết thúc ngay hiệu ứng đang chạy (bấm liên tiếp, bắt đầu kéo ảnh…)
+    const settle = () => {
+      anims.forEach((a) => a.cancel()); anims = [];
+      if (after) { const done = after; after = null; done(); }
+    };
+    const run = (frames, ms, done) => {
+      after = done;
+      if (!canSlide || document.hidden) return settle(); // tab đang ẩn: trình duyệt dừng hiệu ứng → đổi ảnh ngay
+      const mine = anims = frames.map(([s, from, to]) => s.animate([at(from), at(to)], { duration: ms, easing: EASE, fill: 'forwards' }));
+      mine[0].finished.then(() => { if (anims === mine) settle(); }, () => {});
+    };
+    // Ảnh `from` (đang lệch dx theo tay kéo) trượt ra, ảnh `to` trượt vào giữa
+    const slide = (from, to, dir, dx) => {
+      const A = slides[from], B = slides[to], w = step();
+      enter(B); place(A); place(B);
+      main.classList.add('is-sliding');
+      run([[A, dx, -dir * w], [B, dx + dir * w, 0]], Math.max(220, 520 * (1 - Math.min(1, Math.abs(dx) / w))),
+        () => { leave(A); B.classList.remove('is-in'); main.classList.remove('is-sliding'); });
+    };
+    // Kéo chưa đủ xa: ảnh về lại chỗ cũ
+    const snapBack = (peer, dir, dx) => {
+      const A = slides[current], P = slides[peer], w = step();
+      place(A); place(P);
+      run([[A, dx, 0], [P, dx + dir * w, dir * w]], 260, () => { leave(P); main.classList.remove('is-sliding'); });
+    };
+    // Tải sẵn ảnh hai bên để lúc trượt vào đã có hình
+    const warm = (i) => $$('img[loading="lazy"]', slides[(i + slides.length) % slides.length]).forEach((im) => { im.loading = 'eager'; im.decode?.().catch(() => {}); });
+    const warmNear = () => { if (slides.length > 1) { warm(current + 1); warm(current - 1); } };
+    // dir: 1 = sang ảnh sau, -1 = về ảnh trước (bỏ trống: theo thứ tự ảnh) · dx: ảnh đang lệch bao nhiêu px theo tay kéo
+    const show = (n, dir = 0, dx = 0) => {
+      const from = current, to = (n + slides.length) % slides.length;
+      if (to === from) return;
+      settle();
+      current = to;
+      slides.forEach((s, i) => { if (i !== from && i !== to) leave(s); if (i !== to) $('video', s)?.pause(); });
       main.classList.toggle('is-video', !!$('video', slides[current]));
       thumbs.forEach((t, i) => t.setAttribute('aria-pressed', String(i === current)));
-      if (count) count.textContent = `${current + 1}/${slides.length}`;
+      if (count) { count.textContent = `${current + 1}/${slides.length}`; if (canSlide) count.animate([{ opacity: 0.35 }, { opacity: 1 }], { duration: 360, easing: 'ease-out' }); }
       keepThumbVisible();
+      slide(from, to, dir || (to > from ? 1 : -1), dx);
+      warmNear();
       g.dispatchEvent(new CustomEvent('tg:gallery-change', { detail: { index: current } }));
     };
     thumbs.forEach((t, i) => t.addEventListener('click', () => show(i)));
-    $('[data-gallery-prev]', g)?.addEventListener('click', () => show(current - 1));
-    $('[data-gallery-next]', g)?.addEventListener('click', () => show(current + 1));
+    $('[data-gallery-prev]', g)?.addEventListener('click', () => show(current - 1, -1));
+    $('[data-gallery-next]', g)?.addEventListener('click', () => show(current + 1, 1));
     g.addEventListener('keydown', (e) => {
       const thumb = e.target.closest('[data-thumb]');
       if ((!thumb && e.target !== main && !e.target.closest('[data-gallery-prev],[data-gallery-next]')) || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) return;
       e.preventDefault();
       const n = e.key === 'Home' ? 0 : e.key === 'End' ? slides.length - 1 : current + (e.key === 'ArrowRight' ? 1 : -1);
-      show(n);
+      show(n, e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0);
       if (thumb) thumbs[current]?.focus({ preventScroll: true });
     });
     // Vuốt hoặc kéo trên ảnh; video và khung 3D giữ thao tác điều khiển riêng.
     let gesture = null;
+    const dropDrag = () => {
+      const d = gesture; gesture = null;
+      if (!d || d.lock !== 'x') return;
+      main.classList.remove('is-dragging');
+      if (d.peer != null) snapBack(d.peer, d.dir, d.dx); else main.classList.remove('is-sliding');
+    };
     main.addEventListener('pointerdown', (e) => {
-      if (!e.isPrimary) { gesture = null; return; }
+      if (!e.isPrimary) { dropDrag(); return; }
       if (slides.length < 2 || e.button !== 0 || e.target.closest('button,a,video,input,select,textarea,[data-m3d-slide]')) return;
-      gesture = { id: e.pointerId, x: e.clientX, y: e.clientY };
+      gesture = { id: e.pointerId, x: e.clientX, y: e.clientY, lock: '', dx: 0, dir: 0, peer: null };
       main.setPointerCapture(e.pointerId);
     });
-    main.addEventListener('pointerup', (e) => {
-      if (!gesture || gesture.id !== e.pointerId) return;
-      const dx = e.clientX - gesture.x, dy = e.clientY - gesture.y;
-      gesture = null;
-      if (Math.abs(dx) >= Math.max(40, main.clientWidth * 0.08) && Math.abs(dx) > Math.abs(dy) * 1.25) show(current + (dx < 0 ? 1 : -1));
+    main.addEventListener('pointermove', (e) => {
+      const d = gesture;
+      if (!d || d.id !== e.pointerId) return;
+      const lim = step(), dx = Math.max(-lim, Math.min(lim, e.clientX - d.x)), dy = e.clientY - d.y;
+      if (!d.lock) {
+        if (Math.hypot(dx, dy) < 8) return;
+        d.lock = Math.abs(dx) > Math.abs(dy) * 1.25 ? 'x' : 'y';
+        if (d.lock === 'x' && canSlide) { settle(); main.classList.add('is-sliding', 'is-dragging'); }
+      }
+      if (d.lock !== 'x' || !canSlide) return;
+      const dir = dx < 0 ? 1 : -1;
+      if (dir !== d.dir) { // đổi chiều kéo: đổi ảnh đang ló ra ở mép
+        if (d.peer != null) leave(slides[d.peer]);
+        d.dir = dir; d.peer = (current + dir + slides.length) % slides.length;
+        enter(slides[d.peer]);
+      }
+      d.dx = dx;
+      place(slides[current], dx); place(slides[d.peer], dx + dir * step());
     });
-    main.addEventListener('pointercancel', () => { gesture = null; });
-    main.addEventListener('lostpointercapture', () => { gesture = null; });
+    main.addEventListener('pointerup', (e) => {
+      const d = gesture;
+      if (!d || d.id !== e.pointerId) return;
+      const lim = step(), dx = Math.max(-lim, Math.min(lim, e.clientX - d.x)), dy = e.clientY - d.y;
+      if (d.lock !== 'x') { gesture = null; if (!d.lock && Math.abs(dx) >= Math.max(40, main.clientWidth * 0.08) && Math.abs(dx) > Math.abs(dy) * 1.25) show(current + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1); return; }
+      const dir = dx < 0 ? 1 : -1;
+      if (Math.abs(dx) < Math.max(40, main.clientWidth * 0.08) || (d.peer != null && dir !== d.dir)) return dropDrag();
+      gesture = null;
+      main.classList.remove('is-dragging');
+      show(current + dir, dir, canSlide ? dx : 0);
+    });
+    main.addEventListener('pointercancel', dropDrag);
+    main.addEventListener('lostpointercapture', dropDrag);
     main.addEventListener('dragstart', (e) => { if (e.target.matches('img')) e.preventDefault(); });
     sizeThumbs();
+    if (!navigator.connection?.saveData) addEventListener('load', () => setTimeout(warmNear, 400), { once: true });
     if (strip && 'ResizeObserver' in window) new ResizeObserver(sizeThumbs).observe(strip);
     else if (strip) addEventListener('resize', sizeThumbs, { passive: true });
   });

@@ -171,13 +171,10 @@ function footer({ lang, alt }) {
 </footer>`;
 }
 
-// ── Trang hoàn chỉnh ──
-// alt: { vi: '/…', en: '/en/…' } đường dẫn tương ứng ở ngôn ngữ kia
-export function layout({ lang, page, title, description, alt, body, heroHeader = false, jsonld = [], ogImage, noindex = false, bodyClass = '', preload = null }) {
+// Cấu hình cho site.js (ngôn ngữ, form, chữ của các thông báo) — dùng chung cho layout() và siteChrome()
+function clientConfig(lang, alt) {
   const t = C[lang];
-  const path = alt[lang];
-  const og = abs(ogImage || `/assets/brand/og-${lang}.jpg`);
-  const clientCfg = {
+  return {
     lang,
     endpoint: config.form.endpoint,
     maxFiles: config.form.maxFiles,
@@ -189,6 +186,29 @@ export function layout({ lang, page, title, description, alt, body, heroHeader =
     },
     other: { lang: other(lang), href: alt[other(lang)] },
   };
+}
+
+// Thanh menu + menu mobile, tìm kiếm, món đã lưu, thông báo — cho trang không dựng bằng layout() (công cụ tự thiết kế 3D).
+// Trang đó cần nạp thêm site.js; CSS lấy từ site.css bằng chrome-css.js.
+// langHint: false → không hiện thông báo gợi ý chuyển ngôn ngữ (trang chỉ có một ngôn ngữ)
+export function siteChrome({ lang, page, alt, langHint = true }) {
+  const cfg = clientConfig(lang, alt);
+  if (!langHint) delete cfg.other;
+  return {
+    head: typo(header({ lang, page, alt })),
+    dialogs: typo(`${menuDialog({ lang, page, alt })}${searchDialog({ lang })}${savedDialog({ lang })}
+<div class="toast" data-toast role="status" aria-live="polite"></div>`),
+    config: `<script type="application/json" id="tg-config">${jsonScript(cfg)}</script>`,
+  };
+}
+
+// ── Trang hoàn chỉnh ──
+// alt: { vi: '/…', en: '/en/…' } đường dẫn tương ứng ở ngôn ngữ kia
+export function layout({ lang, page, title, description, alt, body, heroHeader = false, jsonld = [], ogImage, noindex = false, bodyClass = '', preload = null }) {
+  const t = C[lang];
+  const path = alt[lang];
+  const og = abs(ogImage || `/assets/brand/og-${lang}.jpg`);
+  const clientCfg = clientConfig(lang, alt);
   const ld = jsonld.map((o) => `<script type="application/ld+json">${jsonScript(o)}</script>`).join('\n');
 
   const inner = typo(`

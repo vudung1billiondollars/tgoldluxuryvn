@@ -21,7 +21,7 @@ import { renderCategory } from './pages/category.js';
 import { renderOrder } from './pages/order.js';
 import { renderCare } from './pages/care.js';
 import { renderModel3d } from './pages/model3d.js';
-import { renderApp3d } from './pages/app3d.js';
+import { renderApp3d, headCss3d } from './pages/app3d.js';
 
 export const DIST = path.join(ROOT, 'dist');
 
@@ -50,6 +50,7 @@ async function doBuild() {
   layout.version = createHash('md5').update(css + js).digest('hex').slice(0, 8);
   const minCss = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ').replace(/\s*([{};,>])\s*/g, '$1').replace(/;}/g, '}').trim();
   await writeFile(path.join(OUT, 'css/site.css'), minCss);
+  await writeFile(path.join(OUT, 'css/head-3d.css'), headCss3d(minCss, js)); // thanh menu cho trang công cụ tự thiết kế 3D
 
   const write = async (p, html) => {
     const file = p.endsWith('.html') ? path.join(OUT, p) : path.join(OUT, p, 'index.html');
@@ -85,7 +86,7 @@ async function doBuild() {
     if (m.kind === 'app') { // công cụ tự thiết kế: một trang trọn màn hình, chỉ tiếng Việt
       try {
         const a = MODEL3D_APPS[m.app];
-        const html = a && renderApp3d(m, { viewer: viewerVer, app: md5(await Promise.all([`${a.file}.js`, 'tu-thiet-ke.css'].map((f) => readFile(path.join(ROOT, 'public/3d/app', f)).catch(() => '')))) });
+        const html = a && renderApp3d(m, { viewer: viewerVer, app: md5(await Promise.all([`${a.file}.js`, 'tu-thiet-ke.css'].map((f) => readFile(path.join(ROOT, 'public/3d/app', f)).catch(() => '')))), site: layout.version });
         if (html) { await write(model3dPath(m.slug, 'vi'), html); pages3d += 1; } else console.warn(`! Công cụ tự thiết kế “${m.slug}” chưa có mẫu trang — chạy npm run sync-3d.`);
       } catch (e) { console.warn(`! Không dựng được trang “${m.slug}”: ${e.message}`); }
       continue;
