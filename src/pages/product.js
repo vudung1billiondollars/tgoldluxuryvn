@@ -2,7 +2,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { ROOT } from '../lib/env.js';
-import { url, esc, nl, icon, bigIcon, media, config, productPath, abs, categoryPath, model3dPath, jsonScript, MODEL3D_METALS, MODEL3D_APPS } from '../lib/core.js';
+import { url, esc, nl, icon, bigIcon, media, mono, config, productPath, abs, categoryPath, model3dPath, jsonScript, MODEL3D_METALS, MODEL3D_APPS } from '../lib/core.js';
 import { layout } from '../partials/layout.js';
 import { productCard } from '../partials/product-card.js';
 import { breadcrumb, breadcrumbLd, promises, zaloHref } from '../partials/blocks.js';
@@ -166,7 +166,7 @@ ${breadcrumb(crumbs, lang)}
       <button type="button" class="pdp-gallery-nav is-prev" data-gallery-prev aria-label="${t.galleryPrev}">${icon('arrow', 'ico flip')}</button>
       <button type="button" class="pdp-gallery-nav is-next" data-gallery-next aria-label="${t.galleryNext}">${icon('arrow')}</button>
       <span class="pdp-gallery-count" data-gallery-count aria-live="polite" aria-atomic="true">1/${slides.length}</span>` : ''}</div>
-    ${slides.length > 1 ? `<div class="pdp-thumbs" role="group" aria-label="${t.gallery}">${slides.map((_, i) => `<button type="button" class="thumb${i === thumb3d ? ' is-3d' : ''}" data-thumb="${i}"${i === thumb3d ? ' data-is3d' : ''} aria-pressed="${i === 0}" aria-label="${i === thumb3d ? t.view3d : `${t.view} ${i + 1}`}">${thumbs[i]}</button>`).join('')}</div>` : ''}
+    ${slides.length > 1 ? `<div class="pdp-thumbs" role="group" aria-label="${t.gallery}">${slides.map((_, i) => `<button type="button" class="thumb${i === thumb3d ? ' is-3d' : ''}" data-thumb="${i}"${i === thumb3d ? ' data-is3d' : ''} aria-pressed="${i === 0}" aria-label="${i === thumb3d ? t.view3d : `${t.view} ${i + 1}`}">${thumbs[i]}</button>`).join('')}<span class="thumbs-seal" aria-hidden="true">${mono('mono', '', 26)}<span class="latin">WORTH, MADE VISIBLE</span></span></div>` : ''}
   </div>
 
   <div class="pdp-info">

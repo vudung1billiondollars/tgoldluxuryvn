@@ -953,9 +953,21 @@ main:focus{outline:none}
 .pdp-thumbs::-webkit-scrollbar{height:4px}
 .pdp-thumbs::-webkit-scrollbar-thumb{background:var(--tg-line);border-radius:999px}
 .pdp-thumbs::-webkit-scrollbar-track{background:transparent}
-.pdp-thumbs .thumb{flex:0 0 var(--thumb-size);width:var(--thumb-size)}
+/* Ô ảnh thu nhỏ cùng tỉ lệ 4:5 với ảnh chính; ảnh phủ kín ô bằng vị trí tuyệt đối. Hai điều phải giữ vì Safari / iPhone:
+   · chiều cao ô ghi thẳng theo --thumb-size (không dùng aspect-ratio: Safari không tính lại chiều cao khi site.js đổi --thumb-size);
+   · ảnh không đặt cao 100% trong ô grid (Safari tính hàng grid theo chiều cao gốc của ảnh rồi căn giữa → ảnh tụt xuống, hở dải đen phía trên). */
+.pdp-thumbs .thumb{position:relative;flex:0 0 var(--thumb-size);width:var(--thumb-size);height:calc(var(--thumb-size) * 1.25);aspect-ratio:auto;overflow:hidden}
 .pdp-thumbs .thumb:focus-visible{outline-offset:-3px}
-.pdp-thumbs .thumb img{width:100%;height:100%;object-fit:cover}
+.pdp-thumbs .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* Viền chọn bằng bàn phím: vẽ bằng ::after nằm trên ảnh (ảnh đặt tuyệt đối che mất outline lùi vào trong) — cùng vị trí với outline cũ */
+.pdp-thumbs .thumb:focus-visible::after{content:"";position:absolute;inset:2px;border:2px solid var(--tg-gold-light);border-radius:2px;pointer-events:none}
+/* Hàng chưa kín (ít ảnh hơn số ô — site.js gắn .is-short): phần trống cuối hàng là một ô dấu ấn T Gold khép hàng, thẳng mép phải ảnh chính;
+   ô đủ rộng (.is-roomy) thì hiện thêm dòng chữ */
+.thumbs-seal{display:none;flex:1 1 0;min-width:0;align-items:center;justify-content:center;gap:16px;overflow:hidden;border:1px solid rgba(212,169,79,.22);background:radial-gradient(120% 140% at 50% 0%,rgba(43,32,16,.7),rgba(12,9,7,.2) 70%)}
+.pdp-thumbs.is-short .thumbs-seal{display:flex}
+.thumbs-seal .mono{width:26px;opacity:.9}
+.thumbs-seal .latin{display:none;font-weight:600;font-size:9.5px;letter-spacing:.3em;line-height:1.9;color:var(--tg-gold);white-space:nowrap}
+.pdp-thumbs.is-roomy .thumbs-seal .latin{display:block}
 .pdp-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .badge.static{position:static}
 .pdp-title{font-size:clamp(1.875rem,1.5rem + 1.5vw,2.875rem);margin-top:8px}

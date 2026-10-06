@@ -329,7 +329,12 @@
       const gap = parseFloat(getComputedStyle(strip).columnGap) || 0;
       const width = strip.getBoundingClientRect().width;
       const columns = Math.max(1, Math.floor((width + gap) / (64 + gap)));
-      strip.style.setProperty('--thumb-size', `${Math.max(64, (width - gap * (columns - 1)) / columns)}px`);
+      const size = Math.max(64, (width - gap * (columns - 1)) / columns);
+      strip.style.setProperty('--thumb-size', `${size}px`);
+      // Ít ảnh hơn số ô: phần trống cuối hàng hiện ô dấu ấn T Gold (.thumbs-seal); đủ rộng thì thêm dòng chữ
+      const spare = columns - thumbs.length;
+      strip.classList.toggle('is-short', spare > 0);
+      strip.classList.toggle('is-roomy', spare * size + (spare - 1) * gap >= 232);
       keepThumbVisible();
     };
     // ── Hiệu ứng chuyển ảnh: ảnh mới trượt vào từ phía bấm / vuốt, ảnh cũ trượt ra; kéo trên ảnh thì ảnh đi theo tay,
