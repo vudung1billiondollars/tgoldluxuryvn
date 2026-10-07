@@ -22,6 +22,11 @@ const COVERS = [
   { name: 'online', file: 'online-pexels-230544.jpg', sizes: [400, 800, 1600], crop: [0, 160, 1760, 1173] }, // cắt bỏ logo trên thẻ và tên hãng điện thoại
   { name: 'whitemetal', file: 'whitemetal-pexels-7700270.jpg', sizes: [400, 800, 1600] },
   { name: 'restyle', file: 'restyle-pexels-8576000.jpg', sizes: [400, 800, 1600] },
+  { name: 'carat', file: 'carat-pexels-5362404.jpg', sizes: [400, 800, 1600] },
+  { name: 'goldtest', file: 'goldtest-pexels-7251792.png', sizes: [400, 800, 1600] },
+  { name: 'ringtypes', file: 'ringtypes-pexels-3091637.jpg', sizes: [400, 800, 1600] },
+  { name: 'earrings', file: 'earrings-pexels-8398842.jpg', sizes: [400, 800, 1600] },
+  { name: 'trends', file: 'trends-pexels-10163183.jpg', sizes: [400, 800, 1600] },
 ];
 
 // Tên tệp có mã theo nội dung ảnh gốc (journal-<tên>-<mã>-<rộng>.webp): đổi ảnh là đổi đường dẫn,
