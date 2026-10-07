@@ -673,7 +673,7 @@
     const fileList = $('[data-file-list]');
     const formErr = $('[data-form-err]', form);
     const maxFiles = CFG.maxFiles || 3, maxMB = CFG.maxFileMB || 5;
-    const idea = form.dataset.kind === 'idea'; // form “Gửi ý tưởng” (trang Custom): ảnh mẫu + mô tả, không số điện thoại, gửi xong mở Zalo
+    const idea = form.dataset.kind === 'idea'; // form “Gửi ý tưởng” (trang Custom, trang Liên hệ): ảnh mẫu + mô tả, không số điện thoại, gửi xong mở Zalo
     let picked = []; // ảnh đã chọn ở form ý tưởng (chọn thêm dần, bỏ từng ảnh)
     const date = $('#bf-date');
     if (date) date.min = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
@@ -683,7 +683,7 @@
     const note = $('#bf-note');
     const lines = [];
     const piece = qs.get('piece');
-    const pieceLine = (p) => `${form.dataset.lblPiece}: ${p ? `${p.t} (${p.s})` : piece}`;
+    const pieceLine = (p) => `${form.dataset.lblPiece}: ${p ? `${p.t}${p.s ? ` (${p.s})` : ''}` : piece}`;
     if (piece) lines.push(pieceLine(null));
     if (qs.get('config')) lines.push(`${form.dataset.lblConfig}: ${qs.get('config').slice(0, 900)}`);
     if (qs.get('from') === 'saved') {

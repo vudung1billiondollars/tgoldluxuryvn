@@ -117,21 +117,27 @@ export function renderProduct(p, lang, ver = {}) {
   const m3app = m3?.kind === 'app' ? m3 : null;
   // có mẫu 3D: màu vàng & đá quý chọn sẵn theo mẫu (như ảnh đại diện 3D) nếu sản phẩm có lựa chọn đó; không thì lựa chọn đầu tiên
   const c0 = m3d && colors.includes(m3d.metal) ? m3d.metal : colors[0], g0 = m3d && gems.includes(m3d.gem) ? m3d.gem : gems[0], s0 = p.sizes?.default || p.sizes?.options?.[0];
-  const goldLabel = (c, k) => (lang === 'vi' ? `${catalog.goldColors[c]?.[lang] || 'Vàng'} ${k}` : `${k} ${(catalog.goldColors[c]?.[lang] || 'gold').toLowerCase()}`);
+  // Từ 2 màu vàng: “phối màu” (mẫu nhiều màu vàng — ghi liền “Vàng trắng & Vàng hồng”, khách không chọn) hay “khách chọn một màu”.
+  // CMS: Sản phẩm → Chất liệu → “Khi có từ 2 màu vàng” (gold_colors_mode: '' tự nhận · 'mix' · 'choice').
+  // Tự nhận: mẫu có sẵn — tuổi vàng, đá quý, size đều không có gì để chọn — thì coi là phối màu.
+  const colorMix = colors.length > 1 && (p.gold_colors_mode === 'mix' || (p.gold_colors_mode !== 'choice' && karats.length <= 1 && gems.length <= 1 && (p.sizes?.options?.length || 0) <= 1));
+  const colorNames = colors.map((c) => catalog.goldColors[c][lang]).join(' & ');
+  const goldLabel = (c, k) => { const nm = colorMix ? colorNames : catalog.goldColors[c]?.[lang]; return lang === 'vi' ? `${nm || 'Vàng'} ${k}` : `${k} ${(nm || 'gold').toLowerCase()}`; };
   const summary = [name, goldLabel(c0, k0), g0 && catalog.gemstones[g0][lang], s0].filter(Boolean).join(' · ');
 
   // Khối cấu hình. Mục chỉ có một giá trị (mẫu có sẵn — không có gì để chọn) hiện trong “tem thông số”; mục có từ 2 lựa chọn là nút chọn.
   // Giá trị của mục cố định vẫn nằm trong form (radio ẩn, đã chọn) → dòng tóm tắt, link tư vấn, khung 3D và site.js đọc như cũ.
   const groups = [
     karats.length && { key: 'karat', label: t.karat, short: t.karat, out: k0, cur: k0, items: karats.map((k) => [k, k]) },
-    colors.length && { key: 'color', label: t.color, short: t.color, out: esc(catalog.goldColors[c0][lang]), cur: c0, items: colors.map((c) => [c, catalog.goldColors[c][lang], catalog.goldColors[c].swatch]) },
+    // phối màu → một giá trị duy nhất (phần tử thứ 4: từng màu kèm chấm màu để hiện trong tem); giá trị form vẫn là màu mặc định c0
+    colors.length && { key: 'color', label: t.color, short: t.color, out: esc(catalog.goldColors[c0][lang]), cur: c0, items: colorMix ? [[c0, colorNames, '', colors.map((c) => [catalog.goldColors[c][lang], catalog.goldColors[c].swatch])]] : colors.map((c) => [c, catalog.goldColors[c][lang], catalog.goldColors[c].swatch]) },
     gems.length && { key: 'gem', label: t.gem, short: t.gemShort, out: esc(catalog.gemstones[g0][lang]), cur: g0, items: gems.map((g) => [g, catalog.gemstones[g][lang]]) },
     p.sizes?.options?.length && { key: 'size', label: esc(p.sizes.label?.[lang] || 'Size'), short: esc(p.sizes.label?.[lang] || 'Size'), out: esc(s0), cur: s0, items: p.sizes.options.map((s) => [s, s]) },
   ].filter(Boolean);
   const fixed = groups.filter((g) => g.items.length === 1), hasChoice = groups.some((g) => g.items.length > 1);
   const pickGroup = (key) => { const g = groups.find((x) => x.key === key && x.items.length > 1); return g ? `<fieldset class="og"><legend><span>${g.label}</span><b data-out="${g.key}">${g.out}</b></legend><div class="opt">${radio(g.key, g.items, g.cur)}</div></fieldset>` : ''; };
   const confTitle = fixed.length && !hasChoice ? t.fixedTitle : t.choose;
-  const fixedStrip = fixed.length ? `<dl class="pdp-fixed${fixed.some((g) => String(g.items[0][1]).length > 12) ? ' is-long' : ''}" data-n="${fixed.length}">${fixed.map((g) => { const [v, label, sw] = g.items[0]; return `<div><dt>${g.short}</dt><dd>${sw ? `<i style="background:${esc(sw)}"></i>` : ''}${esc(label)}<input type="radio" name="${g.key}" value="${esc(v)}" data-label="${esc(label)}" checked hidden></dd></div>`; }).join('')}</dl>` : '';
+  const fixedStrip = fixed.length ? `<dl class="pdp-fixed${fixed.some((g) => String(g.items[0][1]).length > 12) ? ' is-long' : ''}${fixed.some((g) => g.items[0][3]) ? ' has-mix' : ''}" data-n="${fixed.length}">${fixed.map((g) => { const [v, label, sw, parts] = g.items[0]; const shown = parts ? parts.map(([nm, s], i) => `<span><i style="background:${esc(s)}"></i>${esc(nm)}${i < parts.length - 1 ? ' &amp;' : ''}</span>`).join(' ') : `${sw ? `<i style="background:${esc(sw)}"></i>` : ''}${esc(label)}`; return `<div${parts ? ' class="mix"' : ''}><dt>${g.short}</dt><dd>${shown}<input type="radio" name="${g.key}" value="${esc(v)}" data-label="${esc(label)}" checked hidden></dd></div>`; }).join('')}</dl>` : '';
   const orList = (xs) => (xs.length > 1 ? `${xs.slice(0, -1).join(', ')} ${t.or} ${xs.at(-1)}` : xs[0]);
   // Sản phẩm bật Custom trong CMS: gợi ý đổi các thông số đang cố định → form gửi ý tưởng ở trang Custom (kèm tên món + cấu hình)
   const fixedMore = fixed.length && p.customizable ? `<p class="pdp-more">${t.moreQ.replace('{x}', orList(fixed.map((g) => t.words[g.key])))} <a href="${url('custom', lang)}?piece=${p.slug}&amp;config=${encodeURIComponent(summary)}#gui-y-tuong">${t.moreCta} <span aria-hidden="true">→</span></a></p>` : '';
@@ -156,7 +162,7 @@ export function renderProduct(p, lang, ver = {}) {
 
   const specs = [
     [t.karat, karats.join(' · ')],
-    [t.color, colors.map((c) => catalog.goldColors[c][lang]).join(' · ')],
+    [t.color, colors.map((c) => catalog.goldColors[c][lang]).join(colorMix ? ' & ' : ' · ')],
     [t.weight, p.weight_note?.[lang] || t.weightDefault],
     [t.gem, gems.length ? gems.map((g) => catalog.gemstones[g][lang]).join(' · ') : t.noGem],
     [t.gemSpecs, p.gemstone_specs?.[lang] || (gems.length ? '' : t.noGem)],

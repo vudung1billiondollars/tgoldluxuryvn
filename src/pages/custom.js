@@ -155,7 +155,8 @@ function faqs(lang) {
 // Form gửi ý tưởng: ảnh mẫu trước, mô tả sau; không hỏi số điện thoại / ngày hẹn / ô đồng ý.
 // Gửi xong: ảnh + mô tả được lưu vào /admin → Lịch hẹn theo “mã ý tưởng”; khách mở Zalo T Gold và dán tin nhắn soạn sẵn
 // (link zalo.me không nhận sẵn nội dung hay tệp đính kèm). Chưa cấu hình Zalo → chỉ hiện mã ý tưởng.
-function ideaForm(lang) {
+// Dùng chung cho trang Custom và trang Liên hệ (#dat-lich). preset: các mục “Bạn quan tâm” tích sẵn.
+export function ideaForm(lang, { preset = ['custom'] } = {}) {
   const i = pageT('custom', lang).idea;
   const f = pageT('contact', lang).form;
   const zalo = zaloHref();
@@ -186,7 +187,7 @@ function ideaForm(lang) {
   </div>
   <fieldset class="fld">
     <legend>${f.interest}</legend>
-    <div class="chips">${f.interests.map(([v, l]) => `<label class="o"><input type="checkbox" name="interest" value="${v}" data-label="${esc(l)}"${v === 'custom' ? ' checked' : ''}><span>${l}</span></label>`).join('')}</div>
+    <div class="chips">${f.interests.map(([v, l]) => `<label class="o"><input type="checkbox" name="interest" value="${v}" data-label="${esc(l)}"${preset.includes(v) ? ' checked' : ''}><span>${l}</span></label>`).join('')}</div>
   </fieldset>
   <div class="fld">
     <label for="bf-name">${i.name}${req}</label>

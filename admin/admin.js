@@ -662,6 +662,7 @@ async function viewProduct(slug) {
     card('Chất liệu', null,
       field('Tuổi vàng', chips(p, 'gold_karats', (catalog.karats || ['10K', '14K', '18K']).map((k) => [k, k]))),
       field('Màu vàng', chips(p, 'gold_colors', Object.entries(catalog.goldColors).map(([k, v]) => [k, v.vi, v.swatch]), { swatch: true })),
+      field('Khi có từ 2 màu vàng', select(p, 'gold_colors_mode', [['', 'Tự nhận — mẫu có sẵn (một tuổi vàng, một loại đá quý, không chọn size) thì ghi liền các màu'], ['mix', 'Mẫu phối các màu này — ghi liền, ví dụ “Vàng trắng & Vàng hồng”, khách không chọn màu'], ['choice', 'Khách chọn một trong các màu']]), 'Chỉ có tác dụng khi chọn từ 2 màu vàng trở lên.'),
       field('Loại đá quý', chips(p, 'gemstones', Object.entries(catalog.gemstones).map(([k, v]) => [k, v.vi]))),
       field('Giấy kiểm định', chips(p, 'certificates', (catalog.certificates || ['GGJ', 'GRA', 'IGI', 'GIA']).map((k) => [k, k])))),
     card('Thông số', null,

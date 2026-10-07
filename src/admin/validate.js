@@ -40,6 +40,7 @@ export function cleanProduct(p, catalog) {
     description: bi(p?.description, 900),
     gold_karats: pick(p?.gold_karats, catalog.karats || ['10K', '14K', '18K']),
     gold_colors: pick(p?.gold_colors, Object.keys(catalog.goldColors || {})),
+    gold_colors_mode: ['mix', 'choice'].includes(p?.gold_colors_mode) ? p.gold_colors_mode : '', // từ 2 màu vàng: '' tự nhận · 'mix' phối màu (ghi liền) · 'choice' khách chọn một màu
     gemstones: pick(p?.gemstones, Object.keys(catalog.gemstones || {})),
     customizable: !!p?.customizable,
     weight_note: bi(p?.weight_note, 200),

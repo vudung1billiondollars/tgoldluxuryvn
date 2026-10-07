@@ -1,7 +1,8 @@
-// LIÊN HỆ — showroom, kênh nhắn tin, mạng xã hội, bản đồ + form Đặt lịch tư vấn (#dat-lich)
+// LIÊN HỆ — showroom, kênh nhắn tin, mạng xã hội, bản đồ + bảng nhập tư vấn (#dat-lich): cùng form với trang Custom (ideaForm)
 import { url, esc, icon, bigIcon, media, config, tbd, L } from '../lib/core.js';
 import { layout } from '../partials/layout.js';
 import { registerPage, pageT, pageImg, imgAlt } from '../lib/pagetext.js';
+import { ideaForm } from './custom.js'; // custom.js cũng nạp tệp này (nhãn chung) — vòng nạp vô hại: hai bên chỉ gọi nhau lúc dựng trang
 
 const T = {
   vi: {
@@ -64,64 +65,6 @@ const T = {
 
 registerPage('contact', T, { raw: ['form.sending','form.err','form.fileErr','form.fromPiece','form.fromConfig','form.fromSaved'] });
 
-export function bookingForm(lang, { preset = [], submit } = {}) {
-  const f = pageT('contact', lang).form;
-  const { maxFiles: n, maxFileMB: mb } = config.form;
-  const fill = (s) => s.replace('{n}', n).replace('{mb}', mb);
-  const req = `<span class="req" aria-hidden="true">*</span><span class="sr"> (${f.required})</span>`;
-  return `
-<form class="book" id="booking-form" novalidate data-booking
-  data-msg-sending="${esc(f.sending)}" data-msg-err="${esc(f.err)}" data-msg-file="${esc(fill(f.fileErr))}"
-  data-lbl-piece="${esc(f.fromPiece)}" data-lbl-config="${esc(f.fromConfig)}" data-lbl-saved="${esc(f.fromSaved)}">
-  <input type="hidden" name="lang" value="${lang}">
-  <input type="hidden" name="source" value="">
-  <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
-
-  <div class="fld">
-    <label for="bf-name">${f.name}${req}</label>
-    <input id="bf-name" name="name" type="text" autocomplete="name" required maxlength="80" aria-describedby="bf-name-err">
-    <p class="err" id="bf-name-err" hidden>${f.nameErr}</p>
-  </div>
-  <div class="fld">
-    <label for="bf-phone">${f.phone}${req}</label>
-    <input id="bf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20" placeholder="${f.phoneHint}" aria-describedby="bf-phone-err">
-    <p class="err" id="bf-phone-err" hidden>${f.phoneErr}</p>
-  </div>
-  <fieldset class="fld">
-    <legend>${f.interest}</legend>
-    <div class="chips">${f.interests.map(([v, l]) => `<label class="o"><input type="checkbox" name="interest" value="${v}" data-label="${esc(l)}"${preset.includes(v) ? ' checked' : ''}><span>${l}</span></label>`).join('')}</div>
-  </fieldset>
-  <fieldset class="fld two">
-    <legend>${f.when}</legend>
-    <div><label for="bf-date" class="sub">${f.date}</label><input id="bf-date" name="date" type="date"></div>
-    <div><label for="bf-slot" class="sub">${f.slot}</label><select id="bf-slot" name="slot">${f.slots.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')}</select></div>
-  </fieldset>
-  <div class="fld">
-    <label for="bf-note">${f.note}</label>
-    <textarea id="bf-note" name="note" rows="4" maxlength="1500" placeholder="${f.notePh}"></textarea>
-  </div>
-  <div class="fld">
-    <span class="lbl" id="bf-files-lbl">${f.upload} <span class="opt-tag">(${f.optional})</span></span>
-    <label class="drop" for="bf-files">${icon('upload')}<span><b>${f.uploadCta}</b><small>${fill(f.uploadHint)}</small></span></label>
-    <input class="sr" id="bf-files" name="files" type="file" accept="image/*" multiple aria-labelledby="bf-files-lbl" aria-describedby="bf-files-err">
-    <ul class="files" data-file-list></ul>
-    <p class="err" id="bf-files-err" hidden></p>
-  </div>
-  <div class="fld">
-    <label class="consent"><input type="checkbox" name="consent" value="yes" required aria-describedby="bf-consent-err"><span>${f.consent}</span></label>
-    <p class="err" id="bf-consent-err" hidden>${f.consentErr}</p>
-  </div>
-  <p class="err form-err" data-form-err role="alert" hidden></p>
-  <button class="btn g wide-btn" type="submit" data-submit>${submit || f.submit}</button>
-</form>
-<div class="book-ok" data-booking-ok hidden tabindex="-1">
-  ${icon('check', 'ico ok-ic')}
-  <h3 class="disp">${f.okH}</h3>
-  <p>${f.okP}</p>
-  <button type="button" class="link" data-booking-again>${f.okAgain}</button>
-</div>`;
-}
-
 export function renderContact(lang) {
   const t = pageT('contact', lang);
   const c = config.contact;
@@ -160,7 +103,7 @@ export function renderContact(lang) {
   <div class="ct-form frame-soft" id="dat-lich" tabindex="-1">
     <p class="kick">${t.form.kick}</p>
     <h2 class="disp h3">${t.form.h}</h2>
-    ${bookingForm(lang)}
+    ${ideaForm(lang, { preset: [] })}
   </div>
 </section>`;
 

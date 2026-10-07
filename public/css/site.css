@@ -989,6 +989,14 @@ main:focus{outline:none}
 .pdp-fixed dd{display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 7px;font-family:var(--tg-font-display);font-weight:700;font-size:21px;line-height:1.1;color:var(--tg-ivory)}
 .pdp-fixed.is-long dd{font-size:18px}
 .pdp-fixed dd i{flex:none;width:11px;height:11px;border-radius:50%;border:1px solid rgba(255,255,255,.25)}
+/* Mẫu phối màu vàng (.has-mix, ô .mix): mỗi màu một cụm (chấm màu + tên), xuống dòng theo cụm. Điện thoại: ô màu vàng dài nên nằm riêng một hàng
+   trọn chiều ngang ở dưới, các ô còn lại ở hàng trên (4 ô thì vẫn 2×2) */
+.pdp-fixed dd span{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+@media (max-width:479px){
+  .pdp-fixed.has-mix[data-n="3"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pdp-fixed.has-mix[data-n="2"]{grid-template-columns:minmax(0,1fr)}
+  .pdp-fixed.has-mix:not([data-n="4"])>.mix{order:1;grid-column:1/-1;border-left:0;border-top:1px solid var(--tg-line-soft)}
+}
 @media (min-width:768px){
   .pdp-fixed[data-n="4"]{grid-template-columns:repeat(4,minmax(0,1fr))}
   .pdp-fixed[data-n="4"]>div:nth-child(3){border-left:1px solid var(--tg-line-soft)}
