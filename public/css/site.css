@@ -977,7 +977,10 @@ main:focus{outline:none}
 .pdp-conf .og:first-of-type{margin-top:6px}
 .pdp-conf .btns{margin-top:20px}
 /* “Tem thông số”: mục cấu hình chỉ có một giá trị (mẫu có sẵn — không có gì để chọn) hiện thành một dải ô thay cho nút chọn.
-   data-n = số ô (1–4); 4 ô thì điện thoại xếp 2×2. .is-long = có giá trị dài (vd. “Kim cương thiên nhiên”) → chữ nhỏ hơn một bậc */
+   data-n = số ô (1–4); 4 ô: khối hẹp xếp 2×2. .is-long = có giá trị dài (vd. “Kim cương thiên nhiên”) → chữ nhỏ hơn một bậc.
+   Cân đối: mỗi giá trị một dòng, thẳng hàng nhau — chấm màu đi liền tên màu (span không xuống dòng), cỡ chữ co theo bề rộng điện thoại
+   để vừa ô 3 cột, và giá trị canh giữa theo chiều dọc khi ô bên cạnh cao hơn. */
+.pdp-conf{container-type:inline-size} /* tem xếp theo bề rộng thật của khối cấu hình (@container bên dưới) */
 .pdp-fixed{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:16px;border:1px solid var(--tg-line);background:radial-gradient(120% 160% at 50% 0%,rgba(43,32,16,.55),rgba(12,9,7,.15) 70%)}
 .pdp-fixed[data-n="1"]{grid-template-columns:minmax(0,1fr)}
 .pdp-fixed[data-n="2"],.pdp-fixed[data-n="4"]{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -986,21 +989,46 @@ main:focus{outline:none}
 .pdp-fixed[data-n="4"]>div:nth-child(3){border-left:0}
 .pdp-fixed[data-n="4"]>div:nth-child(n+3){border-top:1px solid var(--tg-line-soft)}
 .pdp-fixed dt{margin-right:-.22em;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;color:var(--tg-muted)}
-.pdp-fixed dd{display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px 7px;font-family:var(--tg-font-display);font-weight:700;font-size:21px;line-height:1.1;color:var(--tg-ivory)}
-.pdp-fixed.is-long dd{font-size:18px}
+.pdp-fixed dd{flex:1;display:flex;align-items:center;align-content:center;justify-content:center;flex-wrap:wrap;gap:4px 7px;max-width:100%;font-family:var(--tg-font-display);font-weight:700;font-size:clamp(16px,4.6vw,21px);line-height:1.1;color:var(--tg-ivory)}
+.pdp-fixed.is-long dd{font-size:clamp(15px,4.2vw,18px)}
 .pdp-fixed dd i{flex:none;width:11px;height:11px;border-radius:50%;border:1px solid rgba(255,255,255,.25)}
-/* Mẫu phối màu vàng (.has-mix, ô .mix): mỗi màu một cụm (chấm màu + tên), xuống dòng theo cụm. Điện thoại: ô màu vàng dài nên nằm riêng một hàng
-   trọn chiều ngang ở dưới, các ô còn lại ở hàng trên (4 ô thì vẫn 2×2) */
-.pdp-fixed dd span{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
-@media (max-width:479px){
-  .pdp-fixed.has-mix[data-n="3"]{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .pdp-fixed.has-mix[data-n="2"]{grid-template-columns:minmax(0,1fr)}
-  .pdp-fixed.has-mix:not([data-n="4"])>.mix{order:1;grid-column:1/-1;border-left:0;border-top:1px solid var(--tg-line-soft)}
-}
-@media (min-width:768px){
+.pdp-fixed dd span{display:inline-flex;align-items:center;gap:7px;white-space:nowrap} /* chấm màu + tên màu: một cụm, không tách dòng */
+@container (min-width:560px){ /* 4 ô: khối đủ rộng thì một hàng 4 cột, hẹp hơn thì 2×2 */
   .pdp-fixed[data-n="4"]{grid-template-columns:repeat(4,minmax(0,1fr))}
   .pdp-fixed[data-n="4"]>div:nth-child(3){border-left:1px solid var(--tg-line-soft)}
   .pdp-fixed[data-n="4"]>div:nth-child(n+3){border-top:0}
+}
+/* Mẫu phối màu vàng (.has-mix, ô .mix; data-mix = số màu): giá trị dài (“● Vàng trắng & ● Vàng hồng”) phải nằm trọn một dòng.
+   Mặc định: các ô còn lại một hàng ở trên, ô màu vàng riêng một hàng trọn chiều ngang ở dưới.
+   Khối đủ rộng (≥ 520px, hai màu, tối đa 3 ô): một hàng duy nhất, ô màu vàng ở giữa và rộng hơn hai ô bên. */
+.pdp-fixed.has-mix[data-n="2"]{grid-template-columns:minmax(0,1fr)}
+.pdp-fixed.has-mix[data-n="3"]{grid-template-columns:repeat(2,minmax(0,1fr))}
+.pdp-fixed.has-mix[data-n="4"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pdp-fixed.has-mix>div:not(.mix){border-top:0;border-left:0}
+.pdp-fixed.has-mix>div:not(.mix)~div:not(.mix){border-left:1px solid var(--tg-line-soft)}
+.pdp-fixed.has-mix>.mix{order:1;grid-column:1/-1;border-left:0;border-top:1px solid var(--tg-line-soft)}
+@container (min-width:520px){
+  .pdp-fixed.has-mix[data-mix="2"][data-n="2"]{grid-template-columns:minmax(0,1fr) minmax(0,1.7fr)}
+  .pdp-fixed.has-mix[data-mix="2"][data-n="3"]{grid-template-columns:minmax(0,1fr) minmax(0,1.7fr) minmax(0,1fr)}
+  .pdp-fixed.has-mix[data-mix="2"]:is([data-n="2"],[data-n="3"])>.mix{order:0;grid-column:auto;border-top:0;border-left:1px solid var(--tg-line-soft)}
+}
+/* Điện thoại (≤ 519px — khối luôn hẹp hơn 520px nên mẫu phối màu luôn ở dạng hai hàng): tem nhỏ gọn, nhẹ hơn.
+   Ô thấp, chữ nhỏ hơn một bậc, viền ngoài nhạt; vạch ngăn giữa các ô cùng hàng là một nét ngắn (không kẻ hết chiều cao);
+   ô màu vàng của mẫu phối màu là một dòng “nhãn · giá trị”. */
+@media (max-width:519px){
+  .pdp-fixed{margin-top:14px;border-color:rgba(212,169,79,.26);background:radial-gradient(120% 180% at 50% 0%,rgba(43,32,16,.38),rgba(12,9,7,0) 72%)}
+  .pdp-fixed>div{position:relative;gap:3px;padding:11px 6px 10px}
+  .pdp-fixed dt{margin-right:-.2em;font-size:8.5px;letter-spacing:.2em}
+  .pdp-fixed dd{font-size:clamp(14.5px,4.2vw,17px)}
+  .pdp-fixed.is-long dd{font-size:clamp(14px,4vw,16px)}
+  .pdp-fixed dd i{width:9px;height:9px}
+  .pdp-fixed dd span{gap:6px}
+  .pdp-fixed>div+div,.pdp-fixed.has-mix>div:not(.mix)~div:not(.mix){border-left:0}
+  .pdp-fixed>div+div::before{content:"";position:absolute;left:0;top:26%;bottom:26%;width:1px;background:var(--tg-line-soft)}
+  .pdp-fixed[data-n="4"]:not(.has-mix)>div:nth-child(3)::before,.pdp-fixed.has-mix>.mix::before{display:none} /* ô đứng đầu hàng: không có vạch */
+  .pdp-fixed.has-mix>.mix{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:4px 12px;padding:9px 10px 10px}
+  .pdp-fixed.has-mix>.mix dt{margin-right:0}
+  .pdp-fixed.has-mix>.mix dd{flex:0 1 auto}
 }
 .pdp-more{margin-top:16px;font-size:13px;line-height:1.6;color:var(--tg-sub)}
 .pdp-more a{color:var(--tg-gold-light);border-bottom:1px solid var(--tg-line);padding-bottom:2px;white-space:nowrap;transition:border-color .3s,color .3s}
