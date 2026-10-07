@@ -15,6 +15,8 @@ const T = {
   vi: {
     coll: 'Bộ sưu tập', choose: 'Chọn cấu hình', karat: 'Tuổi vàng', color: 'Màu vàng', gem: 'Loại đá quý',
     current: 'Cấu hình đang chọn', consult: 'Tư vấn cấu hình', zalo: 'Nhắn Zalo', save: 'Lưu món này', saved: 'Đã lưu',
+    fixedTitle: 'Thông số mẫu có sẵn', consultPiece: 'Tư vấn mẫu này', gemShort: 'Đá quý', moreQ: 'Muốn {x} khác?', moreCta: 'Custom mẫu này', or: 'hoặc',
+    words: { karat: 'tuổi vàng', color: 'màu vàng', gem: 'đá quý', size: 'size' },
     specs: 'Thông số', weight: 'Trọng lượng vàng', weightDefault: 'Cân & ghi rõ theo cấu hình đã chốt', gemSpecs: 'Thông số đá quý',
     certs: 'Giấy kiểm định', certsDefault: 'Theo loại đá quý đã chọn', customizable: 'Custom', yes: 'Có thể điều chỉnh theo yêu cầu', no: 'Theo mẫu có sẵn',
     noGem: 'Không đính đá quý', related: 'Có thể bạn <em>cũng thích</em>', gallery: 'Thư viện ảnh', view: 'Xem ảnh',
@@ -27,6 +29,8 @@ const T = {
   en: {
     coll: 'Collection', choose: 'Choose your configuration', karat: 'Gold karat', color: 'Gold color', gem: 'Gemstone',
     current: 'Current configuration', consult: 'Inquire about this configuration', zalo: 'Message on Zalo', save: 'Save this piece', saved: 'Saved',
+    fixedTitle: 'Ready-made specifications', consultPiece: 'Inquire about this piece', gemShort: 'Gemstone', moreQ: 'Prefer a different {x}?', moreCta: 'Customize this piece', or: 'or',
+    words: { karat: 'karat', color: 'gold color', gem: 'gemstone', size: 'size' },
     specs: 'Specifications', weight: 'Gold weight', weightDefault: 'Weighed & stated per final configuration', gemSpecs: 'Gemstone specs',
     certs: 'Certification', certsDefault: 'According to the chosen gemstone', customizable: 'Custom', yes: 'Can be tailored on request', no: 'As designed',
     noGem: 'No gemstones', related: 'You may <em>also like</em>', gallery: 'Gallery', view: 'View image',
@@ -116,6 +120,22 @@ export function renderProduct(p, lang, ver = {}) {
   const goldLabel = (c, k) => (lang === 'vi' ? `${catalog.goldColors[c]?.[lang] || 'Vàng'} ${k}` : `${k} ${(catalog.goldColors[c]?.[lang] || 'gold').toLowerCase()}`);
   const summary = [name, goldLabel(c0, k0), g0 && catalog.gemstones[g0][lang], s0].filter(Boolean).join(' · ');
 
+  // Khối cấu hình. Mục chỉ có một giá trị (mẫu có sẵn — không có gì để chọn) hiện trong “tem thông số”; mục có từ 2 lựa chọn là nút chọn.
+  // Giá trị của mục cố định vẫn nằm trong form (radio ẩn, đã chọn) → dòng tóm tắt, link tư vấn, khung 3D và site.js đọc như cũ.
+  const groups = [
+    karats.length && { key: 'karat', label: t.karat, short: t.karat, out: k0, cur: k0, items: karats.map((k) => [k, k]) },
+    colors.length && { key: 'color', label: t.color, short: t.color, out: esc(catalog.goldColors[c0][lang]), cur: c0, items: colors.map((c) => [c, catalog.goldColors[c][lang], catalog.goldColors[c].swatch]) },
+    gems.length && { key: 'gem', label: t.gem, short: t.gemShort, out: esc(catalog.gemstones[g0][lang]), cur: g0, items: gems.map((g) => [g, catalog.gemstones[g][lang]]) },
+    p.sizes?.options?.length && { key: 'size', label: esc(p.sizes.label?.[lang] || 'Size'), short: esc(p.sizes.label?.[lang] || 'Size'), out: esc(s0), cur: s0, items: p.sizes.options.map((s) => [s, s]) },
+  ].filter(Boolean);
+  const fixed = groups.filter((g) => g.items.length === 1), hasChoice = groups.some((g) => g.items.length > 1);
+  const pickGroup = (key) => { const g = groups.find((x) => x.key === key && x.items.length > 1); return g ? `<fieldset class="og"><legend><span>${g.label}</span><b data-out="${g.key}">${g.out}</b></legend><div class="opt">${radio(g.key, g.items, g.cur)}</div></fieldset>` : ''; };
+  const confTitle = fixed.length && !hasChoice ? t.fixedTitle : t.choose;
+  const fixedStrip = fixed.length ? `<dl class="pdp-fixed${fixed.some((g) => String(g.items[0][1]).length > 12) ? ' is-long' : ''}" data-n="${fixed.length}">${fixed.map((g) => { const [v, label, sw] = g.items[0]; return `<div><dt>${g.short}</dt><dd>${sw ? `<i style="background:${esc(sw)}"></i>` : ''}${esc(label)}<input type="radio" name="${g.key}" value="${esc(v)}" data-label="${esc(label)}" checked hidden></dd></div>`; }).join('')}</dl>` : '';
+  const orList = (xs) => (xs.length > 1 ? `${xs.slice(0, -1).join(', ')} ${t.or} ${xs.at(-1)}` : xs[0]);
+  // Sản phẩm bật Custom trong CMS: gợi ý đổi các thông số đang cố định → form gửi ý tưởng ở trang Custom (kèm tên món + cấu hình)
+  const fixedMore = fixed.length && p.customizable ? `<p class="pdp-more">${t.moreQ.replace('{x}', orList(fixed.map((g) => t.words[g.key])))} <a href="${url('custom', lang)}?piece=${p.slug}&amp;config=${encodeURIComponent(summary)}#gui-y-tuong">${t.moreCta} <span aria-hidden="true">→</span></a></p>` : '';
+
   // Thư viện: ảnh thật nếu có; không thì 4 khung placeholder
   const imgs = (p.images || []).filter((i) => i?.src);
   let slides = imgs.length
@@ -175,15 +195,15 @@ ${breadcrumb(crumbs, lang)}
     <p class="pdp-cfg">${esc(p.config[lang])}</p>
     ${p.description?.[lang] ? `<p class="lead pdp-desc">${nl(p.description[lang])}</p>` : ''}
 
-    <form class="pdp-conf" data-conf-form data-model="${esc(name)}" aria-label="${t.choose}">
-      <p class="kick">${t.choose}</p>
-      ${karats.length ? `<fieldset class="og"><legend><span>${t.karat}</span><b data-out="karat">${k0}</b></legend><div class="opt">${radio('karat', karats.map((k) => [k, k]), k0)}</div></fieldset>` : ''}
-      ${colors.length ? `<fieldset class="og"><legend><span>${t.color}</span><b data-out="color">${esc(catalog.goldColors[c0][lang])}</b></legend><div class="opt">${radio('color', colors.map((c) => [c, catalog.goldColors[c][lang], catalog.goldColors[c].swatch]), c0)}</div></fieldset>` : ''}
-      ${gems.length ? `<fieldset class="og"><legend><span>${t.gem}</span><b data-out="gem">${esc(catalog.gemstones[g0][lang])}</b></legend><div class="opt">${radio('gem', gems.map((g) => [g, catalog.gemstones[g][lang]]), g0)}</div></fieldset>` : ''}
-      ${p.sizes?.options?.length ? `<fieldset class="og"><legend><span>${esc(p.sizes.label?.[lang] || 'Size')}</span><b data-out="size">${esc(s0)}</b></legend><div class="opt">${radio('size', p.sizes.options.map((s) => [s, s]), s0)}</div></fieldset>` : ''}
-      <p class="sum" aria-live="polite">${t.current}: <b data-conf-summary>${esc(summary)}</b></p>
+    <form class="pdp-conf" data-conf-form data-model="${esc(name)}" aria-label="${confTitle}">
+      <p class="kick">${confTitle}</p>${fixedStrip}${fixedMore}
+      ${pickGroup('karat')}
+      ${pickGroup('color')}
+      ${pickGroup('gem')}
+      ${pickGroup('size')}
+      <p class="sum" aria-live="polite"${hasChoice ? '' : ' hidden'}>${t.current}: <b data-conf-summary>${esc(summary)}</b></p>
       <div class="btns">
-        <a class="btn g" data-conf-send data-base="${url('contact', lang)}?piece=${p.slug}" href="${url('contact', lang)}?piece=${p.slug}&amp;config=${encodeURIComponent(summary)}#dat-lich">${t.consult}</a>
+        <a class="btn g" data-conf-send data-base="${url('contact', lang)}?piece=${p.slug}" href="${url('contact', lang)}?piece=${p.slug}&amp;config=${encodeURIComponent(summary)}#dat-lich">${hasChoice ? t.consult : t.consultPiece}</a>
         <a class="btn l" href="${zalo || `${url('contact', lang)}#dat-lich`}"${zalo ? ' target="_blank" rel="noopener"' : ''}>${t.zalo}</a>
       </div>
       ${edit3d ? `<div class="m3d-edit"><a class="btn l" data-m3d-edit data-base="${esc(edit3d)}" href="${esc(withPick(edit3d, { metal: MODEL3D_METALS.includes(c0) ? c0 : '', gem: g0, karat: k0 }))}">${icon('pen')}${t.edit3d} <span aria-hidden="true">→</span></a><p class="fine">${t.edit3dHint}</p></div>` : ''}
