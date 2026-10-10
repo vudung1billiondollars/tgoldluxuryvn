@@ -2,10 +2,12 @@
 // Chạy: npm run sync-3d   — mỗi khi có mẫu 3D mới, khung xem hoặc công cụ tự thiết kế được cập nhật. File .3dm gốc KHÔNG bao giờ được chép.
 //  - public/3d/viewer3d.js|css              khung xem
 //  - public/3d/models/*.glb                 mẫu 3D; thư mục con (vd. models/nhan-cuoi/) gồm <mã>.glb + <mã>.json (thông tin) + <mã>.jpg (ảnh đại diện);
-//                                           models/cong-cu/*.jpg = ảnh đại diện mặc định của hai công cụ tự thiết kế (dùng khi chưa chọn ảnh khác trong CMS)
-//  - public/3d/app/*                        mã chạy công cụ tự thiết kế (nhan-cuoi.js, tuy-chinh.js, nhan-nam.js, mat-day.js, tu-thiet-ke.css)
+//                                           models/cong-cu/*.jpg = ảnh đại diện mặc định của các công cụ tự thiết kế (dùng khi chưa chọn ảnh khác trong CMS)
+//  - public/3d/app/*                        mã chạy công cụ tự thiết kế (nhan-cuoi.js, tuy-chinh.js, nhan-nam.js, mat-day.js, bong-tai.js, tu-thiet-ke.css)
 //  - 3d-app/*.html                          mẫu trang của công cụ (website dựng trang /3d/<đường dẫn>/ từ mẫu này) — không công khai
-import { cp, mkdir, readdir, stat, rm } from 'node:fs/promises';
+//  - 3d-app/mau-san-pham.json               danh sách MẪU DỰNG SẴN theo sản phẩm: { <slug sản phẩm>: { app, ten } } — trang sản phẩm có slug trong danh sách sẽ có nút
+//                                           “Tinh chỉnh thiết kế riêng” mở công cụ 3D với đúng mẫu đó (#mau=<slug>); cấu hình từng mẫu nằm sẵn trong mã chạy công cụ
+import { cp, mkdir, readdir, stat, rm, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -39,12 +41,19 @@ const copyModels = async (rel) => {
 await copyModels('');
 
 // công cụ tự thiết kế
-const APPS = ['nhan-cuoi', 'tuy-chinh', 'nhan-nam', 'mat-day'];
+const APPS = ['nhan-cuoi', 'tuy-chinh', 'nhan-nam', 'mat-day', 'bong-tai'];
 if (APPS.every((a) => existsSync(path.join(SRC, `${a}.js`)) && existsSync(path.join(SRC, `${a}.html`)))) {
   await mkdir(path.join(OUT, 'app'), { recursive: true }); await mkdir(path.join(ROOT, '3d-app'), { recursive: true });
   for (const a of APPS) { await cp(path.join(SRC, `${a}.js`), path.join(OUT, 'app', `${a}.js`)); await cp(path.join(SRC, `${a}.html`), path.join(ROOT, '3d-app', `${a}.html`)); }
   await cp(path.join(SRC, 'tu-thiet-ke.css'), path.join(OUT, 'app', 'tu-thiet-ke.css'));
   await rm(path.join(OUT, 'app', 'goi-y'), { recursive: true, force: true }); // bước "Mẫu gợi ý" đã bỏ khỏi công cụ nhẫn cưới
   console.log(`✓ Công cụ tự thiết kế: ${APPS.join(', ')}`);
-} else console.warn('! Chưa thấy công cụ tự thiết kế (nhan-cuoi.js / tuy-chinh.js / nhan-nam.js / mat-day.js) trong thư mục 3D\'s Products — chạy node tools/build3d.mjs trước.');
+  // mẫu dựng sẵn theo sản phẩm: chỉ chép tên công cụ + tên mẫu (cấu hình hình khối đã nằm trong mã chạy)
+  try {
+    const all = JSON.parse(await readFile(path.join(SRC, 'src', 'mau-san-pham.json'), 'utf8'));
+    const slim = Object.fromEntries(Object.entries(all).filter(([slug, x]) => /^[a-z0-9-]+$/.test(slug) && APPS.includes(x?.app)).map(([slug, x]) => [slug, { app: x.app, ten: String(x.ten || '') }]));
+    await writeFile(path.join(ROOT, '3d-app', 'mau-san-pham.json'), `${JSON.stringify(slim, null, 1)}\n`);
+    console.log(`✓ Mẫu dựng sẵn theo sản phẩm: ${Object.keys(slim).length} mẫu`);
+  } catch (e) { console.warn(`! Không đọc được danh sách mẫu dựng sẵn (src/mau-san-pham.json): ${e.message}`); }
+} else console.warn('! Chưa thấy công cụ tự thiết kế (nhan-cuoi.js / tuy-chinh.js / nhan-nam.js / mat-day.js / bong-tai.js) trong thư mục 3D\'s Products — chạy node tools/build3d.mjs trước.');
 console.log(`Xong (${nGlb} tệp .glb). Mẫu mới cần thêm trong /admin → Sản phẩm 3D để có trang và link riêng; nhớ khởi động lại máy chủ (npm run dev) nếu vừa cập nhật mã.`);

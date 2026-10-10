@@ -12,6 +12,7 @@ import { renderContact } from './pages/contact.js';
 import { renderNotFound } from './pages/notfound.js';
 import { renderCollection } from './pages/collection.js';
 import { renderProduct, renderProductRedirect } from './pages/product.js';
+import { autoAppPages3d } from './lib/presets3d.js';
 import { renderCustom } from './pages/custom.js';
 import { renderMaterials } from './pages/materials.js';
 import { renderWorkshop } from './pages/workshop.js';
@@ -82,7 +83,8 @@ async function doBuild() {
   }
   // Sản phẩm 3D: trang riêng từng mẫu (noindex, không vào sitemap — link gửi trực tiếp cho khách)
   let pages3d = 0;
-  for (const m of visibleModels3d()) {
+  // Công cụ có mẫu dựng sẵn theo sản phẩm (nút “Tinh chỉnh thiết kế riêng”) mà CMS chưa có mục công cụ đang hiện → website tự dựng trang cho công cụ đó
+  for (const m of [...visibleModels3d(), ...autoAppPages3d()]) {
     if (m.kind === 'app') { // công cụ tự thiết kế: một trang trọn màn hình, chỉ tiếng Việt
       try {
         const a = MODEL3D_APPS[m.app];

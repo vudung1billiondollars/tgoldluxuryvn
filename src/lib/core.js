@@ -32,6 +32,7 @@ export const MODEL3D_APPS = {
   'nhan-cau-hon': { file: 'tuy-chinh', vi: 'Tự thiết kế nhẫn cầu hôn', en: 'Design your engagement ring', title: 'Tự thiết kế nhẫn cầu hôn' },
   'nhan-nam': { file: 'nhan-nam', vi: 'Tự thiết kế nhẫn nam', en: 'Design your men’s ring', title: 'Tự thiết kế nhẫn nam' },
   'mat-day': { file: 'mat-day', vi: 'Tự thiết kế mặt dây chuyền', en: 'Design your pendant', title: 'Tự thiết kế mặt dây chuyền' },
+  'bong-tai': { file: 'bong-tai', vi: 'Tự thiết kế bông tai', en: 'Design your earrings', title: 'Tự thiết kế bông tai' },
 };
 export const categoryPath = (id, lang) => (lang === 'en' ? `/en/collection/${id}/` : `/bo-suu-tap/${id}/`);
 

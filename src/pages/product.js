@@ -8,6 +8,7 @@ import { productCard } from '../partials/product-card.js';
 import { breadcrumb, breadcrumbLd, promises, zaloHref } from '../partials/blocks.js';
 import { catalog, visibleProducts, visiblePosts, categoryOf, model3dOf, visibleModels3d, posterSrcset } from '../lib/content.js';
 import { postCardMini } from './materials.js';
+import { presetLink3d } from '../lib/presets3d.js';
 import { viewerLabels } from './model3d.js';
 import C from '../i18n/common.js';
 
@@ -24,7 +25,8 @@ const T = {
     ph: ['Ảnh sản phẩm', 'Nền đen, 1 nguồn sáng, bắt sáng đá quý'], phAlt: ['Góc nghiêng', 'Đeo trên người', 'Cận cảnh đá quý'],
     fine: 'Giá được báo chính xác theo trọng lượng vàng và thông số đá quý thực tế của cấu hình bạn chọn.',
     journal: 'Đọc thêm trên Tạp chí', journalAll: 'Tạp chí',
-    view3d: 'Xem 3D', loading3d: 'Đang tải 3D…', tag3d: '3D', edit3d: 'Tự tuỳ chỉnh lại', edit3dHint: 'Mở đúng mẫu này trong công cụ 3D: đổi kiểu dáng, đá quý, chữ khắc… rồi gửi thiết kế cho T Gold.', design3d: 'Tự thiết kế bản 3D của bạn', design3dHint: 'Chọn kiểu dáng, đá quý và chi tiết rồi gửi thiết kế cho T Gold.',
+    view3d: 'Xem 3D', loading3d: 'Đang tải 3D…', tag3d: '3D', edit3d: 'Tự tuỳ chỉnh lại', edit3dHint: 'Mở đúng mẫu này trong công cụ 3D: đổi kiểu dáng, đá quý, chữ khắc… rồi gửi thiết kế cho T Gold.',
+    tune3d: 'Tinh chỉnh thiết kế riêng', tune3dHint: 'Mở bản 3D của mẫu này: đổi kiểu dáng, đá quý, màu vàng theo ý bạn rồi gửi thiết kế cho T Gold. Bản 3D dựng theo ảnh sản phẩm nên kích thước chỉ là tương đối.', design3d: 'Tự thiết kế bản 3D của bạn', design3dHint: 'Chọn kiểu dáng, đá quý và chi tiết rồi gửi thiết kế cho T Gold.',
   },
   en: {
     coll: 'Collection', choose: 'Choose your configuration', karat: 'Gold karat', color: 'Gold color', gem: 'Gemstone',
@@ -38,7 +40,8 @@ const T = {
     ph: ['Product photo', 'Black backdrop, single key light, gemstones catching the light'], phAlt: ['Side angle', 'On-body shot', 'Gemstone close-up'],
     fine: 'Pricing is quoted precisely from the actual gold weight and gemstone specifications of your configuration.',
     journal: 'More in the Journal', journalAll: 'Journal',
-    view3d: 'View in 3D', loading3d: 'Loading 3D…', tag3d: '3D', edit3d: 'Customize this design', edit3dHint: 'Opens this exact design in our 3D tool (in Vietnamese) to change the style, gemstones and engraving, then send it to T Gold.', design3d: 'Design your own in 3D', design3dHint: 'Choose the style, gemstones and details, then send your design to T Gold.',
+    view3d: 'View in 3D', loading3d: 'Loading 3D…', tag3d: '3D', edit3d: 'Customize this design', edit3dHint: 'Opens this exact design in our 3D tool (in Vietnamese) to change the style, gemstones and engraving, then send it to T Gold.',
+    tune3d: 'Customize your own design', tune3dHint: 'Opens a 3D version of this design (tool in Vietnamese): change the style, gemstones and gold color, then send it to T Gold. The 3D version is built from product photos, so sizes are approximate.', design3d: 'Design your own in 3D', design3dHint: 'Choose the style, gemstones and details, then send your design to T Gold.',
   },
 };
 
@@ -152,6 +155,8 @@ export function renderProduct(p, lang, ver = {}) {
   const thumbs = slides.map((_, i) => (imgs[i] ? `<img src="${esc(imgs[i].src)}" alt="" loading="lazy">` : bigIcon(i === 2 ? 'camera' : 'gem')));
   let thumb3d = -1;
   const edit3d = m3d ? designLink(m3d) : '';
+  // Mẫu dựng sẵn theo sản phẩm (3d-app/mau-san-pham.json): nút “Tinh chỉnh thiết kế riêng” mở công cụ 3D với đúng mẫu này — thay cho nút “Tự tuỳ chỉnh lại” nếu có cả hai
+  const tune3d = presetLink3d(p.slug);
   if (m3d) {
     // khung 3D là khung đầu tiên của thư viện và tự bật khi vào trang (ảnh thật xếp sau)
     const ps = posterSrcset(m3d.poster);
@@ -212,7 +217,7 @@ ${breadcrumb(crumbs, lang)}
         <a class="btn g" data-conf-send data-base="${url('contact', lang)}?piece=${p.slug}" href="${url('contact', lang)}?piece=${p.slug}&amp;config=${encodeURIComponent(summary)}#dat-lich">${hasChoice ? t.consult : t.consultPiece}</a>
         <a class="btn l" href="${zalo || `${url('contact', lang)}#dat-lich`}"${zalo ? ' target="_blank" rel="noopener"' : ''}>${t.zalo}</a>
       </div>
-      ${edit3d ? `<div class="m3d-edit"><a class="btn l" data-m3d-edit data-base="${esc(edit3d)}" href="${esc(withPick(edit3d, { metal: MODEL3D_METALS.includes(c0) ? c0 : '', gem: g0, karat: k0 }))}">${icon('pen')}${t.edit3d} <span aria-hidden="true">→</span></a><p class="fine">${t.edit3dHint}</p></div>` : ''}
+      ${tune3d ? `<div class="m3d-edit"><a class="btn l" href="${esc(tune3d)}"${lang === 'en' ? ' hreflang="vi"' : ''}>${icon('pen')}${t.tune3d} <span aria-hidden="true">→</span></a><p class="fine">${t.tune3dHint}</p></div>` : edit3d ? `<div class="m3d-edit"><a class="btn l" data-m3d-edit data-base="${esc(edit3d)}" href="${esc(withPick(edit3d, { metal: MODEL3D_METALS.includes(c0) ? c0 : '', gem: g0, karat: k0 }))}">${icon('pen')}${t.edit3d} <span aria-hidden="true">→</span></a><p class="fine">${t.edit3dHint}</p></div>` : ''}
       <button type="button" class="save-line" data-save="${p.slug}" data-name="${esc(name)}" data-cfg="${esc(p.config[lang])}" data-href="${productPath(p.slug, lang)}" aria-pressed="false" aria-label="${C[lang].saveThis}: ${esc(name)}">${icon('bookmark')}<span data-save-text data-on="${t.saved}" data-off="${t.save}">${t.save}</span></button>
       <p class="fine">${t.fine}</p>
     </form>
