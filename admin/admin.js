@@ -414,6 +414,16 @@ async function viewProductImport() {
   // thư mục cha trùng tên danh mục (vd. “Nhẫn nam/NN Q640/…”) → tự xếp danh mục
   const catOf = (parts) => { for (const part of [...parts].reverse()) { const s = slugify(part); const c = cats.find((x) => x.id === s || slugify(x.vi) === s || (x.en && slugify(x.en) === s)); if (c) return c.id; } return ''; };
 
+  // thư mục cha đặt theo màu vàng — “Vàng trắng”, “Vàng trắng & Vàng hồng”, có thể có số thứ tự đứng trước (“02 - Vàng trắng”) → tự chọn màu vàng
+  const goldOf = (parts) => {
+    for (const part of [...parts].reverse()) {
+      const names = part.normalize('NFC').replace(/^\s*\d+\s*[-–.)]\s*/, '').split(/\s*(?:&|\+|,)\s*/).map((x) => slugify(x)).filter(Boolean);
+      const ids = names.map((s) => (Object.entries(catalog.goldColors).find(([id, v]) => id === s || slugify(v.vi) === s || (v.en && slugify(v.en) === s)) || [])[0]);
+      if (ids.length && ids.every(Boolean)) return Object.keys(catalog.goldColors).filter((id) => ids.includes(id));
+    }
+    return null;
+  };
+
   function addFiles(items) {
     const map = new Map(groups.map((g) => [g.dir, g]));
     const before = new Set(map.keys());
@@ -425,7 +435,7 @@ async function viewProductImport() {
       let g = map.get(dir);
       if (!g) {
         const auto = catOf(parts.slice(0, -1));
-        g = { dir, name: parts.at(-1).normalize('NFC').trim().slice(0, 120), on: true, category: auto || opts.category, catSrc: auto ? 'auto' : 'default', images: [], video: null, skipped: 0, note: '', tone: '' };
+        g = { dir, name: parts.at(-1).normalize('NFC').trim().slice(0, 120), on: true, category: auto || opts.category, catSrc: auto ? 'auto' : 'default', colors: goldOf(parts.slice(0, -1)), images: [], video: null, skipped: 0, note: '', tone: '' };
         map.set(dir, g);
       }
       if (IMPORT_IMG.test(fname)) g.images.push(file);
@@ -500,6 +510,7 @@ async function viewProductImport() {
           g.images.length > 12 ? h('span', { class: 'pill warn', text: 'chỉ lấy 12 ảnh đầu' }) : null,
           g.skipped ? h('span', { class: 'pill warn', title: 'Chỉ nhận JPG, PNG, WebP, AVIF và video MP4 / WebM. Ảnh HEIC, video MOV cần đổi định dạng trước.', text: `bỏ qua ${g.skipped} tệp` }) : null,
           g.catSrc === 'auto' ? h('span', { class: 'pill gold', text: 'tự xếp danh mục' }) : null,
+          g.colors ? h('span', { class: 'pill gold', title: 'Lấy theo tên thư mục cha', text: `màu: ${g.colors.map((c) => catalog.goldColors[c].vi).join(' & ')}` }) : null,
           g.exists ? h('span', { class: 'pill warn', text: 'đã có sản phẩm cùng tên' }) : null,
           g.noteEl));
     }));
@@ -534,7 +545,7 @@ async function viewProductImport() {
         let video = '';
         if (g.video) { setNote(g, 'đang tải video', 'gold'); try { const r = await uploadFile(g.video, `${g.name.trim()} video${(g.video.name.match(/\.[a-z0-9]+$/i) || ['.mp4'])[0]}`); if (r.kind === 'video') video = r.src; } catch (e) { if (e.message === 'Phiên đăng nhập đã hết hạn.') throw e; problems.push(`${g.name} · ${g.video.name}: ${e.message}`); } }
         const name = g.name.trim();
-        ready.push({ g, product: { slug: slugify(name), status: opts.status, sample: false, featured: 0, created: today, category: g.category, badges: [], name: { vi: name, en: name }, config: { vi: '', en: '' }, description: { vi: '', en: '' }, gold_karats: opts.gold_karats, gold_colors: opts.gold_colors, gemstones: opts.gemstones, customizable: true, weight_note: { vi: '', en: '' }, gemstone_specs: { vi: '', en: '' }, sizes: null, certificates: [], images: imgs.map((r) => ({ src: r.src, srcset: r.srcset || '', alt: { vi: name, en: name } })), video, model3d: '' } });
+        ready.push({ g, product: { slug: slugify(name), status: opts.status, sample: false, featured: 0, created: today, category: g.category, badges: [], name: { vi: name, en: name }, config: { vi: '', en: '' }, description: { vi: '', en: '' }, gold_karats: opts.gold_karats, gold_colors: g.colors || opts.gold_colors, gemstones: opts.gemstones, customizable: true, weight_note: { vi: '', en: '' }, gemstone_specs: { vi: '', en: '' }, sizes: null, certificates: [], images: imgs.map((r) => ({ src: r.src, srcset: r.srcset || '', alt: { vi: name, en: name } })), video, model3d: '' } });
         setNote(g, imgs.length < files.length ? `đã tải ${imgs.length}/${files.length} ảnh` : 'đã tải ảnh', imgs.length < files.length ? 'warn' : 'ok');
       }
     } catch (e) { problems.push(e.message); }
@@ -572,11 +583,11 @@ async function viewProductImport() {
   return page('Sản phẩm', 'Tải theo thư mục', [h('a', { class: 'btn ghost', href: '#/products' }, icon('back'), 'Danh sách sản phẩm')],
     resultEl,
     card('1 · Chọn thư mục', 'Ảnh trong mỗi thư mục xếp theo tên tệp; ảnh đầu tiên là ảnh đại diện. Cỡ ảnh nên dùng: 1600 × 2000 px (dọc 4:5). Chỉ dùng ảnh thật của sản phẩm.', zone,
-      h('p', { class: 'hint', text: 'Muốn chọn nhiều thư mục cùng lúc: chọn các thư mục trong Finder rồi kéo thả vào khung trên. Thư mục mẹ có các thư mục con đặt theo tên danh mục (ví dụ “Nhẫn nam”) thì sản phẩm bên trong tự được xếp vào danh mục đó.' })),
+      h('p', { class: 'hint', text: 'Muốn chọn nhiều thư mục cùng lúc: chọn các thư mục trong Finder rồi kéo thả vào khung trên. Thư mục mẹ có các thư mục con đặt theo tên danh mục (ví dụ “Nhẫn nam”) thì sản phẩm bên trong tự được xếp vào danh mục đó. Thư mục đặt theo màu vàng (ví dụ “Vàng trắng”, “Vàng trắng & Vàng hồng”) thì sản phẩm bên trong tự nhận màu vàng đó thay cho màu ở phần thiết lập chung.' })),
     h('div', { on: { change: () => { dirty = groups.length > 0; draw(); } } }, card('2 · Thiết lập chung', 'Áp dụng cho mọi sản phẩm trong lượt này; sửa riêng từng sản phẩm sau khi tạo.',
       h('div', { class: 'grid2' }, field('Danh mục mặc định', defCat, 'Dùng cho các thư mục không tự nhận được danh mục.'), field('Trạng thái sau khi tạo', defStatus)),
       field('Tuổi vàng', chips(opts, 'gold_karats', (catalog.karats || ['10K', '14K', '18K']).map((k) => [k, k]))),
-      field('Màu vàng', chips(opts, 'gold_colors', Object.entries(catalog.goldColors).map(([k, v]) => [k, v.vi, v.swatch]), { swatch: true })),
+      field('Màu vàng', chips(opts, 'gold_colors', Object.entries(catalog.goldColors).map(([k, v]) => [k, v.vi, v.swatch]), { swatch: true }), 'Dùng cho các thư mục không tự nhận được màu vàng.'),
       field('Loại đá quý', chips(opts, 'gemstones', Object.entries(catalog.gemstones).map(([k, v]) => [k, v.vi]))))),
     card('3 · Kiểm tra danh sách', 'Bỏ tích những thư mục không muốn tạo; sửa tên và danh mục ngay tại đây.', listEl),
     h('div', { class: 'savebar' }, stateEl, clearBtn, goBtn));
