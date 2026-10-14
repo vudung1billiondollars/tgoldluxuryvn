@@ -44,7 +44,7 @@ export function renderApp3d(m, ver = {}) {
   swap('href="tu-thiet-ke.css"', `href="${q('/3d/app/tu-thiet-ke.css', ver.app)}"`);
   swap(`src="${app.file}.js"`, `src="${q(`/3d/app/${app.file}.js`, ver.app)}"`);
   html = html.replace(/<title>[\s\S]*?<\/title>/, () => `<title>${esc(name)} | T Gold – Luxury Jewelry</title>`);
-  html = html.replace('<link rel="icon" href="data:,">', '<link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">\n<link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">');
+  html = html.replace('<link rel="icon" href="data:,">', '<link rel="icon" href="/favicon.ico" sizes="48x48">\n<link rel="icon" type="image/png" sizes="96x96" href="/assets/brand/favicon-96.png">\n<link rel="icon" type="image/png" sizes="32x32" href="/assets/brand/favicon-32.png">\n<link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png">');
   const c = chromeFor(model3dPath(m.slug, 'vi'));
   const head = c.head.trim().replace('class="site-head"', 'class="site-head solid"');
   if (/<header class="top">[\s\S]*?<\/header>/.test(html)) html = html.replace(/<header class="top">[\s\S]*?<\/header>/, () => head);

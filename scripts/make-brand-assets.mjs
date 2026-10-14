@@ -1,9 +1,9 @@
 // Tạo bộ nhận diện cho web từ logo JPG nền đen:
 //  - monogram TG nền trong suốt (color-to-alpha = đảo ngược chế độ Screen trên nền đen)
-//  - bản WebP, favicon 32 / 180 / 512
+//  - bản WebP, favicon 32 / 48 (.ico) / 96 / 180 / 512
 // Chạy: npm run brand   (cần devDependency "sharp")
 import sharp from 'sharp';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -49,8 +49,7 @@ const glowSvg = (s) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" widt
   <defs><radialGradient id="g" cx="50%" cy="8%" r="90%"><stop offset="0" stop-color="#2B2010"/><stop offset=".45" stop-color="#15100A"/><stop offset=".8" stop-color="#080605"/><stop offset="1" stop-color="#030303"/></radialGradient></defs>
   <rect width="100%" height="100%" fill="url(#g)"/></svg>`);
 
-async function iconOn(size, { bg }) {
-  const pad = bg ? 0.2 : 0.04;              // chừa ≥ 20% lề cho khung bo tròn
+async function iconOn(size, { bg, pad = bg ? 0.2 : 0.04 }) {   // mặc định chừa ≥ 20% lề cho khung bo tròn
   const h = Math.round(size * (1 - pad * 2));
   const m = await sharp(master).resize({ height: h }).png().toBuffer();
   const mm = await sharp(m).metadata();
@@ -61,5 +60,15 @@ await sharp(await iconOn(32, { bg: false })).toFile(path.join(OUT, 'favicon-32.p
 await sharp(await iconOn(180, { bg: true })).toFile(path.join(OUT, 'apple-touch-icon.png'));
 await sharp(await iconOn(512, { bg: true })).toFile(path.join(OUT, 'icon-512.png'));
 await sharp(await iconOn(192, { bg: true })).toFile(path.join(OUT, 'icon-192.png'));
+
+// Favicon cho Google Tìm kiếm: cạnh là bội số của 48px, nền tối để monogram vàng nổi trên nền trắng của trang kết quả
+// (Google cắt tròn → lề 14% vẫn giữ trọn monogram). /favicon.ico = PNG 48px gói trong ICO cho trình thu thập tìm ở gốc.
+await sharp(await iconOn(96, { bg: true, pad: 0.14 })).toFile(path.join(OUT, 'favicon-96.png'));
+const ico48 = await sharp(await iconOn(48, { bg: true, pad: 0.14 })).png().toBuffer();
+const icoHead = Buffer.alloc(22);
+icoHead.writeUInt16LE(0, 0); icoHead.writeUInt16LE(1, 2); icoHead.writeUInt16LE(1, 4);      // ICONDIR: type 1, 1 ảnh
+icoHead.writeUInt8(48, 6); icoHead.writeUInt8(48, 7); icoHead.writeUInt16LE(1, 10); icoHead.writeUInt16LE(32, 12);
+icoHead.writeUInt32LE(ico48.length, 14); icoHead.writeUInt32LE(22, 18);                         // ICONDIRENTRY → PNG ngay sau
+await writeFile(path.join(root, 'public/favicon.ico'), Buffer.concat([icoHead, ico48]));
 
 console.log('✓ Brand assets →', path.relative(root, OUT), `(monogram ${info.width}×${info.height})`);
